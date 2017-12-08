@@ -10,6 +10,7 @@ class GeneratorService extends ActiveBaseService {
 
 	public $author;
 	public $email;
+	public $ownerList;
 	
 	public function generate($owner, $name) {
 		$config = [

@@ -13,11 +13,7 @@ class GeneratorController extends Controller
 	
 	public function actionIndex()
 	{
-		$ownerSelect = Select::display('Select owner', [
-			'yii2lab',
-			'yii2module',
-			'yii2woop',
-		]);
+		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->ownerList);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
 		Yii::$app->vendor->generator->generate($owner, $name);
