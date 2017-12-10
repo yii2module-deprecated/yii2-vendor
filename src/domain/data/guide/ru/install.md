@@ -7,6 +7,12 @@
 composer require {owner}/yii2-{name}
 ```
 
+Создаем полномочие:
+
+```
+oExamlpe
+```
+
 Объявляем модуль:
 
 ```php
