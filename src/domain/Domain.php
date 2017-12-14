@@ -13,13 +13,9 @@ class Domain extends \yii2lab\domain\Domain {
 			],
 			'services' => [
 				'generator' => [
-					'author' => 'Yamshikov Vitaliy, WOOPPAY LLC',
-					'email' => 'theyamshikov@yandex.ru',
-					'ownerList' => [
-						'yii2lab',
-						'yii2module',
-						'yii2woop',
-					],
+					'author' => 'Author name',
+					'email' => 'example@example.com',
+					'ownerList' => [],
 				],
 			],
 		];

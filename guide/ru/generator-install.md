@@ -7,7 +7,7 @@
 composer require yii2module/yii2-vendor
 ```
 
-Объявляем консольный модуль:
+Объявляем console модуль:
 
 ```php
 return [
