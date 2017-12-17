@@ -12,7 +12,7 @@
 	"minimum-stability": "dev",
 	"autoload": {
 		"psr-4": {
-			"{owner}\\{name}\\": "src"
+			"{owner}\\{name}\\": "src",
 			"{owner}\\{name}\\tests\\": "tests"
 		}
 	},
