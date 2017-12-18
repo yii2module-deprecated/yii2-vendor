@@ -57,6 +57,7 @@ class GeneratorController extends Controller
 	}
 	
 	private function inputPackage() {
+		return ['yii2woop', 'qwerty12345'];
 		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->ownerList);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
