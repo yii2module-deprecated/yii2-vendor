@@ -11,6 +11,13 @@ class Base extends BaseObject {
 	
 	public $data;
 	
+	protected function insertLineConfig($fileAlias, $search, $newLine) {
+		$fileName = Yii::getAlias($fileAlias);
+		$content = FileHelper::load($fileName);
+		$content = str_replace($search, $search . "\n" . $newLine, $content);
+		FileHelper::save($fileName, $content);
+	}
+	
 	protected function getBaseAlias($data) {
 		$alias = '@' . $data['owner'] . SL .$data['name'];
 		try {

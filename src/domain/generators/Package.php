@@ -41,4 +41,5 @@ class Package extends Base implements CommandInterface {
 		];
 		return $config;
 	}
+	
 }

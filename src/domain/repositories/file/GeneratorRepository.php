@@ -20,4 +20,15 @@ class GeneratorRepository extends BaseRepository {
 		}
 	}
 	
+	public function runInstall($config, $name) {
+		$generatorNamespace = 'yii2module\vendor\domain\install\\';
+		$config['class'] = $generatorNamespace . $name;
+		$generator = Yii::createObject($config);
+		if($generator instanceof CommandInterface) {
+			$generator->run();
+		} else {
+			throw new ServerErrorHttpException('Generator not be instance of CommandInterface');
+		}
+	}
+	
 }

@@ -34,4 +34,5 @@ class Domain extends Base implements CommandInterface {
 	}
 EOT;
 	}
+	
 }

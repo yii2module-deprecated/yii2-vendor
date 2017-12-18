@@ -25,4 +25,5 @@ class Module extends Base implements CommandInterface {
 	protected function getLangDir($data) {
 		return TAB .'//public static $langDir = \''.$data['owner'].'/'.$data['name'].'/domain/messages\';';
 	}
+	
 }
