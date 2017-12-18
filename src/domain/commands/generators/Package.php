@@ -4,6 +4,7 @@ namespace yii2module\vendor\domain\commands\generators;
 
 use yii2lab\misc\interfaces\CommandInterface;
 use yii2lab\store\Store;
+use yii2module\vendor\domain\commands\Base;
 
 class Package extends Base implements CommandInterface {
 

@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\commands\generators;
 
 use yii2lab\misc\interfaces\CommandInterface;
+use yii2module\vendor\domain\commands\Base;
 
 class Test extends Base implements CommandInterface {
 

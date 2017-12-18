@@ -1,15 +1,30 @@
 <?php
 
-namespace yii2module\vendor\domain\commands\generators;
+namespace yii2module\vendor\domain\commands;
 
 use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidParamException;
 use yii2lab\console\helpers\CopyFiles;
 use yii2lab\helpers\yii\FileHelper;
 
 class Base extends BaseObject {
 	
 	public $data;
+	
+	protected function insertConfig($file, $part, $name, $value) {
+		if($this->isExistsConfig($part, $name)) {
+			return;
+		}
+		$newLine = "\t\t'{$name}' => {$value},";
+		$search = "'{$part}' => [";
+		$this->insertLineConfig($file, $search, $newLine);
+	}
+	
+	protected function isExistsConfig($part, $name) {
+		$config = config($part, []);
+		return isset($config[$name]);
+	}
 	
 	protected function insertLineConfig($fileAlias, $search, $newLine) {
 		$fileName = Yii::getAlias($fileAlias);
@@ -21,8 +36,8 @@ class Base extends BaseObject {
 	protected function getBaseAlias($data) {
 		$alias = '@' . $data['owner'] . SL .$data['name'];
 		try {
-			$path = Yii::getAlias($alias);
-		} catch(\yii\base\InvalidParamException $e) {
+			Yii::getAlias($alias);
+		} catch(InvalidParamException $e) {
 			Yii::setAlias($alias, Yii::getAlias('@vendor' . SL . $data['owner'] . SL . 'yii2-' . $data['name'] . SL . 'src'));
 		}
 		return $alias;

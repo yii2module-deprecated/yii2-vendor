@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\commands\install;
 
 use yii2lab\misc\interfaces\CommandInterface;
-use yii2module\vendor\domain\commands\generators\Base;
+use yii2module\vendor\domain\commands\Base;
 
 class Module extends Base implements CommandInterface {
 
@@ -19,18 +19,15 @@ class Module extends Base implements CommandInterface {
 		foreach($this->aliases as $alias => $appName) {
 			$moduleDir = $this->packageFile($this->data['owner'], $this->data['name'], 'src' . DS . $alias);
 			if(is_dir($moduleDir)) {
-				$this->makeConfig($this->data, $alias);
+				$this->makeConfig($alias);
 			}
 		}
 	}
 	
-	protected function makeConfig($data, $alias) {
-		$aliases = config('modules', []);
-		if(isset($aliases[$data['name']])) {
-			return;
-		}
-		$newLine = "\t\t'{$data['name']}' => '{$data['namespace']}\\$alias\Module',";
-		$search = "'modules' => [";
-		$this->insertLineConfig('@'.$this->aliases[$alias].'/config/modules.php', $search, $newLine);
+	protected function makeConfig($alias) {
+		$value = "'{$this->data['namespace']}\\$alias\Module'";
+		$file = '@'.$this->aliases[$alias].'/config/modules.php';
+		$this->insertConfig($file, 'modules', $this->data['name'], $value);
 	}
+	
 }

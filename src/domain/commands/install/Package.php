@@ -3,9 +3,10 @@
 namespace yii2module\vendor\domain\commands\install;
 
 use Yii;
+use yii\base\InvalidParamException;
 use yii2lab\misc\interfaces\CommandInterface;
 use yii2lab\store\Store;
-use yii2module\vendor\domain\commands\generators\Base;
+use yii2module\vendor\domain\commands\Base;
 
 class Package extends Base implements CommandInterface {
 
@@ -16,20 +17,16 @@ class Package extends Base implements CommandInterface {
 			$alias = trim($alias, '/');
 			try {
 				Yii::getAlias('@' . $alias);
-			} catch(\yii\base\InvalidParamException $e) {
+			} catch(InvalidParamException $e) {
 				$this->makeConfig('@' . $alias, '@vendor/' . $this->data['full_name'] . SL . $path);
 			}
 		}
 	}
 	
 	protected function makeConfig($alias, $full_name) {
-		$aliases = config('aliases', []);
-		if(isset($aliases[$alias])) {
-			return;
-		}
-		$newLine = "\t\t'{$alias}' => '{$full_name}',";
-		$search = "'aliases' => [";
-		$this->insertLineConfig('@common/config/main.php', $search, $newLine);
+		$value = "'{$full_name}'";
+		$file = '@common/config/main.php';
+		$this->insertConfig($file, 'aliases', $alias, $value);
 	}
 	
 	protected function loadConfig() {
