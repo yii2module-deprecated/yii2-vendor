@@ -8,7 +8,10 @@ use yii2module\vendor\domain\generators\Base;
 class Domain extends Base implements CommandInterface {
 
 	public function run() {
-		$this->makeConfig($this->data);
+		$moduleDir = $this->packageFile($this->data['owner'], $this->data['name'], 'src' . DS . 'domain');
+		if(is_dir($moduleDir)) {
+			$this->makeConfig($this->data);
+		}
 	}
 	
 	protected function makeConfig($data) {

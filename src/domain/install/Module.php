@@ -7,26 +7,30 @@ use yii2module\vendor\domain\generators\Base;
 
 class Module extends Base implements CommandInterface {
 
-	public $type;
+	private $aliases = [
+		'web' => 'frontend',
+		'admin' => 'backend',
+		'api' => 'api',
+		'console' => 'console',
+		'common' => 'common',
+	];
 	
 	public function run() {
-		$this->makeConfig($this->data, $this->type);
+		foreach($this->aliases as $alias => $appName) {
+			$moduleDir = $this->packageFile($this->data['owner'], $this->data['name'], 'src' . DS . $alias);
+			if(is_dir($moduleDir)) {
+				$this->makeConfig($this->data, $alias);
+			}
+		}
 	}
 	
-	protected function makeConfig($data, $type) {
+	protected function makeConfig($data, $alias) {
 		$aliases = config('modules', []);
 		if(isset($aliases[$data['name']])) {
 			return;
 		}
-		$newLine = "\t\t'{$data['name']}' => '{$data['namespace']}\\$type\Module',";
+		$newLine = "\t\t'{$data['name']}' => '{$data['namespace']}\\$alias\Module',";
 		$search = "'modules' => [";
-		$arr = [
-			'web' => 'frontend',
-			'admin' => 'backend',
-			'api' => 'api',
-			'console' => 'console',
-			'common' => 'common',
-		];
-		$this->insertLineConfig('@'.$arr[$type].'/config/modules.php', $search, $newLine);
+		$this->insertLineConfig('@'.$this->aliases[$alias].'/config/modules.php', $search, $newLine);
 	}
 }
