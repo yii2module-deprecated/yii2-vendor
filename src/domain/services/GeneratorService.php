@@ -2,57 +2,68 @@
 
 namespace yii2module\vendor\domain\services;
 
-use yii2lab\console\helpers\CopyFiles;
 use yii2lab\domain\services\ActiveBaseService;
-use yii2lab\helpers\yii\FileHelper;
+use yii2module\vendor\domain\enums\TypeEnum;
 
 class GeneratorService extends ActiveBaseService {
-
-    const DATA_PATH = 'vendor/yii2module/yii2-vendor/src/domain/data';
 
 	public $author;
 	public $email;
 	public $ownerList;
-
-	public function generate($owner, $name) {
-        $path = $this->getFullName($owner, $name);
-        $files = $this->copy($path);
-		foreach($files as $fileName1) {
-			$fileName = $path . DS . $fileName1;
-			$this->replace($name, $owner, $fileName);
+	
+	public function generatePackage($owner, $name) {
+		$data = $this->getData($owner, $name);
+		$this->repository->generateComposer($data);
+		$this->repository->generateGitIgnore($data);
+	}
+	
+	public function generateLicense($owner, $name) {
+		$data = $this->getData($owner, $name);
+		$this->repository->generateLicense($data);
+	}
+	
+	public function generateGuide($owner, $name) {
+		$data = $this->getData($owner, $name);
+		$this->repository->generateGuide($data);
+	}
+	
+	public function generateReadme($owner, $name) {
+		$data = $this->getData($owner, $name);
+		$this->repository->generateReadme($data);
+	}
+	
+	public function generateTest($owner, $name) {
+		$data = $this->getData($owner, $name);
+		$this->repository->generateTest($data);
+	}
+	
+	public function generateAll($owner, $name, $types) {
+		if(in_array(TypeEnum::PACKAGE, $types)) {
+			$this->generatePackage($owner, $name);
+		}
+		if(in_array(TypeEnum::LICENSE, $types)) {
+			$this->generateLicense($owner, $name);
+		}
+		if(in_array(TypeEnum::GUIDE, $types)) {
+			$this->generateGuide($owner, $name);
+		}
+		if(in_array(TypeEnum::README, $types)) {
+			$this->generateReadme($owner, $name);
+		}
+		if(in_array(TypeEnum::TEST, $types)) {
+			$this->generateTest($owner, $name);
 		}
 	}
 
-	private function getFullName($owner, $name) {
-        return 'vendor' . SL . $owner . SL . 'yii2-' . $name;
-    }
-
-    private function copy($to) {
-        $from = self::DATA_PATH;
-        $copy = new CopyFiles;
-        $copy->copyAllFiles($from, $to);
-        $files = $copy->getFileList($to);
-        return $files;
-    }
-
-    private function replace($name, $owner, $fileName) {
-        $fileData = FileHelper::load($fileName);
-        $fileData = $this->replaceData($name, $owner, $fileData);
-        FileHelper::save($fileName, $fileData);
-    }
-
-	private function replaceData($name, $owner, $data) {
-        $list = [
-            '{name}' => $name,
-            '{owner}' => $owner,
-            '{author}' => $this->author,
-            '{email}' => $this->email,
-            '{year}' => date('Y'),
-        ];
-        $search = array_keys($list);
-        $replace = array_values($list);
-        $data = str_replace($search, $replace, $data);
-        return $data;
-    }
-	
+	private function getData($owner, $name) {
+		return [
+			'owner' => $owner,
+			'name' => $name,
+			'author' => $this->author,
+			'email' => $this->email,
+			'license' => 'MIT',
+			'year' => date('Y'),
+		];
+	}
+ 
 }
