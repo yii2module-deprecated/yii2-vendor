@@ -7,8 +7,8 @@ use yii2lab\misc\helpers\CommandHelper;
 
 class GeneratorRepository extends BaseRepository {
 	
-	const GENERATOR_DIR = 'yii2module\vendor\domain\generators\\';
-	const INSTALL_DIR = 'yii2module\vendor\domain\install\\';
+	const GENERATOR_DIR = 'yii2module\vendor\domain\commands\generators\\';
+	const INSTALL_DIR = 'yii2module\vendor\domain\commands\install\\';
 	
 	public function generate($config, $name) {
 		return CommandHelper::run($config, self::GENERATOR_DIR . $name);

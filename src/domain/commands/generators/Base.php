@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2module\vendor\domain\generators;
+namespace yii2module\vendor\domain\commands\generators;
 
 use Yii;
 use yii\base\BaseObject;

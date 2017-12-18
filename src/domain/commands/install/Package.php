@@ -1,11 +1,11 @@
 <?php
 
-namespace yii2module\vendor\domain\install;
+namespace yii2module\vendor\domain\commands\install;
 
 use Yii;
 use yii2lab\misc\interfaces\CommandInterface;
 use yii2lab\store\Store;
-use yii2module\vendor\domain\generators\Base;
+use yii2module\vendor\domain\commands\generators\Base;
 
 class Package extends Base implements CommandInterface {
 
