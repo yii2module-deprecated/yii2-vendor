@@ -20,27 +20,20 @@ class GeneratorService extends ActiveBaseService {
 			if(strpos($type, 'module') !== false) {
 				list($moduleType, $moduleName) = explode(' ', $type);
 				$generatorConfig['type'] = strtolower($moduleType);
-				$repository->runGenerator($generatorConfig, 'Module');
+				$repository->generate($generatorConfig, 'Module');
 			} else {
-				$repository->runGenerator($generatorConfig, $type);
+				$repository->generate($generatorConfig, $type);
 			}
 		}
 	}
 	
-	public function install($owner, $name, $types) {
+	public function install($owner, $name) {
 		$data = $this->getData($owner, $name);
 		$generatorConfig['data'] = $data;
 		/** @var GeneratorRepository $repository */
 		$repository = $this->repository;
-		foreach($types as $type) {
-			if(strpos($type, 'module') !== false) {
-				list($moduleType, $moduleName) = explode(' ', $type);
-				$generatorConfig['type'] = strtolower($moduleType);
-				$repository->runInstall($generatorConfig, 'Module');
-			} elseif($type == 'Domain') {
-				$repository->runInstall($generatorConfig, 'Domain');
-			}
-		}
+		$repository->install($generatorConfig, 'Module');
+		$repository->install($generatorConfig, 'Domain');
 	}
 	
 	private function getData($owner, $name) {

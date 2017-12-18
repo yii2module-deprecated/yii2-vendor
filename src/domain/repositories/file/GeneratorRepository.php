@@ -2,33 +2,20 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
-use Yii;
-use yii\web\ServerErrorHttpException;
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\misc\interfaces\CommandInterface;
+use yii2lab\misc\helpers\CommandHelper;
 
 class GeneratorRepository extends BaseRepository {
 	
-	public function runGenerator($config, $name) {
-		$generatorNamespace = 'yii2module\vendor\domain\generators\\';
-		$config['class'] = $generatorNamespace . $name;
-		$generator = Yii::createObject($config);
-		if($generator instanceof CommandInterface) {
-			$generator->run();
-		} else {
-			throw new ServerErrorHttpException('Generator not be instance of CommandInterface');
-		}
+	const GENERATOR_DIR = 'yii2module\vendor\domain\generators\\';
+	const INSTALL_DIR = 'yii2module\vendor\domain\install\\';
+	
+	public function generate($config, $name) {
+		return CommandHelper::run($config, self::GENERATOR_DIR . $name);
 	}
 	
-	public function runInstall($config, $name) {
-		$generatorNamespace = 'yii2module\vendor\domain\install\\';
-		$config['class'] = $generatorNamespace . $name;
-		$generator = Yii::createObject($config);
-		if($generator instanceof CommandInterface) {
-			$generator->run();
-		} else {
-			throw new ServerErrorHttpException('Generator not be instance of CommandInterface');
-		}
+	public function install($config, $name) {
+		return CommandHelper::run($config, self::INSTALL_DIR . $name);
 	}
 	
 }
