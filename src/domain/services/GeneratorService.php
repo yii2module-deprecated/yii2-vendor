@@ -11,47 +11,38 @@ class GeneratorService extends ActiveBaseService {
 	public $email;
 	public $ownerList;
 	
-	public function generatePackage($owner, $name) {
-		$data = $this->getData($owner, $name);
-		$this->repository->generateComposer($data);
-		$this->repository->generateGitIgnore($data);
-	}
-	
-	public function generateLicense($owner, $name) {
-		$data = $this->getData($owner, $name);
-		$this->repository->generateLicense($data);
-	}
-	
-	public function generateGuide($owner, $name) {
-		$data = $this->getData($owner, $name);
-		$this->repository->generateGuide($data);
-	}
-	
-	public function generateReadme($owner, $name) {
-		$data = $this->getData($owner, $name);
-		$this->repository->generateReadme($data);
-	}
-	
-	public function generateTest($owner, $name) {
-		$data = $this->getData($owner, $name);
-		$this->repository->generateTest($data);
-	}
-	
 	public function generateAll($owner, $name, $types) {
+		$data = $this->getData($owner, $name);
 		if(in_array(TypeEnum::PACKAGE, $types)) {
-			$this->generatePackage($owner, $name);
+			$this->repository->generateComposer($data);
+			$this->repository->generateGitIgnore($data);
 		}
 		if(in_array(TypeEnum::LICENSE, $types)) {
-			$this->generateLicense($owner, $name);
+			$this->repository->generateLicense($data);
 		}
 		if(in_array(TypeEnum::GUIDE, $types)) {
-			$this->generateGuide($owner, $name);
+			$this->repository->generateGuide($data);
 		}
 		if(in_array(TypeEnum::README, $types)) {
-			$this->generateReadme($owner, $name);
+			$this->repository->generateReadme($data);
 		}
 		if(in_array(TypeEnum::TEST, $types)) {
-			$this->generateTest($owner, $name);
+			$this->repository->generateTest($data);
+		}
+		if(in_array(TypeEnum::DOMAIN, $types)) {
+			$this->repository->generateDomain($data);
+		}
+		if(in_array(TypeEnum::API_MODULE, $types)) {
+			$this->repository->generateApiModule($data);
+		}
+		if(in_array(TypeEnum::ADMIN_MODULE, $types)) {
+			$this->repository->generateAdminModule($data);
+		}
+		if(in_array(TypeEnum::WEB_MODULE, $types)) {
+			$this->repository->generateWebModule($data);
+		}
+		if(in_array(TypeEnum::CONSOLE_MODULE, $types)) {
+			$this->repository->generateConsoleModule($data);
 		}
 	}
 

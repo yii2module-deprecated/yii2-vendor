@@ -2,8 +2,10 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
+use Yii;
 use yii2lab\console\helpers\CopyFiles;
 use yii2lab\domain\repositories\BaseRepository;
+use yii2lab\helpers\generator\ClassGeneratorHelper;
 use yii2lab\helpers\yii\FileHelper;
 use yii2lab\store\Store;
 
@@ -45,9 +47,80 @@ class GeneratorRepository extends BaseRepository {
 		$this->copyFile($data, 'README.md');
 	}
 	
+	public function generateDomain($data) {
+		$code = <<<EOT
+	public function config() {
+		return [
+			'repositories' => [
+			
+			],
+			'services' => [
+			
+			],
+		];
+	}
+EOT;
+		$config = [
+			'className' => $this->getBaseAlias($data) . '/domain/Domain',
+			'afterClassName' => 'extends \yii2lab\domain\Domain',
+			'code' => $code,
+		];
+		ClassGeneratorHelper::generateClass($config);
+	}
+	
+	public function generateApiModule($data) {
+		$config = [
+			'className' => $this->getBaseAlias($data) . '/api/Module',
+			'afterClassName' => 'extends \yii\base\Module',
+			'code' => $this->getLangDir($data),
+		];
+		ClassGeneratorHelper::generateClass($config);
+	}
+	
+	public function generateAdminModule($data) {
+		$config = [
+			'className' => $this->getBaseAlias($data) . '/admin/Module',
+			'afterClassName' => 'extends \yii\base\Module',
+			'code' => $this->getLangDir($data),
+		];
+		ClassGeneratorHelper::generateClass($config);
+	}
+	
+	public function generateWebModule($data) {
+		$config = [
+			'className' => $this->getBaseAlias($data) . '/web/Module',
+			'afterClassName' => 'extends \yii\base\Module',
+			'code' => $this->getLangDir($data),
+		];
+		ClassGeneratorHelper::generateClass($config);
+	}
+	
+	public function generateConsoleModule($data) {
+		$config = [
+			'className' => $this->getBaseAlias($data) . '/console/Module',
+			'afterClassName' => 'extends \yii\base\Module',
+			'code' => $this->getLangDir($data),
+		];
+		ClassGeneratorHelper::generateClass($config);
+	}
+	
 	public function generateTest($data) {
 		$this->copyDir($data, 'tests');
 		$this->copyFile($data, 'codeception.yml');
+	}
+	
+	private function getLangDir($data) {
+		return TAB .'//public static $langDir = \''.$data['owner'].'/'.$data['name'].'/domain/messages\';';
+	}
+	
+	private function getBaseAlias($data) {
+		$alias = '@' . $data['owner'] . SL .$data['name'];
+		try {
+			$path = Yii::getAlias($alias);
+		} catch(\yii\base\InvalidParamException $e) {
+			Yii::setAlias($alias, Yii::getAlias('@vendor' . SL . $data['owner'] . SL . 'yii2-' . $data['name'] . SL . 'src'));
+		}
+		return $alias;
 	}
 	
 	private function replaceFileContent($data, $fileName) {
