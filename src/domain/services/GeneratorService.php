@@ -34,6 +34,7 @@ class GeneratorService extends ActiveBaseService {
 		$repository = $this->repository;
 		$repository->install($generatorConfig, 'Module');
 		$repository->install($generatorConfig, 'Domain');
+		$repository->install($generatorConfig, 'Package');
 	}
 	
 	private function getData($owner, $name) {
