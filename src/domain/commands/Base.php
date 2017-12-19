@@ -5,6 +5,7 @@ namespace yii2module\vendor\domain\commands;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidParamException;
+use yii\helpers\ArrayHelper;
 use yii2lab\console\helpers\CopyFiles;
 use yii2lab\helpers\yii\FileHelper;
 
@@ -13,7 +14,7 @@ class Base extends BaseObject {
 	public $data;
 	
 	protected function insertConfig($file, $part, $name, $value) {
-		if($this->isExistsConfig($part, $name)) {
+		if($this->isExistsConfig($file, $part, $name)) {
 			return;
 		}
 		$newLine = "\t\t'{$name}' => {$value},";
@@ -21,8 +22,10 @@ class Base extends BaseObject {
 		$this->insertLineConfig($file, $search, $newLine);
 	}
 	
-	protected function isExistsConfig($part, $name) {
-		$config = config($part, []);
+	protected function isExistsConfig($file, $part, $name) {
+		$fileName = Yii::getAlias($file);
+		$all = include($fileName);
+		$config = ArrayHelper::getValue($all, $part, []);
 		return isset($config[$name]);
 	}
 	
