@@ -13,9 +13,13 @@ class InfoController extends Controller
 	public function actionAllChanged()
 	{
 		$collection = Yii::$app->vendor->info->allChanged();
-		$names = ArrayHelper::getColumn($collection, 'alias');
-		Output::line();
-		Output::arr($names, 'Changed repository list');
+		if(!empty($collection)) {
+			$names = ArrayHelper::getColumn($collection, 'alias');
+			Output::line();
+			Output::arr($names, 'Changed repository list');
+		} else {
+			Output::block('All repository fixed!', 'Message');
+		}
 	}
 	
 }
