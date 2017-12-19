@@ -9,9 +9,11 @@ class Domain extends \yii2lab\domain\Domain {
 	public function config() {
 		return [
 			'repositories' => [
+				'info' => Driver::FILE,
 				'generator' => Driver::FILE,
 			],
 			'services' => [
+				'info',
 				'generator' => [
 					'author' => 'Yamshikov Vitaliy, WOOPPAY LLC',
 					'email' => 'theyamshikov@yandex.ru',
