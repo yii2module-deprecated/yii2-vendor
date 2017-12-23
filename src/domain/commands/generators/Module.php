@@ -20,7 +20,7 @@ class Module extends Base implements CommandInterface {
 			'afterClassName' => 'extends \yii\base\Module',
 			'code' => $this->getLangDir($data),
 		];
-		ClassGeneratorHelper::generateClass($config);
+		ClassGeneratorHelper::generate($config);
 	}
 	
 	protected function getLangDir($data) {
