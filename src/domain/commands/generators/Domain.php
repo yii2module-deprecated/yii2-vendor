@@ -18,7 +18,7 @@ class Domain extends Base implements CommandInterface {
 			'afterClassName' => 'extends \yii2lab\domain\Domain',
 			'code' => $this->getCode(),
 		];
-		ClassGeneratorHelper::generateClass($config);
+		ClassGeneratorHelper::generate($config);
 	}
 	
 	protected function getCode() {
