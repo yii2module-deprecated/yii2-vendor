@@ -10,6 +10,9 @@ class GeneratorService extends ActiveBaseService {
 	public $author;
 	public $email;
 	public $ownerList;
+	public $install = [
+		'commands' => ['Module', 'Domain', 'Package', 'Rbac'],
+	];
 	
 	public function generateAll($owner, $name, $types) {
 		$data = $this->getData($owner, $name);
@@ -32,9 +35,9 @@ class GeneratorService extends ActiveBaseService {
 		$generatorConfig['data'] = $data;
 		/** @var GeneratorRepository $repository */
 		$repository = $this->repository;
-		$repository->install($generatorConfig, 'Module');
-		$repository->install($generatorConfig, 'Domain');
-		$repository->install($generatorConfig, 'Package');
+		foreach($this->install['commands'] as $name) {
+			$repository->install($generatorConfig, $name);
+		}
 	}
 	
 	private function getData($owner, $name) {

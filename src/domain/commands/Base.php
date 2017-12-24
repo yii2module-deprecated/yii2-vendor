@@ -89,7 +89,7 @@ class Base extends BaseObject {
 		return $this->packageDir($owner, $name) . DS . $fileName;
 	}
 	
-	private function packageDir($owner, $name) {
+	protected function packageDir($owner, $name) {
 		return ROOT_DIR . DS . $this->packageDirMini($owner, $name);
 	}
 	
