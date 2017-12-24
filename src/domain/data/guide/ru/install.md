@@ -13,7 +13,52 @@ composer require {owner}/yii2-{name}
 oExamlpe
 ```
 
-Объявляем модуль:
+Объявляем frontend модуль:
+
+```php
+return [
+	'modules' => [
+		// ...
+		'{name}' => '{owner}\{name}\frontend\Module',
+		// ...
+	],
+];
+```
+
+Объявляем backend модуль:
+
+```php
+return [
+	'modules' => [
+		// ...
+		'{name}' => '{owner}\{name}\backend\Module',
+		// ...
+	],
+];
+```
+
+Объявляем api модуль:
+
+```php
+return [
+	'modules' => [
+		// ...
+		'{name}' => '{owner}\{name}\api\Module',
+		// ...
+		'components' => [
+            'urlManager' => [
+                'rules' => [
+                    ...
+                   ['class' => 'yii\rest\UrlRule', 'controller' => ['{apiVersion}/{name}' => '{name}/default']],
+                    ...
+                ],
+            ],
+        ],
+	],
+];
+```
+
+Объявляем консольный модуль:
 
 ```php
 return [
@@ -31,16 +76,7 @@ return [
 return [
 	'components' => [
 		// ...
-		'{name}' => [
-			'class' => 'yii2lab\domain\Domain',
-			'path' => '{owner}\{name}\domain',
-			'repositories' => [
-				'default',
-			],
-			'services' => [
-				'default',
-			],
-		],
+		'{name}' => '{owner}\{name}\domain\Domain',
 		// ...
 	],
 ];
