@@ -22,4 +22,16 @@ class InfoController extends Controller
 		}
 	}
 	
+	public function actionAllVersion()
+	{
+		$collection = Yii::$app->vendor->info->allVersion();
+		if(!empty($collection)) {
+			Output::line();
+			$flatCollection = ArrayHelper::map($collection, 'full_name', 'version');
+			Output::arr($flatCollection, 'Repository version list');
+		} else {
+			Output::block('Empty list!', 'Message');
+		}
+	}
+	
 }

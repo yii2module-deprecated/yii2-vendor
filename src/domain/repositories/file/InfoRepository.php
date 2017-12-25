@@ -6,6 +6,7 @@ use Yii;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\helpers\yii\FileHelper;
 use yii2module\github\domain\helpers\GitShell;
+use yii2module\vendor\domain\entities\RepoEntity;
 
 class InfoRepository extends BaseRepository {
 	
@@ -19,6 +20,21 @@ class InfoRepository extends BaseRepository {
 			}
 		}
 		return $newList;
+	}
+	
+	public function allVersionRepositoryByOwners($owners) {
+		$list = $this->allRepositoryByOwners($owners);
+		$newList = [];
+		foreach($list as $item) {
+			$repo = $this->gitRepositoryInstance($item['full_name']);
+			
+			if($repo) {
+				$tags = $repo->getTags();
+				$item['tags'] = $this->tagsToList($tags);
+				$newList[] = $item;
+			}
+		}
+		return $this->forgeEntity($newList, RepoEntity::className());
 	}
 	
 	public function allRepositoryByOwners($owners) {
@@ -64,6 +80,20 @@ class InfoRepository extends BaseRepository {
 			return null;
 		}
 		return new GitShell($dir);
+	}
+	
+	private function tagsToList($tags) {
+		$result = [];
+		if(empty($tags)) {
+			return [];
+		}
+		rsort($tags);
+		foreach($tags as $tag) {
+			$result[] = [
+				'name' => $tag,
+			];
+		}
+		return $result;
 	}
 	
 	private function isGit($dir) {

@@ -11,6 +11,10 @@ class InfoService extends BaseService {
 		return $this->repository->allChangedRepositoryByOwners(Yii::$app->vendor->generator->ownerList);
 	}
 	
+	public function allVersion() {
+		return $this->repository->allVersionRepositoryByOwners(Yii::$app->vendor->generator->ownerList);
+	}
+	
 	public function allByOwner($owner) {
 		return $this->repository->allRepositoryByOwners([$owner]);
 	}
