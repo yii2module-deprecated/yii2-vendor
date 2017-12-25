@@ -11,10 +11,15 @@ class RepoEntity extends BaseEntity {
 	protected $owner;
 	protected $name;
 	protected $package;
+	protected $branch;
 	protected $tags;
 	protected $commits;
 	protected $has_changes = false;
-	
+	protected $has_readme;
+	protected $has_guide;
+	protected $has_license;
+	protected $has_test;
+
 	public function fieldType() {
 		return [
 			'tags' => [

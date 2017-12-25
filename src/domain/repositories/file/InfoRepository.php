@@ -48,14 +48,61 @@ class InfoRepository extends BaseRepository {
 				if(in_array('commits', $with)) {
 					$item['commits'] = $repo->getCommits();
 				}
+				if(in_array('branch', $with)) {
+					$item['branch'] = $repo->getCurrentBranchName();
+				}
 				if(in_array('has_changes', $with)) {
 					$item['has_changes'] = $repo->hasChanges();
+				}
+				if(in_array('has_readme', $with)) {
+					$item['has_readme'] = $this->hasReadme($item['package']);
+				}
+				if(in_array('has_guide', $with)) {
+					$item['has_guide'] = $this->hasGuide($item['package']);
+				}
+				if(in_array('has_license', $with)) {
+					$item['has_license'] = $this->hasLicense($item['package']);
+				}
+				if(in_array('has_test', $with)) {
+					$item['has_test'] = $this->hasTest($item['package']);
 				}
 				$newList[] = $item;
 			}
 		}
 		return $this->forgeEntity($newList, RepoEntity::className());
 	}
+	
+	
+	
+	
+	private function hasReadme($fullName) {
+		$file = $this->getPath($fullName . SL . 'README.md');
+		$isExists = file_exists($file);
+		return $isExists;
+	}
+	
+	private function hasGuide($fullName) {
+		$dir = $this->getPath($fullName . SL . 'guide');
+		$isExists = is_dir($dir);
+		return $isExists;
+	}
+	
+	private function hasLicense($fullName) {
+		$file = $this->getPath($fullName . SL . 'LICENSE');
+		$isExists = file_exists($file);
+		return $isExists;
+	}
+	
+	private function hasTest($fullName) {
+		$dir = $this->getPath($fullName . SL . 'tests');
+		$configFile = $this->getPath($fullName . SL . 'codeception.yml');
+		$isExists = is_dir($dir) && file_exists($configFile);
+		return $isExists;
+	}
+	
+	
+	
+	
 	
 	public function allForUpVersion($owners, $query = null) {
 		$query = Query::forge($query);
