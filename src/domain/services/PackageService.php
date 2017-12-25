@@ -33,7 +33,7 @@ class PackageService extends ActiveBaseService {
 		$entity = $this->repository->load();
 		$config = $entity->config;
 		$collection = Yii::$app->vendor->info->allVersion();
-		$flatCollection = ArrayHelper::map($collection, 'full_name', 'version');
+		$flatCollection = ArrayHelper::map($collection, 'package', 'version');
 		$config['require'] = $this->update($config['require'], $flatCollection);
 		$config['require-dev'] = $this->update($config['require-dev'], $flatCollection);
 		$entity->config = $config;
