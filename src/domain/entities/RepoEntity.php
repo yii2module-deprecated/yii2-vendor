@@ -25,7 +25,9 @@ class RepoEntity extends BaseEntity {
 		}
 		$versionList = ArrayHelper::flatten($this->tags);
 		rsort($versionList);
-		return $versionList[0];
+		$last = $versionList[0];
+		$last = trim($last, 'v');
+		return $last;
 	}
 
 	public function fields() {
