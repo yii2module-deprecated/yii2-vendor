@@ -11,6 +11,7 @@ class RepoEntity extends BaseEntity {
 	protected $name;
 	protected $tags;
 	protected $commits;
+	protected $has_changes = false;
 	
 	public function fieldType() {
 		return [
@@ -22,6 +23,7 @@ class RepoEntity extends BaseEntity {
 				'type' => CommitEntity::className(),
 				'isCollection' => true,
 			],
+			'has_changes' => 'boolean',
 		];
 	}
 	
