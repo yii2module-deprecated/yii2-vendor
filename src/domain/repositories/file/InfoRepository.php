@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\repositories\BaseRepository;
@@ -23,12 +24,22 @@ class InfoRepository extends BaseRepository {
 		return $iterator->all($q);
 	}
 	
+	public function one($fullName, $query = null) {
+		$query = Query::forge($query);
+		$query->where('package', $fullName);
+		$collection = $this->all($query);
+		if(empty($collection)) {
+			throw new NotFoundHttpException();
+		}
+		return $collection[0];
+	}
+	
 	public function all($owners, $query = null) {
 		$query = Query::forge($query);
 		$list = $this->allRepositoryByOwners($owners);
 		$newList = [];
 		foreach($list as $item) {
-			$repo = $this->gitRepositoryInstance($item['full_name']);
+			$repo = $this->gitRepositoryInstance($item['package']);
 			if($repo) {
 				$with = $query->getParam('with');
 				if(in_array('tags', $with)) {
@@ -46,9 +57,15 @@ class InfoRepository extends BaseRepository {
 		return $this->forgeEntity($newList, RepoEntity::className());
 	}
 	
+	public function allForUpVersion($owners, $query = null) {
+		$query = Query::forge($query);
+		$query->with(['tags', 'commits']);
+		return $this->all($owners, $query);
+	}
+	
 	public function allVersionRepositoryByOwners($owners, $query = null) {
 		$query = Query::forge($query);
-		$query->with(['tags'/*, 'commits'*/]);
+		$query->with(['tags']);
 		return $this->all($owners, $query);
 	}
 	
@@ -61,8 +78,7 @@ class InfoRepository extends BaseRepository {
 				$list[] = [
 					'owner' => $owner,
 					'name' => $name,
-					'full_name' => $owner . SL . $repository,
-					'alias' => $owner . SL . $name,
+					'package' => $owner . SL . $repository,
 				];
 			}
 		}

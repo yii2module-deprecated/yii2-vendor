@@ -18,5 +18,13 @@ class CommitEntity extends BaseEntity {
 	protected $author;
 	protected $date;
 	protected $message;
-
+	protected $tag;
+	
+	public function fieldType() {
+		return [
+			'tag' => [
+				'type' => TagEntity::className(),
+			],
+		];
+	}
 }

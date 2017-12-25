@@ -7,6 +7,17 @@ use yii2lab\domain\services\BaseService;
 
 class InfoService extends BaseService {
 	
+	public function allForUpVersion() {
+		$collection = $this->repository->allForUpVersion(Yii::$app->vendor->generator->ownerList);
+		$newCollection = [];
+		foreach($collection as $entity) {
+			if($entity->need_release) {
+				$newCollection[] = $entity;
+			}
+		}
+		return $newCollection;
+	}
+	
 	public function allChanged() {
 		return $this->repository->allChangedRepositoryByOwners(Yii::$app->vendor->generator->ownerList);
 	}

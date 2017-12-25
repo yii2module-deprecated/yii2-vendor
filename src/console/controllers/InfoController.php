@@ -34,4 +34,17 @@ class InfoController extends Controller
 		}
 	}
 	
+	public function actionAllForUpVersion()
+	{
+		$collection = Yii::$app->vendor->info->allForUpVersion();
+		//prr($collection,1,1);
+		if(!empty($collection)) {
+			Output::line();
+			$flatCollection = ArrayHelper::map($collection, 'package', 'version');
+			Output::arr($flatCollection, 'Repository list for release');
+		} else {
+			Output::block('Empty list!', 'Message');
+		}
+	}
+	
 }
