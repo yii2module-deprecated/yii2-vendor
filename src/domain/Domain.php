@@ -10,10 +10,12 @@ class Domain extends \yii2lab\domain\Domain {
 		return [
 			'repositories' => [
 				'info' => Driver::FILE,
+				'package' => Driver::FILE,
 				'generator' => Driver::FILE,
 			],
 			'services' => [
 				'info',
+				'package',
 				'generator' => [
 					'author' => 'Yamshikov Vitaliy, WOOPPAY LLC',
 					'email' => 'theyamshikov@yandex.ru',
