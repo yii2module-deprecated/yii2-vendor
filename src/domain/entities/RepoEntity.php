@@ -10,6 +10,20 @@ class RepoEntity extends BaseEntity {
 	protected $owner;
 	protected $name;
 	protected $tags;
+	protected $commits;
+	
+	public function fieldType() {
+		return [
+			'tags' => [
+				'type' => TagEntity::className(),
+				'isCollection' => true,
+			],
+			'commits' => [
+				'type' => CommitEntity::className(),
+				'isCollection' => true,
+			],
+		];
+	}
 	
 	public function getFullName() {
 		return $this->owner . SL . 'yii2-' . $this->name;
@@ -26,7 +40,7 @@ class RepoEntity extends BaseEntity {
 		$versionList = ArrayHelper::flatten($this->tags);
 		rsort($versionList);
 		$last = $versionList[0];
-		$last = trim($last, 'v');
+		$last = trim($last->name, 'v');
 		return $last;
 	}
 

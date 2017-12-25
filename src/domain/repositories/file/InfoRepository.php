@@ -3,8 +3,10 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use Yii;
+use yii2lab\domain\data\Query;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\helpers\yii\FileHelper;
+use yii2mod\helpers\ArrayHelper;
 use yii2module\github\domain\helpers\GitShell;
 use yii2module\vendor\domain\entities\RepoEntity;
 
@@ -22,19 +24,30 @@ class InfoRepository extends BaseRepository {
 		return $newList;
 	}
 	
-	public function allVersionRepositoryByOwners($owners) {
+	public function all($owners, $query = null) {
+		$query = Query::forge($query);
 		$list = $this->allRepositoryByOwners($owners);
 		$newList = [];
 		foreach($list as $item) {
 			$repo = $this->gitRepositoryInstance($item['full_name']);
-			
 			if($repo) {
-				$tags = $repo->getTags();
-				$item['tags'] = $this->tagsToList($tags);
+				$with = $query->getParam('with');
+				if(in_array('tags', $with)) {
+					$item['tags'] = $repo->getTagsSha();
+				}
+				if(in_array('commits', $with)) {
+					$item['commits'] = $repo->getCommits();
+				}
 				$newList[] = $item;
 			}
 		}
 		return $this->forgeEntity($newList, RepoEntity::className());
+	}
+	
+	public function allVersionRepositoryByOwners($owners, $query = null) {
+		$query = Query::forge($query);
+		$query->with(['tags'/*, 'commits'*/]);
+		return $this->all($owners, $query);
 	}
 	
 	public function allRepositoryByOwners($owners) {
@@ -80,20 +93,6 @@ class InfoRepository extends BaseRepository {
 			return null;
 		}
 		return new GitShell($dir);
-	}
-	
-	private function tagsToList($tags) {
-		$result = [];
-		if(empty($tags)) {
-			return [];
-		}
-		rsort($tags);
-		foreach($tags as $tag) {
-			$result[] = [
-				'name' => $tag,
-			];
-		}
-		return $result;
 	}
 	
 	private function isGit($dir) {
