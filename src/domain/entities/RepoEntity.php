@@ -60,6 +60,10 @@ class RepoEntity extends BaseEntity {
 		return $this->owner . SL . 'yii2-' . $this->name;
 	}
 	
+	public function getDirectory() {
+		return ROOT_DIR . DS . self::packageDirMini($this->owner, $this->name);
+	}
+	
 	public function getAlias() {
 		return $this->owner . SL . $this->name;
 	}
@@ -81,7 +85,12 @@ class RepoEntity extends BaseEntity {
 		$fields['version'] = 'version';
 		$fields['need_release'] = 'need_release';
 		$fields['head_commit'] = 'head_commit';
+		$fields['directory'] = 'directory';
 		return $fields;
+	}
+	
+	private static function packageDirMini($owner, $name) {
+		return VENDOR . DS . $owner . DS . 'yii2-' . $name;
 	}
 	
 	private function attachTagToCommit($commits) {

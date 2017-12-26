@@ -105,8 +105,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	
 	public function usesById($id) {
 		$entity = $this->oneById($id);
-		return UseHelper::run($entity->owner, $entity->name);
-		//prr($entity,1,1);
+		return UseHelper::run($entity->directory);
 	}
 	
 	private function namesByOwner($owner) {
