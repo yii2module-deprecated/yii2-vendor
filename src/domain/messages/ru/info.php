@@ -10,7 +10,6 @@ return [
 	'generate_bat' => 'Сгенерировать командный файл для обновления пакетов',
 	'packages_success_pulled' => 'Пакеты обновлены',
 	'pull_packages' => 'Обновить пакеты',
-	'has_job' => 'Очередь задач не пуста',
 	'has_readme' => 'README',
 	'has_guide' => 'Руководство',
 	'has_license' => 'Лицензия',
