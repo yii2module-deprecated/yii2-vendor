@@ -93,8 +93,22 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		$query->with(['tags']);
 		return $this->all($query);
 	}
+
+	public function shortNamesByOwner($owner) {
+		$pathList = $this->namesByOwner($owner);
+		foreach($pathList as &$name) {
+			$name = strpos($name,'yii2-') === 0 ? substr($name, 5) : $name;
+		}
+		return $pathList;
+	}
 	
-	public function allRepositoryByOwners($owners) {
+	private function namesByOwner($owner) {
+		$dir = Yii::getAlias('@vendor/' . $owner);
+		$pathList = FileHelper::scanDir($dir);
+		return $pathList;
+	}
+	
+	private function allRepositoryByOwners($owners) {
 		$map = $this->namesMapByOwners($owners);
 		$list = [];
 		foreach($map as $owner => $repositories) {
@@ -207,12 +221,6 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 			$map[$owner] = $this->namesByOwner($owner);
 		}
 		return $map;
-	}
-	
-	private function namesByOwner($owner) {
-		$dir = Yii::getAlias('@vendor/' . $owner);
-		$pathList = FileHelper::scanDir($dir);
-		return $pathList;
 	}
 	
 	private function getPath($package) {

@@ -10,8 +10,14 @@ use yii2module\rest_client\helpers\ArrayHelper;
 class InfoController extends Controller
 {
 	
+	public function init() {
+		parent::init();
+		Output::line();
+	}
+	
 	public function actionAllChanged()
 	{
+		Output::line('Getting package info...');
 		$collection = Yii::$app->vendor->info->allChanged();
 		if(!empty($collection)) {
 			$names = ArrayHelper::getColumn($collection, 'alias');
@@ -24,6 +30,7 @@ class InfoController extends Controller
 	
 	public function actionAllVersion()
 	{
+		Output::line('Getting package info...');
 		$collection = Yii::$app->vendor->info->allVersion();
 		if(!empty($collection)) {
 			Output::line();
@@ -36,8 +43,8 @@ class InfoController extends Controller
 	
 	public function actionAllForUpVersion()
 	{
+		Output::line('Getting package info...');
 		$collection = Yii::$app->vendor->info->allForUpVersion();
-		//prr($collection,1,1);
 		if(!empty($collection)) {
 			Output::line();
 			$flatCollection = ArrayHelper::map($collection, 'package', 'version');

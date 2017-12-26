@@ -21,9 +21,7 @@ class InstallController extends Controller
 	private function inputPackage() {
 		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
-		
-		$collection = Yii::$app->vendor->info->allByOwner($owner);
-		$names = ArrayHelper::getColumn($collection, 'name');
+		$names = Yii::$app->vendor->info->shortNamesByOwner($owner);
 		$nameSelect = Select::display('Select package', $names);
 		$name = Select::getFirstValue($nameSelect);
 		
