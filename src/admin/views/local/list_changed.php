@@ -4,7 +4,7 @@
 
 use yii\grid\GridView;
 
-$this->title = Yii::t('github/local', 'list_changed');
+$this->title = Yii::t('vendor/local', 'list_changed');
 
 $columns = [
 	[

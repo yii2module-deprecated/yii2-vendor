@@ -12,7 +12,7 @@ use yii2lab\notify\domain\widgets\Alert;
 
 class LocalController extends Controller {
 
-	public $serviceName = 'github.local';
+	public $serviceName = 'vendor.info';
 	public $titleName = 'full_name';
 	
 	public function behaviors()
@@ -45,8 +45,6 @@ class LocalController extends Controller {
 		$query->with('tags');
 		$query->with('commits');
 		$entity = Yii::$app->vendor->info->oneById($id, $query);
-		
-		//prr($entity->commits,1,1);
 		return $this->render('view', ['entity' => $entity]);
 	}
 	
@@ -83,7 +81,7 @@ class LocalController extends Controller {
 	public function actionGenerate() {
 		$file = 'cmd/git/vendor pull.bat';
 		$this->service->generateBat($file);
-		Yii::$app->notify->flash->send(['github/local', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
+		Yii::$app->notify->flash->send(['vendor/local', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
 		return $this->redirect('/github/local');
 	}
 	
