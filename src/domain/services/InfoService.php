@@ -20,8 +20,12 @@ class InfoService extends BaseService {
 		return $this->repository->oneById($id, $query);
 	}
 	
+	public function all($query = null) {
+		return $this->repository->all($query);
+	}
+	
 	public function allForUpVersion($query = null) {
-		$collection = $this->repository->allForUpVersion(Yii::$app->vendor->generator->ownerList, $query);
+		$collection = $this->repository->allForUpVersion($query);
 		$newCollection = [];
 		foreach($collection as $entity) {
 			if($entity->need_release) {
@@ -34,19 +38,15 @@ class InfoService extends BaseService {
 	public function allChanged($query = null) {
 		$query = Query::forge($query);
 		$query->with('has_changes');
-		return $this->repository->allChangedRepositoryByOwners(Yii::$app->vendor->generator->ownerList, $query);
+		return $this->repository->allChanged($query);
 	}
 	
 	public function allVersion($query = null) {
-		return $this->repository->allVersionRepositoryByOwners(Yii::$app->vendor->generator->ownerList, $query);
+		return $this->repository->allVersion($query);
 	}
 	
 	public function allByOwner($owner, $query = null) {
-		return $this->repository->allRepositoryByOwners([$owner], $query);
-	}
-	
-	public function all($query = null) {
-		return $this->repository->all(Yii::$app->vendor->generator->ownerList, $query);
+		return $this->repository->allRepositoryByOwners([$owner]);
 	}
 	
 }

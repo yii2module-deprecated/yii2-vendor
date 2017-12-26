@@ -7,7 +7,6 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\filters\VerbFilter;
 use yii2lab\app\domain\helpers\Config;
-use yii2lab\domain\data\ActiveDataProvider;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\notify\domain\widgets\Alert;
