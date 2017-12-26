@@ -16,6 +16,10 @@ use yii2module\vendor\domain\repositories\file\InfoRepository;
  */
 class InfoService extends BaseService {
 	
+	public function oneById($id, $query = null) {
+		return $this->repository->oneById($id, $query);
+	}
+	
 	public function allForUpVersion($query = null) {
 		$collection = $this->repository->allForUpVersion(Yii::$app->vendor->generator->ownerList, $query);
 		$newCollection = [];

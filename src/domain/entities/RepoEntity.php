@@ -7,7 +7,8 @@ use yii2lab\domain\BaseEntity;
 use yii2mod\helpers\ArrayHelper;
 
 class RepoEntity extends BaseEntity {
-
+	
+	protected $id;
 	protected $owner;
 	protected $name;
 	protected $package;

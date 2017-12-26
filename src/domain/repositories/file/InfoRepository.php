@@ -13,6 +13,12 @@ use yii2module\vendor\domain\entities\RepoEntity;
 
 class InfoRepository extends BaseRepository {
 	
+	protected $owners = [];
+	
+	public function init() {
+		$this->owners = Yii::$app->vendor->generator->ownerList;
+	}
+	
 	public function allChangedRepositoryByOwners($owners, $query = null) {
 		$query = Query::forge($query);
 		$query->with(['has_changes']);
@@ -27,7 +33,17 @@ class InfoRepository extends BaseRepository {
 	public function one($fullName, $query = null) {
 		$query = Query::forge($query);
 		$query->where('package', $fullName);
-		$collection = $this->all($query);
+		$collection = $this->all($this->owners, $query);
+		if(empty($collection)) {
+			throw new NotFoundHttpException();
+		}
+		return $collection[0];
+	}
+	
+	public function oneById($id, $query = null) {
+		$query = Query::forge($query);
+		$query->where('id', $id);
+		$collection = $this->all($this->owners, $query);
 		if(empty($collection)) {
 			throw new NotFoundHttpException();
 		}
@@ -39,14 +55,27 @@ class InfoRepository extends BaseRepository {
 		$list = $this->allRepositoryByOwners($owners);
 		$newList = [];
 		foreach($list as $item) {
-			$repo = $this->gitRepositoryInstance($item['package']);
-			if($repo) {
-				$with = $query->getParam('with');
+			$item = $this->loadRelations($item, $query);
+			if($item) {
+				$newList[] = $item;
+			}
+		}
+		$newList = ArrayIterator::allFromArray($query, $newList);
+		return $this->forgeEntity($newList, RepoEntity::className());
+	}
+	
+	private function loadRelations($item, $query) {
+		$repo = $this->gitRepositoryInstance($item['package']);
+		/** @var Query $query */
+		$with = $query->getParam('with');
+		if($repo) {
+			if(!empty($with)) {
 				if(in_array('tags', $with)) {
 					$item['tags'] = $repo->getTagsSha();
 				}
 				if(in_array('commits', $with)) {
 					$item['commits'] = $repo->getCommits();
+					
 				}
 				if(in_array('branch', $with)) {
 					$item['branch'] = $repo->getCurrentBranchName();
@@ -66,13 +95,11 @@ class InfoRepository extends BaseRepository {
 				if(in_array('has_test', $with)) {
 					$item['has_test'] = $this->hasTest($item['package']);
 				}
-				$newList[] = $item;
 			}
+			return $item;
 		}
-		return $this->forgeEntity($newList, RepoEntity::className());
+		return null;
 	}
-	
-	
 	
 	
 	private function hasReadme($fullName) {
@@ -123,6 +150,7 @@ class InfoRepository extends BaseRepository {
 			foreach($repositories as $repository) {
 				$name = strpos($repository,'yii2-') == 0 ? substr($repository, 5) : $repository;
 				$list[] = [
+					'id' => hash('crc32b', $owner . DOT . $repository),
 					'owner' => $owner,
 					'name' => $name,
 					'package' => $owner . SL . $repository,
