@@ -18,16 +18,16 @@ class Menu {
 			'icon' => 'cube',
 			'items' => [
 				[
-					'label' => ['vendor/local', 'list'],
-					'url' => 'vendor/local/list',
+					'label' => ['vendor/info', 'list'],
+					'url' => 'vendor/info/list',
 					//'icon' => 'circle-o ',
-					'active' => $url == '/vendor/local/list',
+					'active' => $url == '/vendor/info/list',
 				],
 				[
-					'label' => ['vendor/local', 'list_changed'],
-					'url' => 'vendor/local/list-changed',
+					'label' => ['vendor/info', 'list_changed'],
+					'url' => 'vendor/info/list-changed',
 					//'icon' => 'circle-o ',
-					'active' => $url == '/vendor/local/list-changed',
+					'active' => $url == '/vendor/info/list-changed',
 				],
 			],
 		];

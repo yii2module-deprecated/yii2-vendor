@@ -5,7 +5,7 @@
 use yii\grid\GridView;
 use yii2lab\helpers\yii\Html;
 
-$this->title = Yii::t('vendor/local', 'list');
+$this->title = Yii::t('vendor/info', 'list');
 
 $columns = [
 	[
@@ -15,7 +15,7 @@ $columns = [
 			return
 				Html::a(
 					$data->package,
-					['/vendor/local/view', 'id' => $data->id]
+					['/vendor/info/view', 'id' => $data->id]
 				);
 		},
 	],
@@ -49,7 +49,7 @@ $columns = [
 		},
 	],
 	[
-		'label' => Yii::t('vendor/local', 'has_readme'),
+		'label' => Yii::t('vendor/info', 'has_readme'),
 		'format' => 'raw',
 		'value' => function($data){
 			if($data->has_readme) {
@@ -59,7 +59,7 @@ $columns = [
 		},
 	],
 	[
-		'label' => Yii::t('vendor/local', 'has_guide'),
+		'label' => Yii::t('vendor/info', 'has_guide'),
 		'format' => 'raw',
 		'value' => function($data){
 			if($data->has_guide) {
@@ -69,7 +69,7 @@ $columns = [
 		},
 	],
 	[
-		'label' => Yii::t('vendor/local', 'has_license'),
+		'label' => Yii::t('vendor/info', 'has_license'),
 		'format' => 'raw',
 		'value' => function($data){
 			if($data->has_license) {
@@ -79,7 +79,7 @@ $columns = [
 		},
 	],
 	[
-		'label' => Yii::t('vendor/local', 'has_test'),
+		'label' => Yii::t('vendor/info', 'has_test'),
 		'format' => 'raw',
 		'value' => function($data){
 			if($data->has_test) {
@@ -93,11 +93,11 @@ $columns = [
 		'attribute' => 'branch',
 	],
 	[
-		'label' => Yii::t('vendor/local', 'last_commit'),
+		'label' => Yii::t('vendor/info', 'last_commit'),
 		'attribute' => 'head_commit.message',
 	],
 	/*[
-		'label' => Yii::t('vendor/local', 'need_release'),
+		'label' => Yii::t('vendor/info', 'need_release'),
 		'attribute' => 'need_release',
 	],
 	[

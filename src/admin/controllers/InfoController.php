@@ -12,7 +12,7 @@ use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\notify\domain\widgets\Alert;
 
-class LocalController extends Controller {
+class InfoController extends Controller {
 
 	public $serviceName = 'vendor.info';
 	public $titleName = 'full_name';
@@ -84,14 +84,14 @@ class LocalController extends Controller {
 	public function actionGenerate() {
 		$file = 'cmd/git/vendor pull.bat';
 		$this->service->generateBat($file);
-		Yii::$app->notify->flash->send(['vendor/local', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
-		return $this->redirect('/github/local');
+		Yii::$app->notify->flash->send(['vendor/info', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
+		return $this->redirect('/vendor/info');
 	}
 	
 	public function actionPull() {
 		$this->service->allPull();
-		Yii::$app->notify->flash->send(['github/local', 'packages_success_pulled']);
-		return $this->redirect('/github/local');
+		Yii::$app->notify->flash->send(['vendor/info', 'packages_success_pulled']);
+		return $this->redirect('/vendor/info');
 	}
 	
 }
