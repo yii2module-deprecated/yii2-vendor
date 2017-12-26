@@ -2,9 +2,11 @@
 
 namespace yii2module\vendor\admin\controllers;
 
+use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\filters\VerbFilter;
+use yii2lab\app\domain\helpers\Config;
 use yii2lab\domain\data\ActiveDataProvider;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
@@ -24,7 +26,8 @@ class LocalController extends Controller {
 					'generate' => ['post'],
 					'pull' => ['post'],
 				],
-			]
+			],
+			'access' => Config::genAccess(PermissionEnum::VENDOR_MANAGE),
 		];
 	}
 	

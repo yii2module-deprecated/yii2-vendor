@@ -13,7 +13,7 @@ class Menu {
 		$url = Yii::$app->request->url;
 		return [
 			'module' => 'vendor',
-			//'access' => PermissionEnum::VENDOR_MANAGE,
+			'access' => PermissionEnum::VENDOR_MANAGE,
 			'label' => ['vendor/main', 'title'],
 			'icon' => 'cube',
 			'items' => [
