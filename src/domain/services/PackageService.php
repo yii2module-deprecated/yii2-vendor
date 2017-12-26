@@ -58,12 +58,12 @@ class PackageService extends ActiveBaseService {
 	}
 	
 	private function toDev($config) {
-		$ownerList = Yii::$app->vendor->generator->ownerList;
+		$owners = Yii::$app->vendor->generator->owners;
 		foreach($config as $fullName => &$version) {
 			$arr = explode(SL, $fullName);
 			if(count($arr) > 1) {
 				list($owner, $name) = $arr;
-				if(in_array($owner, $ownerList)) {
+				if(in_array($owner, $owners)) {
 					$version = 'dev-master';
 				}
 			}

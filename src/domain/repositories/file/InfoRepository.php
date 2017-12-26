@@ -13,12 +13,6 @@ use yii2module\vendor\domain\entities\RepoEntity;
 
 class InfoRepository extends BaseRepository {
 	
-	protected $owners = [];
-	
-	public function init() {
-		$this->owners = $this->domain->generator->ownerList;
-	}
-	
 	public function oneById($id, $query = null) {
 		$query = Query::forge($query);
 		$query->where('id', $id);
@@ -36,7 +30,7 @@ class InfoRepository extends BaseRepository {
 	
 	public function all($query = null) {
 		$query = Query::forge($query);
-		$list = $this->allRepositoryByOwners($this->owners);
+		$list = $this->allRepositoryByOwners($this->domain->generator->owners);
 		$filteredList = ArrayIterator::allFromArray($query, $list);
 		$listWithRelation = [];
 		foreach($filteredList as $item) {

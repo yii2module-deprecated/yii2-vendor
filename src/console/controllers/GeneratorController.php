@@ -22,7 +22,7 @@ class GeneratorController extends Controller
 	}
 	
 	private function inputPackage() {
-		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->ownerList);
+		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
 		return [$owner, $name];

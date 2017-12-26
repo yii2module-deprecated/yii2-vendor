@@ -9,7 +9,7 @@ class GeneratorService extends ActiveBaseService {
 
 	public $author;
 	public $email;
-	public $ownerList;
+	public $owners;
 	public $install = [
 		'commands' => ['Module', 'Domain', 'Package', 'Rbac'],
 	];

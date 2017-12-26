@@ -14,9 +14,9 @@ use yii\helpers\Html;
 
 <?php if($entity->need_release) { ?>
 	<div class="alert alert-info">
-		Need create tag.
+		<?= Yii::t('vendor/info', 'package_need_of_release') ?>
 		<?= Html::a(
-			'Draft a new release',
+			Yii::t('vendor/info', 'draft_new_release'),
 			'https://github.com/' . $entity->package . '/releases/new',
 			[
 				'class' => 'btn btn-primary',
@@ -27,10 +27,10 @@ use yii\helpers\Html;
 
 <?php } ?>
 
-<h4>Commits</h4>
+<h4><?= Yii::t('vendor/main', 'commits') ?></h4>
 
 <?= $this->render('view/commit', compact('entity')) ?>
 
-<h4>Tags</h4>
+<h4><?= Yii::t('vendor/main', 'tags') ?></h4>
 
 <?= $this->render('view/tag', compact('entity')) ?>
