@@ -6,14 +6,42 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
+use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\helpers\yii\FileHelper;
 use yii2module\github\domain\helpers\GitShell;
 use yii2module\vendor\domain\entities\RepoEntity;
 
-class InfoRepository extends BaseRepository {
+class InfoRepository extends BaseRepository implements ReadInterface {
 	
-	public function oneById($id, $query = null) {
+	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit'];
+	
+	public function isExistsById($id) {
+		try {
+			$this->oneById($id);
+			return true;
+		} catch(NotFoundHttpException $e) {
+			return false;
+		}
+	}
+	
+	public function isExists($condition) {
+		/** @var Query $query */
+		$query = Query::forge();
+		if(is_array($condition)) {
+			$query->whereFromCondition($condition);
+		} else {
+			$query->where($this->primaryKey, $condition);
+		}
+		try {
+			$this->one($query);
+			return true;
+		} catch(NotFoundHttpException $e) {
+			return false;
+		}
+	}
+	
+	public function oneById($id, Query $query = null) {
 		$query = Query::forge($query);
 		$query->where('id', $id);
 		return $this->one($query);
@@ -28,35 +56,39 @@ class InfoRepository extends BaseRepository {
 		return $collection[0];
 	}
 	
-	public function all($query = null) {
+	public function all(Query $query = null) {
 		$query = Query::forge($query);
+		$queryClone = $this->removeRelationWhere($query);
 		$list = $this->allRepositoryByOwners($this->domain->generator->owners);
-		$filteredList = ArrayIterator::allFromArray($query, $list);
+		$filteredList = ArrayIterator::allFromArray($queryClone, $list);
 		$listWithRelation = [];
 		foreach($filteredList as $item) {
 			$listWithRelation[] = $this->loadRelations($item, $query);
 		}
-		return $this->forgeEntity($listWithRelation, RepoEntity::className());
+		$collection = $this->forgeEntity($listWithRelation, RepoEntity::className());
+		return ArrayIterator::allFromArray($query, $collection);
+	}
+	
+	public function count(Query $query = null) {
+		$query = Query::forge($query);
+		$queryCount = Query::cloneForCount($query);
+		$collection = $this->all($queryCount);
+		return count($collection);
 	}
 	
 	public function allChanged($query = null) {
 		$query = Query::forge($query);
-		$query->with(['has_changes']);
-		$collection = $this->all($query);
-		$iterator = new ArrayIterator;
-		$q = Query::forge();
-		$q->where('has_changes', 1);
-		$iterator->setCollection($collection);
-		return $iterator->all($q);
+		$query->where('has_changes', true);
+		return $this->all($query);
 	}
 	
-	public function allForUpVersion($query = null) {
+	public function allWithTagAndCommit($query = null) {
 		$query = Query::forge($query);
 		$query->with(['tags', 'commits']);
 		return $this->all($query);
 	}
 	
-	public function allVersion($query = null) {
+	public function allWithTag($query = null) {
 		$query = Query::forge($query);
 		$query->with(['tags']);
 		return $this->all($query);
@@ -69,7 +101,7 @@ class InfoRepository extends BaseRepository {
 			foreach($repositories as $repository) {
 				$name = strpos($repository,'yii2-') == 0 ? substr($repository, 5) : $repository;
 				$list[] = [
-					'id' => hash('crc32b', $owner . DOT . $repository),
+					'id' => $owner . '-' . $repository,
 					'owner' => $owner,
 					'name' => $name,
 					'package' => $owner . SL . $repository,
@@ -79,18 +111,46 @@ class InfoRepository extends BaseRepository {
 		return $list;
 	}
 	
-	private function loadRelations($item, $query) {
-		$repo = $this->gitRepositoryInstance($item['package']);
-		/** @var Query $query */
+	private function removeRelationWhere($query) {
+		$queryClone = clone $query;
+		if($query->getParam('where')) {
+			$queryClone->removeParam('where');
+			foreach($query->getParam('where') as $whereField => $whereValue) {
+				if(!in_array($whereField, $this->withList)) {
+					$queryClone->where($whereField, $whereValue);
+				}
+			}
+		}
+		return $queryClone;
+	}
+	
+	private function mergeWhereToWith(Query $query) {
 		$with = $query->getParam('with');
+		$with = $with ?: [];
+		$where = $query->getParam('where');
+		if(empty($where)) {
+			return $with;
+		}
+		foreach($where as $field => $value) {
+			if(in_array($field, $this->withList)) {
+				$with[] = $field;
+			}
+		}
+		return $with;
+	}
+	
+	private function loadRelations($item, Query $query) {
+		$repo = $this->gitRepositoryInstance($item['package']);
+		$with = $this->mergeWhereToWith($query);
+		$where = $query->getParam('where');
+		$where = $where ?: [];
 		if($repo) {
 			if(!empty($with)) {
-				if(in_array('tags', $with)) {
+				if(in_array('tags', $with) || isset($where['version']) || isset($where['need_release'])) {
 					$item['tags'] = $repo->getTagsSha();
 				}
-				if(in_array('commits', $with)) {
+				if(in_array('commits', $with) || isset($where['need_release']) || isset($where['head_commit'])) {
 					$item['commits'] = $repo->getCommits();
-					
 				}
 				if(in_array('branch', $with)) {
 					$item['branch'] = $repo->getCurrentBranchName();
@@ -172,4 +232,5 @@ class InfoRepository extends BaseRepository {
 	private function isGit($dir) {
 		return is_dir($dir) && is_dir($dir . DS . '.git');
 	}
+	
 }
