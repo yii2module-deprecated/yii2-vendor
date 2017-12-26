@@ -12,13 +12,13 @@ class ConfigController extends Controller
 	public function actionToDev()
 	{
 		Yii::$app->vendor->package->versionToDev();
-		Output::block('Dev');
+		Output::block('Success converted version to dev-master');
 	}
 	
 	public function actionUpdate()
 	{
 		Yii::$app->vendor->package->versionUpdate();
-		Output::block('Dev');
+		Output::block('Packages version updated');
 	}
 	
 }

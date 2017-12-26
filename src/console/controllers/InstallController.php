@@ -15,7 +15,7 @@ class InstallController extends Controller
 	{
 		list($owner, $name) = $this->inputPackage();
 		Yii::$app->vendor->generator->install($owner, $name);
-		Output::block('Success generated');
+		Output::block('Success installed');
 	}
 	
 	private function inputPackage() {
