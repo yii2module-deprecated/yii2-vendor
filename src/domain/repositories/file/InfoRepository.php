@@ -9,7 +9,7 @@ use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\helpers\yii\FileHelper;
-use yii2module\github\domain\helpers\GitShell;
+use yii2module\vendor\domain\helpers\GitShell;
 use yii2module\vendor\domain\entities\RepoEntity;
 
 class InfoRepository extends BaseRepository implements ReadInterface {
