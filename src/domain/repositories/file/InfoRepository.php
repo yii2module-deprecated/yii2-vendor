@@ -2,15 +2,13 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
-use Yii;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\helpers\yii\FileHelper;
-use yii2module\vendor\domain\helpers\GitShell;
 use yii2module\vendor\domain\entities\RepoEntity;
+use yii2module\vendor\domain\helpers\RepositoryHelper;
 use yii2module\vendor\domain\helpers\UseHelper;
 
 class InfoRepository extends BaseRepository implements ReadInterface {
@@ -60,7 +58,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	public function all(Query $query = null) {
 		$query = Query::forge($query);
 		$queryClone = $this->removeRelationWhere($query);
-		$list = $this->allRepositoryByOwners($this->domain->generator->owners);
+		$list = RepositoryHelper::allByOwners($this->domain->generator->owners);
 		$filteredList = ArrayIterator::allFromArray($queryClone, $list);
 		$listWithRelation = [];
 		foreach($filteredList as $item) {
@@ -96,7 +94,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	}
 
 	public function shortNamesByOwner($owner) {
-		$pathList = $this->namesByOwner($owner);
+		$pathList = RepositoryHelper::namesByOwner($owner);
 		foreach($pathList as &$name) {
 			$name = strpos($name,'yii2-') === 0 ? substr($name, 5) : $name;
 		}
@@ -105,33 +103,10 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	
 	public function usesById($id) {
 		$entity = $this->oneById($id);
-		return UseHelper::run($entity->directory);
+		return UseHelper::find($entity->directory);
 	}
 	
-	private function namesByOwner($owner) {
-		$dir = Yii::getAlias('@vendor/' . $owner);
-		$pathList = FileHelper::scanDir($dir);
-		return $pathList;
-	}
-	
-	private function allRepositoryByOwners($owners) {
-		$map = $this->namesMapByOwners($owners);
-		$list = [];
-		foreach($map as $owner => $repositories) {
-			foreach($repositories as $repository) {
-				$name = strpos($repository,'yii2-') == 0 ? substr($repository, 5) : $repository;
-				$list[] = [
-					'id' => $owner . '-' . $repository,
-					'owner' => $owner,
-					'name' => $name,
-					'package' => $owner . SL . $repository,
-				];
-			}
-		}
-		return $list;
-	}
-	
-	private function removeRelationWhere($query) {
+	private function removeRelationWhere(Query $query = null) {
 		$queryClone = clone $query;
 		if($query->getParam('where')) {
 			$queryClone->removeParam('where');
@@ -160,91 +135,29 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	}
 	
 	private function loadRelations($item, Query $query) {
-		$repo = $this->gitRepositoryInstance($item['package']);
 		$with = $this->mergeWhereToWith($query);
 		$where = $query->getParam('where');
 		$where = $where ?: [];
-		if($repo) {
-			if(!empty($with)) {
-				if(in_array('tags', $with) || isset($where['version']) || isset($where['need_release'])) {
-					$item['tags'] = $repo->getTagsSha();
-				}
-				if(in_array('commits', $with) || isset($where['need_release']) || isset($where['head_commit'])) {
-					$item['commits'] = $repo->getCommits();
-				}
-				if(in_array('branch', $with)) {
-					$item['branch'] = $repo->getCurrentBranchName();
-				}
-				if(in_array('has_changes', $with)) {
-					$item['has_changes'] = $repo->hasChanges();
-				}
-				if(in_array('has_readme', $with)) {
-					$item['has_readme'] = $this->hasReadme($item['package']);
-				}
-				if(in_array('has_guide', $with)) {
-					$item['has_guide'] = $this->hasGuide($item['package']);
-				}
-				if(in_array('has_license', $with)) {
-					$item['has_license'] = $this->hasLicense($item['package']);
-				}
-				if(in_array('has_test', $with)) {
-					$item['has_test'] = $this->hasTest($item['package']);
-				}
-			}
+		if(empty($with)) {
 			return $item;
 		}
-		return null;
-	}
-	
-	private function hasReadme($package) {
-		$file = $this->getPath($package . SL . 'README.md');
-		$isExists = file_exists($file);
-		return $isExists;
-	}
-	
-	private function hasGuide($package) {
-		$dir = $this->getPath($package . SL . 'guide');
-		$isExists = is_dir($dir);
-		return $isExists;
-	}
-	
-	private function hasLicense($package) {
-		$file = $this->getPath($package . SL . 'LICENSE');
-		$isExists = file_exists($file);
-		return $isExists;
-	}
-	
-	private function hasTest($package) {
-		$dir = $this->getPath($package . SL . 'tests');
-		$configFile = $this->getPath($package . SL . 'codeception.yml');
-		$isExists = is_dir($dir) && file_exists($configFile);
-		return $isExists;
-	}
-	
-	private function namesMapByOwners($owners) {
-		$map = [];
-		foreach($owners as $owner) {
-			$map[$owner] = $this->namesByOwner($owner);
+		$repo = RepositoryHelper::gitInstance($item['package']);
+		if($repo) {
+			if(in_array('tags', $with) || isset($where['version']) || isset($where['need_release'])) {
+				$item['tags'] = $repo->getTagsSha();
+			}
+			if(in_array('commits', $with) || isset($where['need_release']) || isset($where['head_commit'])) {
+				$item['commits'] = $repo->getCommits();
+			}
+			if(in_array('branch', $with)) {
+				$item['branch'] = $repo->getCurrentBranchName();
+			}
+			if(in_array('has_changes', $with)) {
+				$item['has_changes'] = $repo->hasChanges();
+			}
 		}
-		return $map;
-	}
-	
-	private function getPath($package) {
-		$dir = Yii::getAlias('@vendor/' . $package);
-		$dir = FileHelper::normalizePath($dir);
-		return $dir;
-	}
-	
-	private function gitRepositoryInstance($package) {
-		$dir = $this->getPath($package);
-		if(!$this->isGit($dir)) {
-			return null;
-		}
-		return new GitShell($dir);
-	}
-	
-	private function isGit($dir) {
-		return is_dir($dir) && is_dir($dir . DS . '.git');
+		$item = RepositoryHelper::getHasInfo($item, $with);
+		return $item;
 	}
 	
 }

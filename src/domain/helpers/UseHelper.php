@@ -7,7 +7,7 @@ use yii2mod\helpers\ArrayHelper;
 
 class UseHelper {
 
-	public static function run($dir) {
+	public static function find($dir) {
 		$fileList = self::findPhpFiles($dir);
 		$uses = self::findUsesInFiles($fileList);
 		sort($uses);
