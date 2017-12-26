@@ -37,7 +37,7 @@ return [
         				'generator' => [
         					'author' => 'Author name',
         					'email' => 'author@email.com',
-        					'ownerList' => [
+        					'owners' => [
         						'yii2lab',
         						'yii2module',
         						'yii2woop',
