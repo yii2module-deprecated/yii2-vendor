@@ -11,6 +11,7 @@ use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\helpers\yii\FileHelper;
 use yii2module\vendor\domain\helpers\GitShell;
 use yii2module\vendor\domain\entities\RepoEntity;
+use yii2module\vendor\domain\helpers\UseHelper;
 
 class InfoRepository extends BaseRepository implements ReadInterface {
 	
@@ -100,6 +101,12 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 			$name = strpos($name,'yii2-') === 0 ? substr($name, 5) : $name;
 		}
 		return $pathList;
+	}
+	
+	public function usesById($id) {
+		$entity = $this->oneById($id);
+		return UseHelper::run($entity->owner, $entity->name);
+		//prr($entity,1,1);
 	}
 	
 	private function namesByOwner($owner) {

@@ -40,4 +40,8 @@ class InfoService extends ActiveBaseService {
 		return $this->repository->shortNamesByOwner($owner);
 	}
 	
+	public function usesById($id) {
+		return $this->repository->usesById($id);
+	}
+	
 }
