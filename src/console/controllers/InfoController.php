@@ -41,10 +41,10 @@ class InfoController extends Controller
 		}
 	}
 	
-	public function actionAllForUpVersion()
+	public function actionAllForRelease()
 	{
 		Output::line('Getting package info...');
-		$collection = Yii::$app->vendor->info->allForUpVersion();
+		$collection = Yii::$app->vendor->info->allForRelease();
 		if(!empty($collection)) {
 			Output::line();
 			$flatCollection = ArrayHelper::map($collection, 'package', 'version');

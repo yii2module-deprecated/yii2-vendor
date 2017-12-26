@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View
- * @var $entity yii2lab\domain\BaseEntity
+ * @var $entity \yii2module\vendor\domain\entities\RepoEntity
  */
 
 use yii\data\ArrayDataProvider;
@@ -17,7 +17,7 @@ $columns = [
 			$tagHtml = '';
 			foreach($entity->tags as $tag) {
 				if($tag->sha == $data['sha']) {
-					$tagHtml =  " <small class='text-muted'>" . Html::fa('tag') . " {$tag->name}</small>";
+					$tagHtml =  " <span class='label label-default'>{$tag->version}</span>";
 				}
 			}
 			return Html::a($data['message'], "https://github.com/{$entity->package}/commit/{$data['sha']}", [
@@ -42,4 +42,4 @@ $dataProvider = new ArrayDataProvider([
 	'dataProvider' => $dataProvider,
 	'layout' => '{items}',
 	'columns' => $columns,
-]); ?>
+]) ?>

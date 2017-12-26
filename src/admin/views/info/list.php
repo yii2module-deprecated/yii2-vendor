@@ -39,10 +39,10 @@ $columns = [
 				);
 			}
 			if($data->need_release) {
-				$html .= NBSP . Html::a(
+				$html .= Html::a(
 						Html::fa('plus'),
 						'https://github.com/' . $data->package . '/releases/new',
-						['target' => '_blank']
+						['target' => '_blank', 'style' => 'margin-left: 5px']
 					);
 			}
 			return $html ? $html : null;

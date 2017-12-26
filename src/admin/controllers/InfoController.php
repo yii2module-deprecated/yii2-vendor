@@ -32,7 +32,6 @@ class InfoController extends Controller {
 	
 	public function actions() {
 		$actions = parent::actions();
-		unset($actions['list']);
 		unset($actions['index']);
 		unset($actions['view']);
 		return $actions;
@@ -60,6 +59,25 @@ class InfoController extends Controller {
 		$query->with('has_license');
 		$query->with('has_test');
 		$collection = Yii::$app->vendor->info->all($query);
+		$dataProvider = new ArrayDataProvider([
+			'allModels' => $collection,
+			'pagination' => [
+				'pageSize' => 1000,
+			],
+		]);
+		return $this->render('list', ['dataProvider' => $dataProvider]);
+	}
+	
+	public function actionListForRelease() {
+		$query = Query::forge();
+		$query->with('tags');
+		$query->with('commits');
+		$query->with('branch');
+		$query->with('has_readme');
+		$query->with('has_guide');
+		$query->with('has_license');
+		$query->with('has_test');
+		$collection = Yii::$app->vendor->info->allForRelease($query);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
 			'pagination' => [

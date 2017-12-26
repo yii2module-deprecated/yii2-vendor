@@ -15,7 +15,7 @@ use yii2module\vendor\domain\repositories\file\InfoRepository;
  */
 class InfoService extends ActiveBaseService {
 	
-	public function allForUpVersion($query = null) {
+	public function allForRelease($query = null) {
 		$collection = $this->repository->allWithTagAndCommit($query);
 		$newCollection = [];
 		foreach($collection as $entity) {

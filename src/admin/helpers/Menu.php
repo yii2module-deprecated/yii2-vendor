@@ -29,6 +29,12 @@ class Menu {
 					//'icon' => 'circle-o ',
 					'active' => $url == '/vendor/info/list-changed',
 				],
+				[
+					'label' => ['vendor/info', 'list_for_release'],
+					'url' => 'vendor/info/list-for-release',
+					//'icon' => 'circle-o ',
+					'active' => $url == '/vendor/info/list-for-release',
+				],
 			],
 		];
 	}
