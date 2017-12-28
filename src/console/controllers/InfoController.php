@@ -3,6 +3,7 @@
 namespace yii2module\vendor\console\controllers;
 
 use Yii;
+use yii\helpers\Inflector;
 use yii2lab\console\helpers\input\Select;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\yii\console\Controller;
@@ -63,7 +64,12 @@ class InfoController extends Controller
 		Output::line('Find uses in package...');
 		$uses = Yii::$app->vendor->info->usesById($owner . '-yii2-' . $name);
 		Output::line();
-		Output::items($uses, 'Package use list');
+		foreach($uses as $placeName => $list) {
+			//if($placeName !) {
+				Output::items($list, Inflector::titleize($placeName));
+				Output::line();
+			//}
+		}
 	}
 	
 	private function inputPackage() {

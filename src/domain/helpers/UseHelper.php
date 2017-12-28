@@ -21,12 +21,18 @@ class UseHelper {
 	
 	protected static function findUsesInFiles($fileList) {
 		$result = [];
-		$search = '\s+use\s+([^;]+);';
+		$search = '\s*use\s+(.+);\s+';
 		foreach($fileList as $file) {
 			$matches = FileHelper::findInFileByExp($file, $search, 1);
 			if($matches) {
 				$matchesFlatten = ArrayHelper::flatten($matches);
 				$result = ArrayHelper::merge($result, $matchesFlatten);
+			}
+		}
+		foreach($result as &$use) {
+			preg_match('#(.+)(\s+as\s+)(.+)#', $use, $matches1);
+			if(!empty($matches1[1])) {
+				$use = $matches1[1];
 			}
 		}
 		$result = array_unique($result);

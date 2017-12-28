@@ -7,6 +7,7 @@ use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
+use yii2module\rest_client\helpers\ArrayHelper;
 use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
 use yii2module\vendor\domain\helpers\UseHelper;
@@ -103,7 +104,42 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	
 	public function usesById($id) {
 		$entity = $this->oneById($id);
-		return UseHelper::find($entity->directory);
+		//prr($entity->alias,1,1);
+		$uses = UseHelper::find($entity->directory);
+		$res = [];
+		foreach($uses as $use) {
+			if($this->isHasStr($use, $entity->alias)) {
+				$res['self'][] = $use;
+			} elseif($this->isHasStr($use, ['yii\\', 'Yii'])) {
+				$res['yii'][] = $use;
+			} elseif($this->isHasStr($use, ['common\\', 'frontend\\', 'backend\\', 'console\\', 'api\\', 'domain\\', ])) {
+				$res['application'][] = $use;
+			} else {
+				$res['misc'][] = $use;
+			}
+		}
+		foreach($res['misc'] as $vendor) {
+			$arr = explode('\\', $vendor);
+			$output = array_slice($arr, 0, 2);
+			$res['required_packages'][] = implode('\\', $output);
+		}
+		if(!empty($res['yii'])) {
+			$res['required_packages'][] = 'yiisoft/yii2';
+		}
+		foreach($res as &$item) {
+			$item = array_unique($item);
+		}
+		return $res;
+	}
+	
+	private function isHasStr($str, $needles) {
+		$needles = ArrayHelper::toArray($needles);
+		foreach($needles as $needle) {
+			if(strpos($str, $needle) === 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private function removeRelationWhere(Query $query = null) {
