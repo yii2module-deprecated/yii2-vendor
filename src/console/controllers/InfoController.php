@@ -58,17 +58,13 @@ class InfoController extends Controller
 	
 	public function actionPackageUses()
 	{
-		//list($owner, $name) = $this->inputPackage();
-		$owner = 'yii2lab';
-		$name = 'notify';
+		list($owner, $name) = $this->inputPackage();
 		Output::line('Find uses in package...');
 		$uses = Yii::$app->vendor->info->usesById($owner . '-yii2-' . $name);
 		Output::line();
 		foreach($uses as $placeName => $list) {
-			//if($placeName !) {
-				Output::items($list, Inflector::titleize($placeName));
-				Output::line();
-			//}
+			Output::items($list, Inflector::titleize($placeName));
+			Output::line();
 		}
 	}
 	
@@ -78,6 +74,7 @@ class InfoController extends Controller
 		$names = Yii::$app->vendor->info->shortNamesByOwner($owner);
 		$nameSelect = Select::display('Select package', $names);
 		$name = Select::getFirstValue($nameSelect);
+		Output::line();
 		return [$owner, $name];
 	}
 	
