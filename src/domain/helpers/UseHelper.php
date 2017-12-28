@@ -14,6 +14,49 @@ class UseHelper {
 		return $uses;
 	}
 	
+	public static function listToMap($uses, $entity) {
+		$res = [];
+		foreach($uses as $use) {
+			if(self::isHasStr($use, $entity->alias)) {
+				$res['self'][] = $use;
+			} elseif(self::isHasStr($use, ['yii\\', 'Yii'])) {
+				$res['yii'][] = $use;
+			} elseif(self::isHasStr($use, ['common\\', 'frontend\\', 'backend\\', 'console\\', 'api\\', 'domain\\', ])) {
+				$res['application'][] = $use;
+			} else {
+				$res['misc'][] = $use;
+			}
+		}
+		$res['required_packages'] = self::getRequiredPackages($res);
+		foreach($res as &$item) {
+			$item = array_unique($item);
+		}
+		return $res;
+	}
+	
+	private static function getRequiredPackages($map) {
+		$res = [];
+		if(!empty($map['yii'])) {
+			$res[] = 'yiisoft\yii2';
+		}
+		foreach($map['misc'] as $vendor) {
+			$arr = explode('\\', $vendor);
+			$output = array_slice($arr, 0, 2);
+			$res[] = implode('\\', $output);
+		}
+		return $res;
+	}
+	
+	private static function isHasStr($str, $needles) {
+		$needles = ArrayHelper::toArray($needles);
+		foreach($needles as $needle) {
+			if(strpos($str, $needle) === 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected static function findPhpFiles($dir) {
 		$options['only'][] = '*.php';
 		return FileHelper::findFiles($dir, $options);
