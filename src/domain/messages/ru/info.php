@@ -19,4 +19,5 @@ return [
 	'last_commit' => 'HEAD коммит',
 	'package_need_of_release' => 'Есть неверсионированные изменения. Можно выпустить очередной релиз.',
 	'draft_new_release' => 'Выпустить релиз',
+	'required_packages' => 'Зависимости',
 ];

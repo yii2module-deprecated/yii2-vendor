@@ -30,6 +30,7 @@ class UseHelper {
 		$res['required_packages'] = self::getRequiredPackages($res);
 		foreach($res as &$item) {
 			$item = array_unique($item);
+			$item = array_values($item);
 		}
 		return $res;
 	}

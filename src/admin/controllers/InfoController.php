@@ -37,6 +37,7 @@ class InfoController extends Controller {
 		$query = Query::forge();
 		$query->with('tags');
 		$query->with('commits');
+		$query->with('required_packages');
 		$entity = Yii::$app->vendor->info->oneById($id, $query);
 		return $this->render('view', ['entity' => $entity]);
 	}

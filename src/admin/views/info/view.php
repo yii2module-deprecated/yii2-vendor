@@ -34,3 +34,7 @@ use yii\helpers\Html;
 <h4><?= Yii::t('vendor/main', 'tags') ?></h4>
 
 <?= $this->render('view/tag', compact('entity')) ?>
+
+<h4><?= Yii::t('vendor/info', 'required_packages') ?></h4>
+
+<?= $this->render('view/required_packages', compact('entity')) ?>

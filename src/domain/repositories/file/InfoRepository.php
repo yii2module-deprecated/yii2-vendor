@@ -158,6 +158,9 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 			if(in_array('has_changes', $with)) {
 				$item['has_changes'] = $repo->hasChanges();
 			}
+			if(in_array('required_packages', $with)) {
+				$item['required_packages'] = $this->usesById($item['id'])['required_packages'];
+			}
 		}
 		$item = RepositoryHelper::getHasInfo($item, $with);
 		return $item;
