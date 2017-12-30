@@ -15,9 +15,7 @@ use yii2module\vendor\domain\repositories\file\InfoRepository;
  */
 class InfoService extends ActiveBaseService {
 	
-	public $ignore = [
-		'yii2module/yii2-dashboard',
-	];
+	public $ignore;
 	
 	public function allForRelease($query = null) {
 		$collection = $this->repository->allWithTagAndCommit($query);
