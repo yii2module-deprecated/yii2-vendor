@@ -4,6 +4,7 @@ namespace yii2module\vendor\domain\helpers;
 
 use Yii;
 use yii2lab\helpers\yii\FileHelper;
+use yii2lab\misc\helpers\FilterHelper;
 
 class RepositoryHelper {
 	
@@ -84,11 +85,37 @@ class RepositoryHelper {
 	
 	private static function namesMapByOwners($owners) {
 		$map = [];
+		
 		foreach($owners as $owner) {
-			$map[$owner] = self::namesByOwner($owner);
+			$names = self::namesByOwner($owner);
+			//$names = self::filterList($owner, $names);
+			//$names = self::filterIgnoreList($owner, $names);
+			$map[$owner] = $names;
 		}
 		return $map;
 	}
+	
+	/*private static function filterList($owner, $list) {
+		$result = [];
+		foreach($list as $k => $repo) {
+			$dir = Yii::getAlias('@vendor/' . $owner);
+			if(is_dir($dir . DS . $repo) && is_file($dir . DS . $repo . DS . 'composer.json')) {
+				$result[] = $repo;
+			}
+		}
+		return $result;
+	}
+	
+	private static function filterIgnoreList($owner, $list) {
+		$result = [];
+		$ignore = ['yii2module/yii2-dashboard'];
+		foreach($list as $k => $repo) {
+			if(!in_array($owner . SL . $repo, $ignore)) {
+				$result[] = $repo;
+			}
+		}
+		return $result;
+	}*/
 	
 	private static function getPath($package) {
 		$dir = Yii::getAlias('@vendor/' . $package);

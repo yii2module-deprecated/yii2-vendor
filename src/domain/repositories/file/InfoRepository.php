@@ -7,6 +7,7 @@ use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
+use yii2lab\misc\helpers\FilterHelper;
 use yii2module\rest_client\helpers\ArrayHelper;
 use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
@@ -60,6 +61,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		$query = Query::forge($query);
 		$queryClone = $this->removeRelationWhere($query);
 		$list = RepositoryHelper::allByOwners($this->domain->generator->owners);
+		$list = $this->separateCollection($list);
 		$filteredList = ArrayIterator::allFromArray($queryClone, $list);
 		$listWithRelation = [];
 		foreach($filteredList as $item) {
@@ -107,6 +109,19 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		$uses = UseHelper::find($entity->directory);
 		$res = UseHelper::listToMap($uses, $entity);
 		return $res;
+	}
+	
+	private function separateCollection($collection) {
+		$filters = [
+			[
+				'class' => 'yii2module\vendor\domain\filters\IsPackageFilter',
+			],
+			[
+				'class' => 'yii2module\vendor\domain\filters\IsIgnoreFilter',
+				'ignore' => $this->domain->info->ignore,
+			],
+		];
+		return FilterHelper::runAll($filters, $collection);
 	}
 	
 	private function removeRelationWhere(Query $query = null) {
