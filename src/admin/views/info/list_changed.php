@@ -3,13 +3,21 @@
 /* @var $this yii\web\View */
 
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 $this->title = Yii::t('vendor/info', 'list_changed');
 
 $columns = [
 	[
 		'label' => Yii::t('main', 'title'),
-		'attribute' => 'package',
+		'format' => 'raw',
+		'value' => function($data) {
+			return
+				Html::a(
+					$data->package,
+					['/vendor/info/view', 'id' => $data->id]
+				);
+		},
 	],
 ];
 ?>
