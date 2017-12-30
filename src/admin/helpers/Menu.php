@@ -5,12 +5,11 @@ namespace yii2module\vendor\admin\helpers;
 // todo: отрефакторить - сделать нормальный интерфейс и родителя
 
 use common\enums\rbac\PermissionEnum;
-use Yii;
+use yii2lab\helpers\ModuleHelper;
 
 class Menu {
 	
 	static function getMenu() {
-		$url = Yii::$app->request->url;
 		return [
 			'module' => 'vendor',
 			'access' => PermissionEnum::VENDOR_MANAGE,
@@ -21,19 +20,19 @@ class Menu {
 					'label' => ['vendor/info', 'list'],
 					'url' => 'vendor/info/list',
 					//'icon' => 'circle-o ',
-					'active' => $url == '/vendor/info/list',
+					'active' => ModuleHelper::isActiveUrl(['vendor/info/list', 'vendor/info/view']),
 				],
 				[
 					'label' => ['vendor/info', 'list_changed'],
 					'url' => 'vendor/info/list-changed',
 					//'icon' => 'circle-o ',
-					'active' => $url == '/vendor/info/list-changed',
+					'active' => ModuleHelper::isActiveUrl('vendor/info/list-changed'),
 				],
 				[
 					'label' => ['vendor/info', 'list_for_release'],
 					'url' => 'vendor/info/list-for-release',
 					//'icon' => 'circle-o ',
-					'active' => $url == '/vendor/info/list-for-release',
+					'active' => ModuleHelper::isActiveUrl('vendor/info/list-for-release'),
 				],
 			],
 		];
