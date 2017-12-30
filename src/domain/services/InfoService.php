@@ -46,4 +46,10 @@ class InfoService extends ActiveBaseService {
 		return $this->repository->usesById($id);
 	}
 	
+	public function allWithGuide() {
+		$query = Query::forge();
+		$query->where('has_guide', true);
+		return $this->repository->all($query);
+	}
+	
 }

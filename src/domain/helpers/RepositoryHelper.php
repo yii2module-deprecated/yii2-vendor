@@ -46,7 +46,7 @@ class RepositoryHelper {
 		$list = [];
 		foreach($map as $owner => $repositories) {
 			foreach($repositories as $repository) {
-				$name = strpos($repository,'yii2-') == 0 ? substr($repository, 5) : $repository;
+				$name = self::delYiiPrefix($repository);
 				$list[] = [
 					'id' => $owner . '-' . $repository,
 					'owner' => $owner,
@@ -58,6 +58,10 @@ class RepositoryHelper {
 		return $list;
 	}
 	
+	private static function delYiiPrefix($repository) {
+		return strpos($repository, 'yii2-') == 0 ? substr($repository, 5) : $repository;
+	}
+	
 	private static function hasReadme($package) {
 		 	$file = self::getPath($package . SL . 'README.md');
 		$isExists = file_exists($file);
@@ -65,8 +69,8 @@ class RepositoryHelper {
 	}
 	
 	private static function hasGuide($package) {
-		$dir = self::getPath($package . SL . 'guide');
-		$isExists = is_dir($dir);
+		$dir = self::getPath($package . SL . 'guide' . SL . LangHelper::locale2lang(Yii::$app->language) . SL . 'README.md');
+		$isExists = is_file($dir);
 		return $isExists;
 	}
 	
