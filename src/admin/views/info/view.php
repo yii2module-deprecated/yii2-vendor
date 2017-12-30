@@ -5,6 +5,8 @@
  */
 use yii\helpers\Html;
 
+$this->title = $entity->package;
+
 ?>
 
 <h3>
