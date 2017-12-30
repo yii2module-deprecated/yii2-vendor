@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View
- * @var $entity
+ * @var $entity \yii2module\vendor\domain\entities\RepoEntity
  */
 use yii\helpers\Html;
 
@@ -24,7 +24,12 @@ use yii\helpers\Html;
 			]
 		) ?>
 	</div>
+<?php } ?>
 
+<?php if($entity->has_changes) { ?>
+    <div class="alert alert-warning">
+	    <?= Yii::t('vendor/info', 'package_has_changes') ?>
+    </div>
 <?php } ?>
 
 <h4><?= Yii::t('vendor/main', 'commits') ?></h4>
