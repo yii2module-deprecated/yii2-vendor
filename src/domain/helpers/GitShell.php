@@ -371,6 +371,22 @@ class GitShell extends BaseShell {
 	}
 
 	/**
+	 * Pull changes from a remote
+	 *
+	 * @param $remote string|NULL
+	 * @param $params array|NULL
+	 *
+	 * @return static
+	 * @throws ShellException
+	 */
+	public function pullWithInfo($remote = null) {
+		$result = $this->extractFromCommand("git pull $remote", 'trim');
+		$result = implode(PHP_EOL, $result);
+		$result = trim($result);
+		return $result;
+	}
+	
+	/**
 	 * Push changes to a remote
 	 *
 	 * @param $remote string|NULL

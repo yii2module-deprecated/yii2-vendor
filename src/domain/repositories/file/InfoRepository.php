@@ -42,6 +42,16 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		}
 	}
 	
+	public function pull($entity) {
+		$repo = RepositoryHelper::gitInstance($entity->package);
+		$result = $repo->pullWithInfo();
+		if($result = 'Already up-to-date.') {
+			return false;
+		} else {
+			return $result;
+		}
+	}
+	
 	public function oneById($id, Query $query = null) {
 		$query = Query::forge($query);
 		$query->where('id', $id);

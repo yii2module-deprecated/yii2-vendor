@@ -17,6 +17,10 @@ class InfoService extends ActiveBaseService {
 	
 	public $ignore;
 	
+	public function pull($entity) {
+		return $this->repository->pull($entity);
+	}
+	
 	public function allForRelease($query = null) {
 		$collection = $this->repository->allWithTagAndCommit($query);
 		$newCollection = [];

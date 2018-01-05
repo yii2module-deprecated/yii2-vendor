@@ -68,6 +68,25 @@ class InfoController extends Controller
 		}
 	}
 	
+	public function actionGitPull()
+	{
+		$collection = Yii::$app->vendor->info->all();
+		Output::line();
+		Output::pipe('Git pull packages');
+		foreach($collection as $entity) {
+			$result = Yii::$app->vendor->info->pull($entity);
+			$outputLine = $entity->package . SPC . DOT . DOT . DOT . SPC;
+			if($result) {
+				$outputLine .= PHP_EOL . $result . PHP_EOL;
+			} else {
+				$outputLine .= 'Already up-to-date';
+			}
+			Output::line($outputLine);
+		}
+		Output::pipe();
+		Output::line();
+	}
+	
 	private function inputPackage() {
 		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
