@@ -8,6 +8,7 @@ use yii\data\ArrayDataProvider;
 use yii2lab\app\domain\helpers\Config;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
+use yii2lab\helpers\Behavior;
 use yii2lab\notify\domain\widgets\Alert;
 
 class InfoController extends Controller {
@@ -18,7 +19,7 @@ class InfoController extends Controller {
 	public function behaviors()
 	{
 		return [
-			'access' => Config::genAccess(PermissionEnum::VENDOR_MANAGE),
+			'access' => Behavior::access(PermissionEnum::VENDOR_MANAGE),
 		];
 	}
 	
