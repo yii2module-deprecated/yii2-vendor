@@ -11,11 +11,13 @@ class GeneratorRepository extends BaseRepository {
 	const INSTALL_DIR = 'yii2module\vendor\domain\commands\install\\';
 	
 	public function generate($config, $name) {
-		return CommandHelper::run($config, self::GENERATOR_DIR . $name);
+		$config['class'] = self:: GENERATOR_DIR. $name;
+		return CommandHelper::run($config);
 	}
 	
 	public function install($config, $name) {
-		return CommandHelper::run($config, self::INSTALL_DIR . $name);
+		$config['class'] = self::INSTALL_DIR . $name;
+		return CommandHelper::run($config);
 	}
 	
 }
