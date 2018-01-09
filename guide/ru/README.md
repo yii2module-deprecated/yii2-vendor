@@ -1,15 +1,16 @@
 Сторонние библиотеки
 =============================
 
-## Генератор пакетов
+## Менеджер пакетов
 
-* [Установка](generator-install.md)
-* [Руководство](generator-guide.md)
+* [Установка](manager-install.md)
+* [Руководство](manager-guide.md)
 
 ## Прочее
 
 * [Обновление](vendor-update.md)
 * [Создание](vendor-create.md)
+* [Сопровождение](maintenance.md)
 * [Версионирование](vendor-version.md)
 * [Тестирование](vendor-test.md)
 * [Документирование](vendor-doc.md)
