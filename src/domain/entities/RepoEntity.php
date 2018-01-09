@@ -62,7 +62,7 @@ class RepoEntity extends BaseEntity {
 	}
 	
 	public function getDirectory() {
-		return ROOT_DIR . DS . self::packageDirMini($this->owner, $this->name);
+		return VENDOR_DIR . DS . $this->package;
 	}
 	
 	public function getAlias() {
@@ -88,10 +88,6 @@ class RepoEntity extends BaseEntity {
 		$fields['head_commit'] = 'head_commit';
 		$fields['directory'] = 'directory';
 		return $fields;
-	}
-	
-	private static function packageDirMini($owner, $name) {
-		return VENDOR . DS . $owner . DS . 'yii2-' . $name;
 	}
 	
 	private function attachTagToCommit($commits) {

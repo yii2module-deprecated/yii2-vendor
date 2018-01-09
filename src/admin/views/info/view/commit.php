@@ -15,9 +15,11 @@ $columns = [
 		'format' => 'raw',
 		'value' => function($data) use($entity){
 			$tagHtml = '';
-			foreach($entity->tags as $tag) {
-				if($tag->sha == $data['sha']) {
-					$tagHtml =  " <span class='label label-default'>{$tag->version}</span>";
+			if(!empty($entity->tags)) {
+				foreach($entity->tags as $tag) {
+					if($tag->sha == $data['sha']) {
+						$tagHtml =  " <span class='label label-default'>{$tag->version}</span>";
+					}
 				}
 			}
 			return Html::a($data['message'], "https://github.com/{$entity->package}/commit/{$data['sha']}", [

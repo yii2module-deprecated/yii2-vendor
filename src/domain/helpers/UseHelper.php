@@ -40,10 +40,12 @@ class UseHelper {
 		if(!empty($map['yii'])) {
 			$res[] = 'yiisoft\yii2';
 		}
-		foreach($map['misc'] as $vendor) {
-			$arr = explode('\\', $vendor);
-			$output = array_slice($arr, 0, 2);
-			$res[] = implode('\\', $output);
+		if(!empty($map['misc'])) {
+			foreach($map['misc'] as $vendor) {
+				$arr = explode('\\', $vendor);
+				$output = array_slice($arr, 0, 2);
+				$res[] = implode('\\', $output);
+			}
 		}
 		return $res;
 	}
