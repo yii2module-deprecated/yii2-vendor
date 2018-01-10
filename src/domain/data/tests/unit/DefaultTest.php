@@ -1,5 +1,5 @@
 <?php
-namespace api\tests\unit\helpers;
+namespace {owner}\{name}\tests\unit;
 
 use Codeception\Test\Unit;
 
