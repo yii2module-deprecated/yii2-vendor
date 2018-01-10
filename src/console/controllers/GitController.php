@@ -25,7 +25,9 @@ class GitController extends Controller
 				$result = Yii::$app->vendor->git->pull($entity);
 				if($result) {
 					Output::line();
+					Output::line();
 					Output::line($result);
+					Output::line();
 					Output::line();
 				}
 			} catch(ShellException $e) {
