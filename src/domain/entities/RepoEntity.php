@@ -74,7 +74,14 @@ class RepoEntity extends BaseEntity {
 			return null;
 		}
 		$versionList = ArrayHelper::flatten($this->tags);
-		rsort($versionList);
+		$cmp = function ($a, $b) {
+			if ($a == $b) {
+				return 0;
+			}
+			$isGreater = version_compare($a->version, $b->version, '<');
+			return $isGreater ? 1 : -1;
+		};
+		usort($versionList, $cmp);
 		$last = $versionList[0];
 		$last = trim($last->name, 'v');
 		return $last;
