@@ -11,6 +11,9 @@ use yii2lab\console\yii\console\Controller;
 class InstallController extends Controller
 {
 	
+	/**
+	 * Install package
+	 */
 	public function actionIndex()
 	{
 		list($owner, $name) = $this->inputPackage();

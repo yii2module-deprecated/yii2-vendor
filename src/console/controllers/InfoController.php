@@ -17,6 +17,9 @@ class InfoController extends Controller
 		Output::line();
 	}
 	
+	/**
+	 * Changed package list
+	 */
 	public function actionAllChanged()
 	{
 		Output::line('Getting package info...');
@@ -30,6 +33,9 @@ class InfoController extends Controller
 		}
 	}
 	
+	/**
+	 * Package list with version
+	 */
 	public function actionAllVersion()
 	{
 		Output::line('Getting package info...');
@@ -43,6 +49,9 @@ class InfoController extends Controller
 		}
 	}
 	
+	/**
+	 * Package list for release
+	 */
 	public function actionAllForRelease()
 	{
 		Output::line('Getting package info...');
@@ -56,6 +65,9 @@ class InfoController extends Controller
 		}
 	}
 	
+	/**
+	 * Get package dependencies
+	 */
 	public function actionPackageUses()
 	{
 		list($owner, $name) = $this->inputPackage();
@@ -68,6 +80,7 @@ class InfoController extends Controller
 		}
 	}
 	
+	/*
 	public function actionGitPull()
 	{
 		$collection = Yii::$app->vendor->info->all();
@@ -86,6 +99,7 @@ class InfoController extends Controller
 		Output::pipe();
 		Output::line();
 	}
+	*/
 	
 	private function inputPackage() {
 		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->owners);

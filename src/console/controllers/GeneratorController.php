@@ -12,6 +12,9 @@ use yii2module\vendor\domain\enums\TypeEnum;
 class GeneratorController extends Controller
 {
 	
+	/**
+	 * Generate package
+	 */
 	public function actionIndex()
 	{
 		list($owner, $name) = $this->inputPackage();

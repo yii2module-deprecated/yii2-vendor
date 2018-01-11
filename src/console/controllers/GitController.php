@@ -15,6 +15,9 @@ class GitController extends Controller
 		Output::line();
 	}
 	
+	/**
+	 * Git pull for all packages
+	 */
 	public function actionPull()
 	{
 		$collection = Yii::$app->vendor->info->all();

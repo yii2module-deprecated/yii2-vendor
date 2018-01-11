@@ -14,13 +14,19 @@ class ConfigController extends Controller
 		Output::line();
 	}
 	
+	/**
+	 * Set dev-master package version
+	 */
 	public function actionToDev()
 	{
-		Output::line('Set dev-master version...');
+		Output::line('Set dev-master package version...');
 		Yii::$app->vendor->package->versionToDev();
 		Output::block('Success converted version to dev-master');
 	}
 	
+	/**
+	 * Set new package version
+	 */
 	public function actionUpdate()
 	{
 		Output::line('Getting package info...');
