@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\filters;
 
 use yii\base\BaseObject;
-use yii2lab\misc\interfaces\FilterInterface;
+use yii2lab\designPattern\filter\interfaces\FilterInterface;
 
 class IsIgnoreFilter extends BaseObject implements FilterInterface {
 

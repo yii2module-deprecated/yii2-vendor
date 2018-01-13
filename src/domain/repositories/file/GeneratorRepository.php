@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\misc\helpers\CommandHelper;
+use yii2lab\designPattern\command\helpers\CommandHelper;
 
 class GeneratorRepository extends BaseRepository {
 	

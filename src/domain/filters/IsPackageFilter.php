@@ -4,7 +4,7 @@ namespace yii2module\vendor\domain\filters;
 
 use Yii;
 use yii\base\BaseObject;
-use yii2lab\misc\interfaces\FilterInterface;
+use yii2lab\designPattern\filter\interfaces\FilterInterface;
 
 class IsPackageFilter extends BaseObject implements FilterInterface {
 

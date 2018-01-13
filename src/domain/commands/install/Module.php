@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\commands\install;
 
-use yii2lab\misc\interfaces\CommandInterface;
+use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
 class Module extends Base implements CommandInterface {

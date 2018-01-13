@@ -2,7 +2,8 @@
 
 namespace yii2module\vendor\domain\commands\generators;
 
-use yii2lab\misc\interfaces\CommandInterface;
+use yii\helpers\Inflector;
+use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2lab\store\Store;
 use yii2module\vendor\domain\commands\Base;
 
@@ -34,8 +35,10 @@ class Package extends Base implements CommandInterface {
 			'email' => $data['email'],
 		];
 		$config['minimum-stability'] = 'dev';
-		$config['autoload']['psr-4'][$data['owner'] . '\\' . $data['name'] . '\\'] = 'src';
-		$config['autoload']['psr-4'][$data['owner'] . '\\' . $data['name'] . '\\tests\\'] = 'tests';
+		$name = Inflector::camelize($data['name']);
+		$name{0} = strtolower($name{0});
+		$config['autoload']['psr-4'][$data['owner'] . '\\' . $name . '\\'] = 'src';
+		$config['autoload']['psr-4'][$data['owner'] . '\\' . $name . '\\tests\\'] = 'tests';
 		$config['require'] = [
 			'yiisoft/yii2' => '*',
 			'php' => '>=5.4.0',

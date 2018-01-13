@@ -4,7 +4,7 @@ namespace yii2module\vendor\domain\helpers;
 
 use Yii;
 use yii2lab\helpers\yii\FileHelper;
-use yii2lab\misc\helpers\FilterHelper;
+use yii2lab\designPattern\filter\helpers\FilterHelper;
 use yii2module\lang\domain\enums\LanguageEnum;
 use yii2module\lang\domain\helpers\LangHelper;
 
