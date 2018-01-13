@@ -37,7 +37,7 @@ class Base extends BaseObject {
 	}
 	
 	protected function getBaseAlias($data) {
-		$alias = '@' . $data['owner'] . SL .$data['name'];
+		$alias = '@' . $data['owner'] . SL .$data['nameAlias'];
 		try {
 			Yii::getAlias($alias);
 		} catch(InvalidParamException $e) {

@@ -19,7 +19,7 @@ oExamlpe
 return [
 	'modules' => [
 		// ...
-		'{name}' => '{owner}\{name}\frontend\Module',
+		'{name}' => '{owner}\{nameAlias}\frontend\Module',
 		// ...
 	],
 ];
@@ -31,7 +31,7 @@ return [
 return [
 	'modules' => [
 		// ...
-		'{name}' => '{owner}\{name}\backend\Module',
+		'{name}' => '{owner}\{nameAlias}\backend\Module',
 		// ...
 	],
 ];
@@ -43,7 +43,7 @@ return [
 return [
 	'modules' => [
 		// ...
-		'{name}' => '{owner}\{name}\api\Module',
+		'{nameAlias}' => '{owner}\{nameAlias}\api\Module',
 		// ...
 		'components' => [
             'urlManager' => [
@@ -64,7 +64,7 @@ return [
 return [
 	'modules' => [
 		// ...
-		'{name}' => '{owner}\{name}\console\Module',
+		'{name}' => '{owner}\{nameAlias}\console\Module',
 		// ...
 	],
 ];
@@ -76,7 +76,7 @@ return [
 return [
 	'components' => [
 		// ...
-		'{name}' => '{owner}\{name}\domain\Domain',
+		'{nameAlias}' => '{owner}\{nameAlias}\domain\Domain',
 		// ...
 	],
 ];

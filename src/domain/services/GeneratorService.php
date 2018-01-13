@@ -2,6 +2,7 @@
 
 namespace yii2module\vendor\domain\services;
 
+use yii\helpers\Inflector;
 use yii2lab\domain\services\ActiveBaseService;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
@@ -41,9 +42,12 @@ class GeneratorService extends ActiveBaseService {
 	}
 	
 	private function getData($owner, $name) {
+		$nameAlias = Inflector::camelize($name);
+		$nameAlias{0} = strtolower($nameAlias{0});
 		return [
 			'owner' => $owner,
 			'name' => $name,
+			'nameAlias' => $nameAlias,
 			'title' => ucfirst($name),
 			'namespace' => $owner . BSL . $name,
 			'alias' => '@' . $owner . SL . $name,

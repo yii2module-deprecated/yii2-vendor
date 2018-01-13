@@ -35,10 +35,8 @@ class Package extends Base implements CommandInterface {
 			'email' => $data['email'],
 		];
 		$config['minimum-stability'] = 'dev';
-		$name = Inflector::camelize($data['name']);
-		$name{0} = strtolower($name{0});
-		$config['autoload']['psr-4'][$data['owner'] . '\\' . $name . '\\'] = 'src';
-		$config['autoload']['psr-4'][$data['owner'] . '\\' . $name . '\\tests\\'] = 'tests';
+		$config['autoload']['psr-4'][$data['owner'] . '\\' . $data['nameAlias'] . '\\'] = 'src';
+		$config['autoload']['psr-4'][$data['owner'] . '\\' . $data['nameAlias'] . '\\tests\\'] = 'tests';
 		$config['require'] = [
 			'yiisoft/yii2' => '*',
 			'php' => '>=5.4.0',
