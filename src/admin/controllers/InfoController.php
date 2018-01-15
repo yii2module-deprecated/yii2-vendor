@@ -56,9 +56,7 @@ class InfoController extends Controller {
 		$collection = Yii::$app->vendor->info->all($query);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
-			'pagination' => [
-				'pageSize' => 1000,
-			],
+			'pagination' => false,
 		]);
 		return $this->render('list', ['dataProvider' => $dataProvider]);
 	}
