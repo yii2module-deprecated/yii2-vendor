@@ -1,5 +1,5 @@
 <?php
-namespace {owner}\{name}\tests\unit;
+namespace tests\unit;
 
 use Codeception\Test\Unit;
 
