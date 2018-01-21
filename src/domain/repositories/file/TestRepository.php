@@ -9,7 +9,7 @@ class TestRepository extends BaseRepository {
 	
 	public function run($entity) {
 		$repo = new TestShell($entity->directory);
-		$result = $repo->pullWithInfo();
+		$result = $repo->codeceptionRun();
 		if(preg_match('#OK \((\d+) tests?, (\d+) assertions?\)#', $result, $matches)) {
 			return [
 				'result' => true,
