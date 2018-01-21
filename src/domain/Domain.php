@@ -13,11 +13,13 @@ class Domain extends \yii2lab\domain\Domain {
 				'package' => Driver::FILE,
 				'generator' => Driver::FILE,
 				'git' => Driver::FILE,
+				'test' => Driver::FILE,
 			],
 			'services' => [
 				'info',
 				'package',
 				'git',
+				'test',
 				'generator' => [
 					'author' => 'Yamshikov Vitaliy, WOOPPAY LLC',
 					'email' => 'theyamshikov@yandex.ru',

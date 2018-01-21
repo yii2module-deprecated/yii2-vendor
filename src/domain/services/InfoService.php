@@ -52,4 +52,10 @@ class InfoService extends ActiveBaseService {
 		return $this->repository->all($query);
 	}
 	
+	public function allWithHasTest() {
+		$query = Query::forge();
+		$query->where('has_test', true);
+		return $this->repository->all($query);
+	}
+	
 }
