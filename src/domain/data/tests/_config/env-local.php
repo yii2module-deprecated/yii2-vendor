@@ -1,7 +1,9 @@
 <?php
 
-$config = require(ROOT_DIR . DS . TEST_APPLICATION_DIR . '/common/config/env-local.php');
+use yii2lab\test\helpers\TestHelper;
 
-return \yii\helpers\ArrayHelper::merge($config, [
-	
-]);
+$config = [
+
+];
+
+return , $config);
