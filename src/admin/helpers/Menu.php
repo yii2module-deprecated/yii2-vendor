@@ -2,14 +2,12 @@
 
 namespace yii2module\vendor\admin\helpers;
 
-// todo: отрефакторить - сделать нормальный интерфейс и родителя
-
 use common\enums\rbac\PermissionEnum;
 use yii2lab\helpers\ModuleHelper;
 
 class Menu {
 	
-	static function getMenu() {
+	public function toArray() {
 		return [
 			'module' => 'vendor',
 			'access' => PermissionEnum::VENDOR_MANAGE,
