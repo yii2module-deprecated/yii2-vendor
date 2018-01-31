@@ -11,6 +11,7 @@ return [
 	'packages_success_pulled' => 'Пакеты обновлены',
 	'pull_packages' => 'Обновить пакеты',
 	'has_readme' => 'README',
+	'has_changelog' => 'CHANGELOG',
 	'has_guide' => 'Руководство',
 	'has_license' => 'Лицензия',
 	'has_test' => 'Тесты',

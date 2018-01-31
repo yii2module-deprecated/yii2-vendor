@@ -50,6 +50,7 @@ class InfoController extends Controller {
 		$query->with('commits');
 		$query->with('branch');
 		$query->with('has_readme');
+		$query->with('has_changelog');
 		$query->with('has_guide');
 		$query->with('has_license');
 		$query->with('has_test');
@@ -67,6 +68,7 @@ class InfoController extends Controller {
 		$query->with('commits');
 		$query->with('branch');
 		$query->with('has_readme');
+		$query->with('has_changelog');
 		$query->with('has_guide');
 		$query->with('has_license');
 		$query->with('has_test');

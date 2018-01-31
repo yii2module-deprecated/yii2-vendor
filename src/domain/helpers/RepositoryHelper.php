@@ -25,6 +25,9 @@ class RepositoryHelper {
 		if(in_array('has_readme', $with)) {
 			$item['has_readme'] = RepositoryHelper::hasReadme($item['package']);
 		}
+		if(in_array('has_changelog', $with)) {
+			$item['has_changelog'] = RepositoryHelper::hasChangelog($item['package']);
+		}
 		if(in_array('has_guide', $with)) {
 			$item['has_guide'] = RepositoryHelper::hasGuide($item['package']);
 		}
@@ -66,6 +69,12 @@ class RepositoryHelper {
 	
 	private static function hasReadme($package) {
 		 	$file = self::getPath($package . SL . 'README.md');
+		$isExists = file_exists($file);
+		return $isExists;
+	}
+	
+	private static function hasChangelog($package) {
+		$file = self::getPath($package . SL . 'CHANGELOG.md');
 		$isExists = file_exists($file);
 		return $isExists;
 	}

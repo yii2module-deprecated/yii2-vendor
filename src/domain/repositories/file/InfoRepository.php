@@ -15,7 +15,7 @@ use yii2module\vendor\domain\helpers\UseHelper;
 
 class InfoRepository extends BaseRepository implements ReadInterface {
 	
-	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit'];
+	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_changelog', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit'];
 	
 	public function isExistsById($id) {
 		try {

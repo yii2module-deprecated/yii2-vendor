@@ -10,6 +10,7 @@ class TypeEnum extends BaseEnum {
 	const LICENSE = 'License';
 	const GUIDE = 'Guide';
 	const README = 'Readme';
+	const CHANGELOG = 'Changelog';
 	const TEST = 'Test';
 	const DOMAIN = 'Domain';
 	const API_MODULE = 'Api module';

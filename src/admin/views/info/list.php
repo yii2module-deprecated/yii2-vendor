@@ -59,6 +59,16 @@ $columns = [
 		},
 	],
 	[
+		'label' => Yii::t('vendor/info', 'has_changelog'),
+		'format' => 'raw',
+		'value' => function($data){
+			if($data->has_changelog) {
+				return Html::a(Html::fa('file-text'), 'https://github.com/'.$data->package.'/blob/master/CHANGELOG.md', ['target' => '_blank']);
+			}
+			return '';
+		},
+	],
+	[
 		'label' => Yii::t('vendor/info', 'has_guide'),
 		'format' => 'raw',
 		'value' => function($data){

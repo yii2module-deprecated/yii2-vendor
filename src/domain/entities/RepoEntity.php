@@ -17,6 +17,7 @@ class RepoEntity extends BaseEntity {
 	protected $commits;
 	protected $has_changes = false;
 	protected $has_readme;
+	protected $has_changelog;
 	protected $has_guide;
 	protected $has_license;
 	protected $has_test;
