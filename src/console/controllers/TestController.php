@@ -15,24 +15,51 @@ class TestController extends Controller
 	}
 	
 	/**
-	 * Test all packages
+	 * Test packages and project
 	 */
-	public function actionRun()
+	public function actionAll()
 	{
-		$collection = Yii::$app->vendor->info->allWithHasTest();
+		$collection = Yii::$app->vendor->test->directoriesWithHasTestAll();
+		Output::pipe('Test all (count: ' . count($collection) . ')');
+		$this->runCollection($collection);
+		Output::line();
+	}
+	
+	/**
+	 * Test packages
+	 */
+	public function actionPackage()
+	{
+		$collection = Yii::$app->vendor->test->directoriesWithHasForPackage();
+		Output::pipe('Test packages (count: ' . count($collection) . ')');
+		$this->runCollection($collection);
+		Output::line();
+	}
+	
+	/**
+	 * Test project
+	 */
+	public function actionProject()
+	{
+		$collection = Yii::$app->vendor->test->directoriesWithHasTestForProject();
+		Output::pipe('Test project (count: ' . count($collection) . ')');
+		$this->runCollection($collection);
+		Output::line();
+	}
+	
+	private function runCollection($collection) {
 		$failPackages = [];
 		$allTestCount = $allAssertCount = 0;
-		Output::pipe('Test packages');
 		foreach($collection as $entity) {
-			$output = $entity->package;
-			$result = Yii::$app->vendor->test->run($entity);
-			$dots = Output::getDots($entity->package, 40);
+			$output = $entity['name'];
+			$result = Yii::$app->vendor->test->run($entity['directory']);
+			$dots = Output::getDots($entity['name'], 40);
 			if(!empty($result['result'])) {
 				$output .= SPC . $dots . SPC . 'OK. tests: ' . $result['testCount'] . '. assertions: ' . $result['assertionCount'];
 				$allTestCount = $allTestCount + $result['testCount'];
 				$allAssertCount = $allAssertCount + $result['assertionCount'];
 			} else {
-				$failPackages[] = $entity->package;
+				$failPackages[] = $entity['name'];
 				$output .= SPC . $dots . SPC . 'FAIL';
 			}
 			Output::line($output);
@@ -58,8 +85,5 @@ class TestController extends Controller
 			Output::line();
 			Output::pipe('All tests are OK!');
 		}
-		
-		Output::line();
 	}
-	
 }

@@ -3,12 +3,13 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii2lab\domain\repositories\BaseRepository;
+use yii2lab\helpers\yii\FileHelper;
 use yii2module\vendor\domain\helpers\TestShell;
 
 class TestRepository extends BaseRepository {
 	
-	public function run($entity) {
-		$repo = new TestShell($entity->directory);
+	public function run($directory) {
+		$repo = new TestShell($directory);
 		$result = $repo->codeceptionRun();
 		if(preg_match('#OK \((\d+) tests?, (\d+) assertions?\)#', $result, $matches)) {
 			return [
