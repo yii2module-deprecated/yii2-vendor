@@ -6,6 +6,13 @@
 * [Установка](manager-install.md)
 * [Руководство](manager-guide.md)
 
+## Консоль
+
+* [Git](console-git.md)
+* [Генератор](console-generator.md)
+* [Информация](console-info.md)
+* [Конфиг зависимостей](console-config.md)
+
 ## Прочее
 
 * [Обновление](vendor-update.md)
