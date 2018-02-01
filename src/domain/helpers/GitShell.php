@@ -386,6 +386,13 @@ class GitShell extends BaseShell {
 		return $result;
 	}
 	
+	public function pushWithInfo($remote = null) {
+		$result = $this->extractFromCommand("git push $remote", 'trim');
+		//$result = implode(PHP_EOL, $result);
+		//$result = trim($result);
+		return $result;
+	}
+	
 	/**
 	 * Push changes to a remote
 	 *

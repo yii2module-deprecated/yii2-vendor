@@ -41,4 +41,25 @@ class GitController extends Controller
 		Output::line();
 	}
 	
+	/**
+	 * Git push for all packages
+	 */
+	public function actionPush()
+	{
+		$collection = Yii::$app->vendor->info->all();
+		Output::pipe('Git push packages');
+		foreach($collection as $entity) {
+			Output::line($entity->package);
+			try {
+				Output::line();
+				Yii::$app->vendor->git->push($entity);
+				Output::line();
+			} catch(ShellException $e) {
+				Yii::$app->end();
+			}
+		}
+		Output::pipe();
+		Output::line();
+	}
+	
 }

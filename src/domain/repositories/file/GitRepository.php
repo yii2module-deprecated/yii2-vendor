@@ -17,4 +17,9 @@ class GitRepository extends BaseRepository {
 		}
 	}
 	
+	public function push($entity) {
+		$repo = RepositoryHelper::gitInstance($entity->package);
+		$repo->pushWithInfo();
+	}
+	
 }
