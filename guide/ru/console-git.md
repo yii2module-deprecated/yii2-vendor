@@ -14,3 +14,5 @@ php yii vendor/git/push
 ```
 php yii vendor/git/pull
 ```
+
+Настройка приватного ключа на Windows разбирается в [этой статье](https://habrahabr.ru/post/266667/).
