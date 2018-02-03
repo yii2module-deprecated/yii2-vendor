@@ -48,6 +48,11 @@ class TestController extends Controller
 	}
 	
 	private function runCollection($collection) {
+		if(empty($collection)) {
+			Output::line();
+			Output::pipe('Tests not found!');
+			return;
+		}
 		$failPackages = [];
 		$allTestCount = $allAssertCount = 0;
 		foreach($collection as $entity) {

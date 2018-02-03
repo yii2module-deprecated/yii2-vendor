@@ -43,6 +43,9 @@ class TestService extends ActiveBaseService {
 	
 	public function directoriesWithHasTestForProject() {
 		$collection = [];
+		if(empty($this->aliases)) {
+			return [];
+		}
 		foreach($this->aliases as $alias) {
 			$collection[] = [
 				'name' => trim($alias, '@/'),
