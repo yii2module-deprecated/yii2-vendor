@@ -2,8 +2,8 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
-use Yii;
 use yii2lab\domain\repositories\BaseRepository;
+use yii2lab\helpers\yii\FileHelper;
 use yii2lab\store\Store;
 use yii2module\vendor\domain\entities\PackageEntity;
 
@@ -26,7 +26,7 @@ class PackageRepository extends BaseRepository {
 	}
 	
 	private function getFileName($alias = null) {
-		$path = empty($alias) ? ROOT_DIR : Yii::getAlias($alias);
+		$path = empty($alias) ? ROOT_DIR : FileHelper::getAlias($alias);
 		return $path . DS . 'composer.json';
 	}
 	

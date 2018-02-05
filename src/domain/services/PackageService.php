@@ -16,28 +16,63 @@ use yii2module\vendor\domain\repositories\file\PackageRepository;
  */
 class PackageService extends ActiveBaseService {
 	
+	public $aliases = EMP;
+	
 	public function versionToDev()
 	{
-		/** @var PackageEntity $entity */
-		$entity = $this->repository->load();
-		$config = $entity->config;
-		$config['require'] = $this->toDev($config['require']);
-		$config['require-dev'] = $this->toDev($config['require-dev']);
-		$entity->config = $config;
-		$this->repository->save($entity);
+		if(empty($this->aliases)) {
+			return;
+		}
+		$aliases = ArrayHelper::toArray($this->aliases);
+		foreach($aliases as $alias) {
+			$this->versionToDevItem($alias);
+		}
 	}
 	
 	public function versionUpdate()
 	{
-		/** @var PackageEntity $entity */
-		$entity = $this->repository->load();
-		$config = $entity->config;
+		if(empty($this->aliases)) {
+			return;
+		}
+		$aliases = ArrayHelper::toArray($this->aliases);
 		$collection = Yii::$app->vendor->info->allVersion();
-		$flatCollection = ArrayHelper::map($collection, 'package', 'version');
-		$config['require'] = $this->update($config['require'], $flatCollection);
-		$config['require-dev'] = $this->update($config['require-dev'], $flatCollection);
+		foreach($aliases as $alias) {
+			$this->versionUpdateItem($alias, $collection);
+		}
+	}
+	
+	private function versionToDevItem($alias)
+	{
+		/** @var PackageEntity $entity */
+		$entity = $this->repository->load($alias);
+		$config = $entity->config;
+		$config['require'] = $this->toDev(ArrayHelper::getValue($config, 'require', []));
+		$config['require-dev'] = $this->toDev(ArrayHelper::getValue($config, 'require-dev', []));
+		$config = $this->removeEmptyValues($config);
 		$entity->config = $config;
 		$this->repository->save($entity);
+	}
+	
+	private function versionUpdateItem($alias, $collection)
+	{
+		/** @var PackageEntity $entity */
+		$entity = $this->repository->load($alias);
+		$config = $entity->config;
+		$flatCollection = ArrayHelper::map($collection, 'package', 'version');
+		$config['require'] = $this->update(ArrayHelper::getValue($config, 'require', []), $flatCollection);
+		$config['require-dev'] = $this->update(ArrayHelper::getValue($config, 'require-dev', []), $flatCollection);
+		$config = $this->removeEmptyValues($config);
+		$entity->config = $config;
+		$this->repository->save($entity);
+	}
+	
+	private function removeEmptyValues($config) {
+		foreach($config as $key => $value) {
+			if(empty($value)) {
+				unset($config[$key]);
+			}
+		}
+		return $config;
 	}
 	
 	private function update($config, $flatCollection) {
