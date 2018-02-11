@@ -16,7 +16,7 @@ use yii2module\vendor\domain\repositories\file\PackageRepository;
  */
 class PackageService extends ActiveBaseService {
 	
-	public $aliases = EMP;
+	public $aliases = [EMP];
 	
 	public function versionToDev()
 	{
