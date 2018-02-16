@@ -9,6 +9,7 @@ class GitRepository extends BaseRepository {
 	
 	public function pull($entity) {
 		$repo = RepositoryHelper::gitInstance($entity->package);
+		$repo->checkout('master');
 		$result = $repo->pullWithInfo();
 		if($result == 'Already up-to-date.') {
 			return false;
