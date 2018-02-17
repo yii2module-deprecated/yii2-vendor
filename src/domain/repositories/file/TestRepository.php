@@ -3,7 +3,6 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\helpers\yii\FileHelper;
 use yii2module\vendor\domain\helpers\TestShell;
 
 class TestRepository extends BaseRepository {
