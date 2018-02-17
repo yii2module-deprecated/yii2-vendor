@@ -4,6 +4,7 @@ namespace yii2module\vendor\domain\services;
 
 use Yii;
 use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\helpers\yii\FileHelper;
 use yii2module\rest_client\helpers\ArrayHelper;
 use yii2module\vendor\domain\repositories\file\GitRepository;
 
@@ -47,10 +48,13 @@ class TestService extends ActiveBaseService {
 			return [];
 		}
 		foreach($this->aliases as $alias) {
-			$collection[] = [
-				'name' => trim($alias, '@/'),
-				'directory' => Yii::getAlias($alias),
-			];
+			$directory = Yii::getAlias($alias);
+		    if(FileHelper::has($directory)) {
+                $collection[] = [
+                    'name' => trim($alias, '@/'),
+                    'directory' => $directory,
+                ];
+            }
 		}
 		return $collection;
 	}
