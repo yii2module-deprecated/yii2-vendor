@@ -11,3 +11,9 @@ modules:
     config:
         Yii2:
             configFile: 'tests/_config/unit.php'
+coverage:
+    enabled: true
+    whitelist:
+        include:
+            - src/domain/services/*
+            - src/domain/helpers/*
