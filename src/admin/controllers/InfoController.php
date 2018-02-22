@@ -5,7 +5,6 @@ namespace yii2module\vendor\admin\controllers;
 use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
-use yii2lab\app\domain\helpers\Config;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\helpers\Behavior;
