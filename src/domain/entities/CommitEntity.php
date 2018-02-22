@@ -23,7 +23,7 @@ class CommitEntity extends BaseEntity {
 	public function fieldType() {
 		return [
 			'tag' => [
-				'type' => TagEntity::className(),
+				'type' => TagEntity::class,
 			],
 		];
 	}

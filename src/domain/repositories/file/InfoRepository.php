@@ -67,7 +67,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		foreach($filteredList as $item) {
 			$listWithRelation[] = $this->loadRelations($item, $query);
 		}
-		$collection = $this->forgeEntity($listWithRelation, RepoEntity::className());
+		$collection = $this->forgeEntity($listWithRelation, RepoEntity::class);
 		return ArrayIterator::allFromArray($query, $collection);
 	}
 	

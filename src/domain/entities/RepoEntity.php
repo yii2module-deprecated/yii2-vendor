@@ -26,11 +26,11 @@ class RepoEntity extends BaseEntity {
 	public function fieldType() {
 		return [
 			'tags' => [
-				'type' => TagEntity::className(),
+				'type' => TagEntity::class,
 				'isCollection' => true,
 			],
 			'commits' => [
-				'type' => CommitEntity::className(),
+				'type' => CommitEntity::class,
 				'isCollection' => true,
 			],
 			'has_changes' => 'boolean',
