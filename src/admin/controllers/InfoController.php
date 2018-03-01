@@ -95,13 +95,13 @@ class InfoController extends Controller {
 	public function actionGenerate() {
 		$file = 'cmd/git/vendor pull.bat';
 		$this->service->generateBat($file);
-		Yii::$app->notify->flash->send(['vendor/info', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
+		Yii::$app->navigation->alert->create(['vendor/info', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
 		return $this->redirect('/vendor/info');
 	}
 	
 	public function actionPull() {
 		$this->service->allPull();
-		Yii::$app->notify->flash->send(['vendor/info', 'packages_success_pulled']);
+		Yii::$app->navigation->alert->create(['vendor/info', 'packages_success_pulled']);
 		return $this->redirect('/vendor/info');
 	}
 	
