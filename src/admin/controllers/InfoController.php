@@ -64,9 +64,9 @@ class InfoController extends Controller {
 	
 	public function actionListForRelease() {
 		$query = Query::forge();
-		$query->with('tags');
+		/*$query->with('tags');
 		$query->with('commits');
-		/*$query->with('branch');
+		$query->with('branch');
 		$query->with('has_readme');
 		$query->with('has_changelog');
 		$query->with('has_guide');
