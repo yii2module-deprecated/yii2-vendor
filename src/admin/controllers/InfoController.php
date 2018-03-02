@@ -20,12 +20,6 @@ class InfoController extends Controller {
 	{
 		return [
 			'access' => Behavior::access(PermissionEnum::VENDOR_MANAGE),
-			'verbs' => Behavior::verb([
-				'checkout' => ['POST'],
-				'pull' => ['POST'],
-				'push' => ['POST'],
-				'synch' => ['POST'],
-			]),
 		];
 	}
 	
@@ -48,39 +42,6 @@ class InfoController extends Controller {
 		$query->with('has_changes');
 		$entity = Yii::$app->vendor->info->oneById($id, $query);
 		return $this->render('view', ['entity' => $entity]);
-	}
-	
-	public function actionCheckout($id, $branch) {
-		$entity = Yii::$app->vendor->info->oneById($id);
-		Yii::$app->vendor->git->checkout($entity, $branch);
-		Yii::$app->navigation->alert->create(['vendor/git', 'checkout_success'], Alert::TYPE_SUCCESS);
-		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
-	}
-	
-	public function actionSynch($id) {
-		$entity = Yii::$app->vendor->info->oneById($id);
-		Yii::$app->vendor->git->pull($entity);
-		Yii::$app->vendor->git->push($entity);
-		Yii::$app->navigation->alert->create(['vendor/git', 'synch_success'], Alert::TYPE_SUCCESS);
-		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
-	}
-	
-	public function actionPull($id) {
-		$entity = Yii::$app->vendor->info->oneById($id);
-		$result = Yii::$app->vendor->git->pull($entity);
-		if($result) {
-			Yii::$app->navigation->alert->create(['vendor/git', 'pull_success {data}', ['data' => nl2br($result)]], Alert::TYPE_SUCCESS);
-		} else {
-			Yii::$app->navigation->alert->create(['vendor/git', 'pull_no_changes'], Alert::TYPE_INFO);
-		}
-		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
-	}
-	
-	public function actionPush($id) {
-		$entity = Yii::$app->vendor->info->oneById($id);
-		Yii::$app->vendor->git->push($entity);
-		Yii::$app->navigation->alert->create(['vendor/git', 'push_success'], Alert::TYPE_SUCCESS);
-		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
 	}
 	
 	public function actionList() {
@@ -132,13 +93,6 @@ class InfoController extends Controller {
 		return $this->render('list_changed', ['dataProvider' => $dataProvider]);
 	}
 
-	public function actionGenerate() {
-		$file = 'cmd/git/vendor pull.bat';
-		$this->service->generateBat($file);
-		Yii::$app->navigation->alert->create(['vendor/info', 'bat_success_generated'], Alert::TYPE_SUCCESS, 10000);
-		return $this->redirect('/vendor/info');
-	}
-	
 	/*public function actionPull() {
 		$this->service->allPull();
 		Yii::$app->navigation->alert->create(['vendor/info', 'packages_success_pulled']);

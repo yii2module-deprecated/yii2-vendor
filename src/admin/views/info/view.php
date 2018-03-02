@@ -37,7 +37,7 @@ $this->title = $entity->package;
 
 <?= Html::a(
 	Yii::t('vendor/git', 'synch'),
-	Url::to('/vendor/info/synch?id='.$entity->id),
+	Url::to('/vendor/git/synch?id='.$entity->id),
     [
 		'class' => 'btn btn-default',
 	    'data-method' => 'post',
@@ -46,7 +46,7 @@ $this->title = $entity->package;
 
 <?= Html::a(
 	Yii::t('vendor/git', 'pull'),
-	Url::to('/vendor/info/pull?id='.$entity->id),
+	Url::to('/vendor/git/pull?id='.$entity->id),
 	[
 		'class' => 'btn btn-default',
 		'data-method' => 'post',
@@ -55,7 +55,7 @@ $this->title = $entity->package;
 
 <?= Html::a(
 	Yii::t('vendor/git', 'push'),
-	Url::to('/vendor/info/push?id='.$entity->id),
+	Url::to('/vendor/git/push?id='.$entity->id),
 	[
 		'class' => 'btn btn-default',
 		'data-method' => 'post',

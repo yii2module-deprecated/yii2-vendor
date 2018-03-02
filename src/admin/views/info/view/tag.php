@@ -35,7 +35,7 @@ $columns = [
 		'value' => function($data) use($entity) {
 			return Html::a(
 				Yii::t('vendor/git', 'checkout'),
-				Url::to('/vendor/info/checkout?id='.$entity->id.'&branch=' . $data['name']),
+				Url::to('/vendor/git/checkout?id='.$entity->id.'&branch=' . $data['name']),
 				[
 					'class' => 'btn btn-default',
 					'data-method' => 'post',
@@ -52,7 +52,7 @@ $dataProvider = new ArrayDataProvider([
 
 <?= Html::a(
 	Yii::t('vendor/git', 'checkout') . SPC . '<b>master</b>',
-	Url::to('/vendor/info/checkout?id='.$entity->id.'&branch=master'),
+	Url::to('/vendor/git/checkout?id='.$entity->id.'&branch=master'),
 	[
 		'class' => 'btn btn-default',
 		'data-method' => 'post',
