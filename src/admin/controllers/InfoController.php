@@ -67,8 +67,12 @@ class InfoController extends Controller {
 	
 	public function actionPull($id) {
 		$entity = Yii::$app->vendor->info->oneById($id);
-		Yii::$app->vendor->git->pull($entity);
-		Yii::$app->navigation->alert->create(['vendor/git', 'pull_success'], Alert::TYPE_SUCCESS);
+		$result = Yii::$app->vendor->git->pull($entity);
+		if($result) {
+			Yii::$app->navigation->alert->create(['vendor/git', 'pull_success {data}', ['data' => nl2br($result)]], Alert::TYPE_SUCCESS);
+		} else {
+			Yii::$app->navigation->alert->create(['vendor/git', 'pull_no_changes'], Alert::TYPE_INFO);
+		}
 		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
 	}
 	
