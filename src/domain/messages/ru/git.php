@@ -8,7 +8,7 @@ return [
 	'push' => 'Отправить',
 	'checkout_success' => 'Успешно переключено!',
 	'synch_success' => 'Успешно синхронизированно!',
-	'pull_success {data}' => 'Успешно получно!<br />{data}',
+	'pull_success {data}' => 'Успешно получено!<br />{data}',
 	'pull_no_changes' => 'Нет изменений!',
 	'push_success' => 'Успешно отправлено!',
 ];
