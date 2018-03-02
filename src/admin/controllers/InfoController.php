@@ -66,12 +66,12 @@ class InfoController extends Controller {
 		$query = Query::forge();
 		$query->with('tags');
 		$query->with('commits');
-		$query->with('branch');
+		/*$query->with('branch');
 		$query->with('has_readme');
 		$query->with('has_changelog');
 		$query->with('has_guide');
 		$query->with('has_license');
-		$query->with('has_test');
+		$query->with('has_test');*/
 		$collection = Yii::$app->vendor->info->allForRelease($query);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
@@ -79,7 +79,7 @@ class InfoController extends Controller {
 				'pageSize' => 1000,
 			],
 		]);
-		return $this->render('list', ['dataProvider' => $dataProvider]);
+		return $this->render('list_for_release', ['dataProvider' => $dataProvider]);
 	}
 	
 	public function actionListChanged() {
