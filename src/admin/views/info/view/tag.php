@@ -3,10 +3,12 @@
 /* @var $this yii\web\View
  * @var $entity yii2lab\domain\BaseEntity
  */
+
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $columns = [
 	[
@@ -27,10 +29,36 @@ $columns = [
 			return Html::tag('span', substr($data['sha'], 0, 8), ['title' => $data['sha']]);
 		},
 	],
+	[
+		'label' => Yii::t('main', 'checkout'),
+		'format' => 'raw',
+		'value' => function($data) use($entity) {
+			return Html::a(
+				Yii::t('vendor/git', 'checkout'),
+				Url::to('/vendor/info/checkout?id='.$entity->id.'&branch=' . $data['name']),
+				[
+					'class' => 'btn btn-default',
+					'data-method' => 'post',
+				]
+			);
+	//tags/v1.0
+		},
+	],
 ];
 $dataProvider = new ArrayDataProvider([
 	'models' => ArrayHelper::toArray($entity->tags),
 ]);
+?>
+
+<?= Html::a(
+	Yii::t('vendor/git', 'checkout') . SPC . '<b>master</b>',
+	Url::to('/vendor/info/checkout?id='.$entity->id.'&branch=master'),
+	[
+		'class' => 'btn btn-default',
+		'data-method' => 'post',
+	]
+);
+
 ?>
 
 <?= GridView::widget([

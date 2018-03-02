@@ -5,6 +5,7 @@ namespace yii2module\vendor\admin\controllers;
 use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
+use yii\helpers\Url;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\helpers\Behavior;
@@ -19,6 +20,12 @@ class InfoController extends Controller {
 	{
 		return [
 			'access' => Behavior::access(PermissionEnum::VENDOR_MANAGE),
+			'verbs' => Behavior::verb([
+				'checkout' => ['POST'],
+				'pull' => ['POST'],
+				'push' => ['POST'],
+				'synch' => ['POST'],
+			]),
 		];
 	}
 	
@@ -41,6 +48,35 @@ class InfoController extends Controller {
 		$query->with('has_changes');
 		$entity = Yii::$app->vendor->info->oneById($id, $query);
 		return $this->render('view', ['entity' => $entity]);
+	}
+	
+	public function actionCheckout($id, $branch) {
+		$entity = Yii::$app->vendor->info->oneById($id);
+		Yii::$app->vendor->git->checkout($entity, $branch);
+		Yii::$app->navigation->alert->create(['vendor/git', 'checkout_success'], Alert::TYPE_SUCCESS);
+		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
+	}
+	
+	public function actionSynch($id) {
+		$entity = Yii::$app->vendor->info->oneById($id);
+		Yii::$app->vendor->git->pull($entity);
+		Yii::$app->vendor->git->push($entity);
+		Yii::$app->navigation->alert->create(['vendor/git', 'synch_success'], Alert::TYPE_SUCCESS);
+		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
+	}
+	
+	public function actionPull($id) {
+		$entity = Yii::$app->vendor->info->oneById($id);
+		Yii::$app->vendor->git->pull($entity);
+		Yii::$app->navigation->alert->create(['vendor/git', 'pull_success'], Alert::TYPE_SUCCESS);
+		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
+	}
+	
+	public function actionPush($id) {
+		$entity = Yii::$app->vendor->info->oneById($id);
+		Yii::$app->vendor->git->push($entity);
+		Yii::$app->navigation->alert->create(['vendor/git', 'push_success'], Alert::TYPE_SUCCESS);
+		return $this->redirect(Url::to('/vendor/info/view?id=' . $id));
 	}
 	
 	public function actionList() {
@@ -99,10 +135,10 @@ class InfoController extends Controller {
 		return $this->redirect('/vendor/info');
 	}
 	
-	public function actionPull() {
+	/*public function actionPull() {
 		$this->service->allPull();
 		Yii::$app->navigation->alert->create(['vendor/info', 'packages_success_pulled']);
 		return $this->redirect('/vendor/info');
-	}
+	}*/
 	
 }

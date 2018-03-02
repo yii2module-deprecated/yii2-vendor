@@ -4,6 +4,7 @@
  * @var $entity \yii2module\vendor\domain\entities\RepoEntity
  */
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = $entity->package;
 
@@ -33,6 +34,33 @@ $this->title = $entity->package;
 	    <?= Yii::t('vendor/info', 'package_has_changes') ?>
     </div>
 <?php } ?>
+
+<?= Html::a(
+	Yii::t('vendor/git', 'synch'),
+	Url::to('/vendor/info/synch?id='.$entity->id),
+    [
+		'class' => 'btn btn-default',
+	    'data-method' => 'post',
+	]
+); ?>
+
+<?= Html::a(
+	Yii::t('vendor/git', 'pull'),
+	Url::to('/vendor/info/pull?id='.$entity->id),
+	[
+		'class' => 'btn btn-default',
+		'data-method' => 'post',
+	]
+); ?>
+
+<?= Html::a(
+	Yii::t('vendor/git', 'push'),
+	Url::to('/vendor/info/push?id='.$entity->id),
+	[
+		'class' => 'btn btn-default',
+		'data-method' => 'post',
+	]
+); ?>
 
 <h4><?= Yii::t('vendor/main', 'commits') ?></h4>
 

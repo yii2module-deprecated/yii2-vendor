@@ -24,4 +24,8 @@ class GitService extends ActiveBaseService {
 		return $this->repository->push($entity);
 	}
 	
+	public function checkout($entity, $branch) {
+		return $this->repository->checkout($entity, $branch);
+	}
+	
 }
