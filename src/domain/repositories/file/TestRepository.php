@@ -10,7 +10,14 @@ class TestRepository extends BaseRepository {
 	public function run($directory) {
 		$repo = new TestShell($directory);
 		$result = $repo->codeceptionRun();
-		if(preg_match('#OK \((\d+) tests?, (\d+) assertions?\)#', $result, $matches)) {
+		if(strpos($result, 'No tests executed!')) {
+			return [
+				'result' => true,
+				'testCount' => 0,
+				'assertionCount' => 0,
+				'text' => $result,
+			];
+		} elseif(preg_match('#OK \((\d+) tests?, (\d+) assertions?\)#', $result, $matches)) {
 			return [
 				'result' => true,
 				'testCount' => $matches[1],
