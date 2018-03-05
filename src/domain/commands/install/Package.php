@@ -17,7 +17,7 @@ class Package extends Base implements CommandInterface {
 			$alias = trim($alias, '/');
 			try {
 				Yii::getAlias('@' . $alias);
-			} catch(InvalidParamException $e) {
+			} catch(\InvalidArgumentException $e) {
 				$this->makeConfig('@' . $alias, '@vendor/' . $this->data['full_name'] . SL . $path);
 			}
 		}

@@ -2,9 +2,9 @@
 
 namespace yii2module\vendor\domain\commands;
 
+use InvalidArgumentException;
 use Yii;
 use yii\base\BaseObject;
-use yii\base\InvalidParamException;
 use yii\helpers\ArrayHelper;
 use yii2lab\console\helpers\CopyFiles;
 use yii2lab\helpers\yii\FileHelper;
@@ -40,7 +40,7 @@ class Base extends BaseObject {
 		$alias = '@' . $data['owner'] . SL .$data['nameAlias'];
 		try {
 			Yii::getAlias($alias);
-		} catch(InvalidParamException $e) {
+		} catch(InvalidArgumentException $e) {
 			Yii::setAlias($alias, Yii::getAlias('@vendor' . SL . $data['owner'] . SL . 'yii2-' . $data['name'] . SL . 'src'));
 		}
 		return $alias;
