@@ -15,6 +15,7 @@
 
 ## Прочее
 
+* [Структура пакета](vendor-structure.md)
 * [Обновление](vendor-update.md)
 * [Создание](vendor-create.md)
 * [Сопровождение](maintenance.md)
