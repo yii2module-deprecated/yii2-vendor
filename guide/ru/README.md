@@ -22,4 +22,5 @@
 * [Версионирование](vendor-version.md)
 * [Тестирование](vendor-test.md)
 * [Документирование](vendor-doc.md)
+* [Кастомизация](vendor-customize.md)
 * [CHANGELOG](vendor-changelog.md)
