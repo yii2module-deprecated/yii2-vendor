@@ -2,9 +2,9 @@
 
 namespace yii2module\vendor\domain\commands;
 
-use InvalidArgumentException;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii2lab\console\helpers\CopyFiles;
 use yii2lab\helpers\yii\FileHelper;
