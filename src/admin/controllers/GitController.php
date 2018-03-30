@@ -9,7 +9,7 @@ use yii\helpers\Url;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\helpers\Behavior;
-use yii2lab\notify\domain\widgets\Alert;
+use yii2lab\navigation\domain\widgets\Alert;
 
 class GitController extends Controller {
 	
