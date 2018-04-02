@@ -59,8 +59,8 @@ class PackageService extends ActiveBaseService {
 		$entity = $this->repository->load($alias);
 		$config = $entity->config;
 		$flatCollection = ArrayHelper::map($collection, 'package', 'version');
-		$config['require'] = $this->update(ArrayHelper::getValue($config, 'require', []), $flatCollection);
-		$config['require-dev'] = $this->update(ArrayHelper::getValue($config, 'require-dev', []), $flatCollection);
+		$config['require'] = $this->formatVersion(ArrayHelper::getValue($config, 'require', []), $flatCollection);
+		$config['require-dev'] = $this->formatVersion(ArrayHelper::getValue($config, 'require-dev', []), $flatCollection);
 		$config = $this->removeEmptyValues($config);
 		$entity->config = $config;
 		$this->repository->save($entity);
@@ -75,7 +75,7 @@ class PackageService extends ActiveBaseService {
 		return $config;
 	}
 	
-	private function update($config, $flatCollection) {
+	private function formatVersion($config, $flatCollection) {
 		foreach($flatCollection as $fullName => $version) {
 			if(isset($config[$fullName])) {
 				$config[$fullName] = $this->flexFormat($version);
