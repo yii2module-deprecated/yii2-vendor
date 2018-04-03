@@ -20,7 +20,7 @@ class ConfigController extends Controller
 	public function actionToDev()
 	{
 		Output::line('Set dev-master package version...');
-		Yii::$app->vendor->package->versionToDev();
+		Yii::$domain->vendor->package->versionToDev();
 		Output::block('Success converted version to dev-master');
 	}
 	
@@ -30,7 +30,7 @@ class ConfigController extends Controller
 	public function actionUpdate()
 	{
 		Output::line('Getting package info...');
-		Yii::$app->vendor->package->versionUpdate();
+		Yii::$domain->vendor->package->versionUpdate();
 		Output::block('Packages version updated');
 	}
 	

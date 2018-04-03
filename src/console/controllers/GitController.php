@@ -20,12 +20,12 @@ class GitController extends Controller
 	 */
 	public function actionPull()
 	{
-		$collection = Yii::$app->vendor->info->all();
+		$collection = Yii::$domain->vendor->info->all();
 		Output::pipe('Git pull packages');
 		foreach($collection as $entity) {
 			Output::line($entity->package);
 			try {
-				$result = Yii::$app->vendor->git->pull($entity);
+				$result = Yii::$domain->vendor->git->pull($entity);
 				if($result) {
 					Output::line();
 					Output::line();
@@ -46,13 +46,13 @@ class GitController extends Controller
 	 */
 	public function actionPush()
 	{
-		$collection = Yii::$app->vendor->info->all();
+		$collection = Yii::$domain->vendor->info->all();
 		Output::pipe('Git push packages');
 		foreach($collection as $entity) {
 			Output::line($entity->package);
 			try {
 				Output::line();
-				Yii::$app->vendor->git->push($entity);
+				Yii::$domain->vendor->git->push($entity);
 				Output::line();
 			} catch(ShellException $e) {
 				Yii::$app->end();

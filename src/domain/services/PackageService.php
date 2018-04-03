@@ -35,7 +35,7 @@ class PackageService extends ActiveBaseService {
 			return;
 		}
 		$aliases = ArrayHelper::toArray($this->aliases);
-		$collection = Yii::$app->vendor->info->allVersion();
+		$collection = Yii::$domain->vendor->info->allVersion();
 		foreach($aliases as $alias) {
 			$this->versionUpdateItem($alias, $collection);
 		}
@@ -93,7 +93,7 @@ class PackageService extends ActiveBaseService {
 	}
 	
 	private function toDev($config) {
-		$owners = Yii::$app->vendor->generator->owners;
+		$owners = Yii::$domain->vendor->generator->owners;
 		foreach($config as $fullName => &$version) {
 			$arr = explode(SL, $fullName);
 			if(count($arr) > 1) {

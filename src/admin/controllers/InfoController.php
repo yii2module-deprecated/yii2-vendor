@@ -38,7 +38,7 @@ class InfoController extends Controller {
 		$query->with('commits');
 		$query->with('required_packages');
 		$query->with('has_changes');
-		$entity = Yii::$app->vendor->info->oneById($id, $query);
+		$entity = Yii::$domain->vendor->info->oneById($id, $query);
 		return $this->render('view', ['entity' => $entity]);
 	}
 	
@@ -52,7 +52,7 @@ class InfoController extends Controller {
 		$query->with('has_guide');
 		$query->with('has_license');
 		$query->with('has_test');
-		$collection = Yii::$app->vendor->info->all($query);
+		$collection = Yii::$domain->vendor->info->all($query);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
 			'pagination' => false,
@@ -70,7 +70,7 @@ class InfoController extends Controller {
 		$query->with('has_guide');
 		$query->with('has_license');
 		$query->with('has_test');*/
-		$collection = Yii::$app->vendor->info->allForRelease($query);
+		$collection = Yii::$domain->vendor->info->allForRelease($query);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
 			'pagination' => [
@@ -81,7 +81,7 @@ class InfoController extends Controller {
 	}
 	
 	public function actionListChanged() {
-		$collection = Yii::$app->vendor->info->allChanged();
+		$collection = Yii::$domain->vendor->info->allChanged();
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $collection,
 			'pagination' => [
@@ -93,7 +93,7 @@ class InfoController extends Controller {
 
 	/*public function actionPull() {
 		$this->service->allPull();
-		Yii::$app->navigation->alert->create(['vendor/info', 'packages_success_pulled']);
+		Yii::$domain->navigation->alert->create(['vendor/info', 'packages_success_pulled']);
 		return $this->redirect('/vendor/info');
 	}*/
 	

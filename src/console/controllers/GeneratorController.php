@@ -20,12 +20,12 @@ class GeneratorController extends Controller
 		list($owner, $name) = $this->inputPackage();
 		$types = Select::display('Select for generate', TypeEnum::values(), 1);
 		$types = array_values($types);
-		Yii::$app->vendor->generator->generateAll($owner, $name, $types);
+		Yii::$domain->vendor->generator->generateAll($owner, $name, $types);
 		Output::block('Success generated');
 	}
 	
 	private function inputPackage() {
-		$ownerSelect = Select::display('Select owner', Yii::$app->vendor->generator->owners);
+		$ownerSelect = Select::display('Select owner', Yii::$domain->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
 		return [$owner, $name];
