@@ -19,6 +19,7 @@
 * [Обновление](vendor-update.md)
 * [Создание](vendor-create.md)
 * [Сопровождение](maintenance.md)
+* [Pull-request](pull-request.md)
 * [Версионирование](vendor-version.md)
 * [Тестирование](vendor-test.md)
 * [Документирование](vendor-doc.md)
