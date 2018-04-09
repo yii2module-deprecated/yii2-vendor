@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\Inflector;
 use yii2lab\console\helpers\input\Select;
 use yii2lab\console\helpers\Output;
-use yii2lab\console\yii\console\Controller;
+use yii2lab\console\base\Controller;
 use yii\helpers\ArrayHelper;
 
 class InfoController extends Controller
