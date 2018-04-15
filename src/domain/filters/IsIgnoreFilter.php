@@ -2,16 +2,16 @@
 
 namespace yii2module\vendor\domain\filters;
 
-use yii\base\BaseObject;
-use yii2lab\designPattern\filter\interfaces\FilterInterface;
+use yii2lab\designPattern\scenario\base\BaseScenario;
 
-class IsIgnoreFilter extends BaseObject implements FilterInterface {
+class IsIgnoreFilter extends BaseScenario {
 
 	public $ignore;
 	
-	public function run($list) {
+	public function run() {
+		$list = $this->getData();
 		$list = $this->filterIgnoreList($list);
-		return $list;
+		$this->setData($list);
 	}
 	
 	private function filterIgnoreList($list) {

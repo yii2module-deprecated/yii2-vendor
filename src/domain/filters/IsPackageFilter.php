@@ -3,16 +3,16 @@
 namespace yii2module\vendor\domain\filters;
 
 use Yii;
-use yii\base\BaseObject;
-use yii2lab\designPattern\filter\interfaces\FilterInterface;
+use yii2lab\designPattern\scenario\base\BaseScenario;
 
-class IsPackageFilter extends BaseObject implements FilterInterface {
-
-	public function run($list) {
+class IsPackageFilter extends BaseScenario {
+	
+	public function run() {
+		$list = $this->getData();
 		$list = $this->filterList($list);
-		return $list;
+		$this->setData($list);
 	}
-
+	
 	private function filterList($list) {
 		$result = [];
 		foreach($list as $k => $repo) {

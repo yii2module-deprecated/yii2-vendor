@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii\web\NotFoundHttpException;
+use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
 use yii2lab\domain\data\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
@@ -110,6 +111,13 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		return $res;
 	}
 	
+	/**
+	 * @param $collection
+	 *
+	 * @return \yii2lab\domain\values\BaseValue
+	 * @throws \yii\base\InvalidConfigException
+	 * @throws \yii\web\ServerErrorHttpException
+	 */
 	private function separateCollection($collection) {
 		$filters = [
 			[
@@ -120,7 +128,10 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 				'ignore' => $this->domain->info->ignore,
 			],
 		];
-		return FilterHelper::runAll($filters, $collection);
+		
+		$filterCollection = ScenarioHelper::forgeCollection($filters);
+		$collection =  ScenarioHelper::runAll($filterCollection, $collection);
+		return $collection;
 	}
 	
 	private function removeRelationWhere(Query $query = null) {
