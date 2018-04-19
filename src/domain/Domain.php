@@ -29,7 +29,7 @@ class Domain extends \yii2lab\domain\Domain {
 			'services' => [
 				'info' => [
 					'ignore' => [
-						'yii2module/yii2-test',
+						//'yii2module/yii2-test',
 					],
 				],
 				'package' => [
