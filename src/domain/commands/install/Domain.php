@@ -2,10 +2,9 @@
 
 namespace yii2module\vendor\domain\commands\install;
 
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class Domain extends Base implements CommandInterface {
+class Domain extends Base {
 
 	public function run() {
 		$moduleDir = $this->packageFile($this->data['owner'], $this->data['name'], 'src' . DS . 'domain');

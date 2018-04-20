@@ -6,11 +6,10 @@ use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\helpers\Inflector;
 use yii2lab\helpers\yii\FileHelper;
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\commands\Base;
 
-class Rbac extends Base implements CommandInterface {
+class Rbac extends Base {
 
 	public function run() {
 		$fileList = $this->findPhpFiles();

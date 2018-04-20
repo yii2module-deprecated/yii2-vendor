@@ -2,10 +2,9 @@
 
 namespace yii2module\vendor\domain\commands\generators;
 
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class License extends Base implements CommandInterface {
+class License extends Base {
 
 	public function run() {
 		$this->generateLicense($this->data);

@@ -3,10 +3,9 @@
 namespace yii2module\vendor\domain\commands\generators;
 
 use yii2lab\helpers\generator\ClassGeneratorHelper;
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class Domain extends Base implements CommandInterface {
+class Domain extends Base {
 
 	public function run() {
 		$this->generateDomain($this->data);

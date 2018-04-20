@@ -3,12 +3,10 @@
 namespace yii2module\vendor\domain\commands\install;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2lab\store\Store;
 use yii2module\vendor\domain\commands\Base;
 
-class Package extends Base implements CommandInterface {
+class Package extends Base {
 
 	public function run() {
 		$config = $this->loadConfig();

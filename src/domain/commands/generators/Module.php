@@ -3,10 +3,9 @@
 namespace yii2module\vendor\domain\commands\generators;
 
 use yii2lab\helpers\generator\ClassGeneratorHelper;
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class Module extends Base implements CommandInterface {
+class Module extends Base {
 
 	public $type;
 	

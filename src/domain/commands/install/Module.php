@@ -2,10 +2,9 @@
 
 namespace yii2module\vendor\domain\commands\install;
 
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class Module extends Base implements CommandInterface {
+class Module extends Base {
 
 	private $aliases = [
 		'web' => 'frontend',

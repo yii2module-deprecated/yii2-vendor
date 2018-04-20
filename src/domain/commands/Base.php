@@ -3,13 +3,13 @@
 namespace yii2module\vendor\domain\commands;
 
 use Yii;
-use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii2lab\console\helpers\CopyFiles;
+use yii2lab\designPattern\scenario\base\BaseScenario;
 use yii2lab\helpers\yii\FileHelper;
 
-class Base extends BaseObject {
+abstract class Base extends BaseScenario {
 	
 	public $data;
 	

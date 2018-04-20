@@ -2,10 +2,9 @@
 
 namespace yii2module\vendor\domain\commands\generators;
 
-use yii2lab\designPattern\command\interfaces\CommandInterface;
 use yii2module\vendor\domain\commands\Base;
 
-class Test extends Base implements CommandInterface {
+class Test extends Base {
 
 	public function run() {
 		$this->generateTest($this->data);
