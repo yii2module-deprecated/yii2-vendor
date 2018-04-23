@@ -4,7 +4,7 @@ namespace {owner}\{name}\domain\entities;
 
 use yii2lab\domain\BaseEntity;
 
-class TransactionEntity extends BaseEntity {
+class {Entity}Entity extends BaseEntity {
 
 	protected $id;
 	

@@ -12,10 +12,10 @@ class Domain extends \yii2lab\domain\Domain {
 	public function config() {
 		return [
 			'repositories' => [
-				'transaction',
+				'{entity}',
 			],
 			'services' => [
-				'transaction',
+				'{entity}',
 			],
 		];
 	}
