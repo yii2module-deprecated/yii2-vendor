@@ -9,6 +9,7 @@ class Domain extends Base {
 
 	public function run() {
 		$this->generateDomain($this->data);
+		$this->copyDir($this->data, 'src/domain');
 	}
 	
 	protected function generateDomain($data) {
