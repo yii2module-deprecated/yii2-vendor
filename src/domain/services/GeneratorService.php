@@ -47,6 +47,7 @@ class GeneratorService extends ActiveBaseService {
 		return [
 			'owner' => $owner,
 			'name' => $name,
+			'Name' => ucfirst($name),
 			'nameAlias' => $nameAlias,
 			'title' => ucfirst($name),
 			'namespace' => $owner . BSL . $name,
