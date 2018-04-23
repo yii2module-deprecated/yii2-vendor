@@ -2,9 +2,9 @@
 
 namespace {owner}\{name}\domain\services;
 
-use yii2lab\domain\data\Query;
 use yii2lab\domain\services\ActiveBaseService;
+use {owner}\{name}\domain\interfaces\services\TransactionInterface;
 
-class TransactionService extends ActiveBaseService {
+class TransactionService extends ActiveBaseService implements TransactionInterface {
 
 }
