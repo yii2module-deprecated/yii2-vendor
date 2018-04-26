@@ -4,11 +4,10 @@ namespace yii2module\vendor\domain\repositories\file;
 
 use yii\web\NotFoundHttpException;
 use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
-use yii2lab\domain\data\ArrayIterator;
+use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\designPattern\filter\helpers\FilterHelper;
 use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
 use yii2module\vendor\domain\helpers\UseHelper;
