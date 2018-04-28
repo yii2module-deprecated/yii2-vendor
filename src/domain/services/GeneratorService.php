@@ -21,6 +21,8 @@ class GeneratorService extends ActiveBaseService {
 	];
 	
 	public function generateDomain($owner, $name, $version = null) {
+		$data = $this->getData($owner, $name);
+		
 		/** @var Domain $domainInstance */
 		//$domainInstance = ClassHelper::createObject();
 		//$domainConfig = $domainInstance->config();
@@ -67,7 +69,7 @@ class GeneratorService extends ActiveBaseService {
 				$config = [
 					'className' => $items['repositoryInterface'],
 					
-					'use' => ['yii2lab\domain\interfaces\services\CrudInterface'],
+					'use' => ['yii2lab\domain\interfaces\repositories\CrudInterface'],
 					'afterClassName' => 'extends CrudInterface',
 					//'code' => $this->getCode(),
 				];
@@ -85,14 +87,14 @@ class GeneratorService extends ActiveBaseService {
 				
 				$config = [
 					'className' => $items['service'],
-					'use' => ['yii2lab\extension\activeRecord\repositories\base\BaseActiveArRepository'],
+					'use' => ['yii2lab\domain\services\base\BaseActiveService'],
 					'afterClassName' => 'extends BaseActiveService',
 					//'code' => $this->getCode(),
 				];
 				ClassGeneratorHelper::generate($config);
 				
 				$config = [
-					'className' => $items['repositoryInterface'],
+					'className' => $items['serviceInterface'],
 					
 					'use' => ['yii2lab\domain\interfaces\services\CrudInterface'],
 					'afterClassName' => 'extends CrudInterface',
@@ -100,19 +102,10 @@ class GeneratorService extends ActiveBaseService {
 				];
 				ClassGeneratorHelper::generate($config);
 			}
-			
-			/*foreach($items as $item) {
-				$config = [
-					'className' => $item,
-					//'afterClassName' => 'extends \yii2lab\domain\Domain',
-					//'code' => $this->getCode(),
-				];
-				//ClassGeneratorHelper::generate($config);
-			}*/
 		}
 		
 		prr($arr);
-		
+		prr($data);
 		//prr($domainConfig);
 		
 	}
