@@ -31,7 +31,7 @@ class GeneratorController extends Controller
 	{
 		//list($owner, $name) = $this->selectPackage();
 		//Yii::$domain->vendor->generator->generateDomain($owner, $name);
-		Yii::$domain->vendor->generator->generateDomain('yii2woop', 'history');
+		Yii::$domain->vendor->generator->generateDomain('yii2woop\history\domain');
 		Output::block('Success generated');
 	}
 	
