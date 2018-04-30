@@ -3,10 +3,24 @@
 namespace yii2module\vendor\domain\services;
 
 use yii\helpers\Inflector;
+use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
 use yii2lab\domain\helpers\DomainHelper;
 use yii2lab\domain\services\ActiveBaseService;
-use yii2lab\helpers\ClassHelper;
+use yii2lab\extension\code\entities\ClassConstantEntity;
+use yii2lab\extension\code\entities\ClassEntity;
+use yii2lab\extension\code\entities\ClassMethodEntity;
+use yii2lab\extension\code\entities\ClassUseEntity;
+use yii2lab\extension\code\entities\ClassVariableEntity;
+use yii2lab\extension\code\entities\DocBlockEntity;
 use yii2lab\domain\Domain;
+use yii2lab\extension\code\helpers\ClassHelper;
+use yii2lab\extension\code\scenarios\generator\EntityGenerator;
+use yii2lab\extension\code\scenarios\generator\MessageGenerator;
+use yii2lab\extension\code\scenarios\generator\RepositoryGenerator;
+use yii2lab\extension\code\scenarios\generator\RepositoryInterfaceGenerator;
+use yii2lab\extension\code\scenarios\generator\RepositorySchemaGenerator;
+use yii2lab\extension\code\scenarios\generator\ServiceGenerator;
+use yii2lab\extension\code\scenarios\generator\ServiceInterfaceGenerator;
 use yii2lab\helpers\generator\ClassGeneratorHelper;
 use yii2lab\helpers\yii\FileHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
@@ -33,6 +47,8 @@ class GeneratorService extends ActiveBaseService {
 		
 		$arr = [];
 		
+		//self::getCode();
+		
 		$repositories = $this->getNames($domainConfig['repositories']);
 		foreach($repositories as $name) {
 			$arr[$name]['entity'] = $namespace . '\\entities\\' . Inflector::camelize($name) . 'Entity';
@@ -45,63 +61,45 @@ class GeneratorService extends ActiveBaseService {
 		foreach($services as $name) {
 			$arr[$name]['serviceInterface'] = $namespace . '\\interfaces\\services\\' . Inflector::camelize($name) . 'Interface';
 			$arr[$name]['service'] = $namespace . '\\services\\' . Inflector::camelize($name) . 'Service';
+			$arr[$name]['message'] = $namespace . '\\messages\\ru\\' . Inflector::underscore($name);
 		}
 		
 		foreach($arr as $n => $items) {
 			if(isset($items['entity'])) {
-				$config = [
-					'className' => $items['entity'],
-					'use' => ['yii2lab\domain\BaseEntity'],
-					'afterClassName' => 'extends BaseEntity',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
+				$generator = new EntityGenerator;
+				$generator->name = $items['entity'];
+				$generator->run();
 			}
 			if(isset($items['repository'])) {
-				$config = [
-					'className' => $items['repository'],
-					'use' => ['yii2lab\extension\activeRecord\repositories\base\BaseActiveArRepository'],
-					'afterClassName' => 'extends BaseActiveArRepository',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
+				$generator = new RepositoryGenerator();
+				$generator->name = $items['repository'];
+				$generator->run();
 				
-				$config = [
-					'className' => $items['repositoryInterface'],
-					
-					'use' => ['yii2lab\domain\interfaces\repositories\CrudInterface'],
-					'afterClassName' => 'extends CrudInterface',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
+				$generator = new RepositoryInterfaceGenerator();
+				$generator->name = $items['repositoryInterface'];
+				$generator->run();
 				
-				$config = [
-					'className' => $namespace . '\\repositories\\schema\\' . Inflector::camelize($n) . 'Schema',
-					'use' => ['yii2lab\domain\repositories\relations\BaseSchema'],
-					'afterClassName' => 'extends BaseSchema',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
-				
-				FileHelper::save(ROOT_DIR . DS . $items['message'] . DOT . 'php', '<?php ');
-				
-				$config = [
-					'className' => $items['service'],
-					'use' => ['yii2lab\domain\services\base\BaseActiveService'],
-					'afterClassName' => 'extends BaseActiveService',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
-				
-				$config = [
-					'className' => $items['serviceInterface'],
-					
-					'use' => ['yii2lab\domain\interfaces\services\CrudInterface'],
-					'afterClassName' => 'extends CrudInterface',
-					//'code' => $this->getCode(),
-				];
-				ClassGeneratorHelper::generate($config);
+				$generator = new RepositorySchemaGenerator();
+				$generator->name = $namespace . '\\repositories\\schema\\' . Inflector::camelize($n) . 'Schema';
+				$generator->run();
 			}
+			
+			if(isset($items['service'])) {
+				$generator = new ServiceGenerator();
+				$generator->name = $items['service'];
+				$generator->run();
+				
+				$generator = new ServiceInterfaceGenerator();
+				$generator->name = $items['serviceInterface'];
+				$generator->run();
+			}
+			
+			if(isset($items['message'])) {
+				$generator = new MessageGenerator();
+				$generator->name = $items['message'];
+				$generator->run();
+			}
+			
 		}
 		
 		prr($arr);
@@ -174,5 +172,61 @@ class GeneratorService extends ActiveBaseService {
 			'year' => date('Y'),
 		];
 	}
- 
+	
+	private function getCode() {
+		
+		/*$define = [
+			'name' => 'common\enums\rbac\PermissionEnum',
+			'' => ,
+			'' => ,
+			'' => ,
+			'' => ,
+			'' => ,
+			'' => ,
+			'' => ,
+		];*/
+		
+		
+		$classEntity = new ClassEntity();
+		$classEntity->name = 'yii2woop\history\domain\PermissionEnum';
+		$classEntity->is_abstract = true;
+		$classEntity->extends = 'BaseEnum';
+		$classEntity->implements = 'EnumInterface';
+		$classEntity->doc_block = new DocBlockEntity([
+			'title' => 'Class ' . $classEntity->name,
+		]);
+		$classEntity->uses = [
+			new ClassUseEntity([
+				'name' => 'ArTrait',
+			]),
+		];
+		$classEntity->constants = [
+			[
+				'name' => 'typeOfVar',
+				'value' => 'var',
+			],
+		];
+		$classEntity->variables = [
+			[
+				'name' => 'id',
+				'value' => 'null',
+			],
+			[
+				'name' => 'name',
+				'value' => 'null',
+			],
+		];
+		$classEntity->methods = [
+			[
+				'name' => 'one',
+			],
+			[
+				'name' => 'all',
+			],
+		];
+		$ccode = \yii2lab\extension\code\helpers\ClassHelper::generate($classEntity);
+		
+		prr($ccode,1,0);
+	}
+	
 }
