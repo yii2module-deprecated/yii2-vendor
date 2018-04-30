@@ -5,13 +5,13 @@ namespace yii2module\vendor\domain\helpers;
 use yii\helpers\Inflector;
 use yii2lab\domain\helpers\DomainHelper;
 use yii2lab\extension\code\entities\DocBlockParameterEntity;
-use yii2lab\extension\code\scenarios\generator\EntityGenerator;
-use yii2lab\extension\code\scenarios\generator\MessageGenerator;
-use yii2lab\extension\code\scenarios\generator\RepositoryGenerator;
-use yii2lab\extension\code\scenarios\generator\RepositoryInterfaceGenerator;
-use yii2lab\extension\code\scenarios\generator\RepositorySchemaGenerator;
-use yii2lab\extension\code\scenarios\generator\ServiceGenerator;
-use yii2lab\extension\code\scenarios\generator\ServiceInterfaceGenerator;
+use yii2lab\domain\generator\EntityGenerator;
+use yii2lab\domain\generator\MessageGenerator;
+use yii2lab\domain\generator\RepositoryGenerator;
+use yii2lab\domain\generator\RepositoryInterfaceGenerator;
+use yii2lab\domain\generator\RepositorySchemaGenerator;
+use yii2lab\domain\generator\ServiceGenerator;
+use yii2lab\domain\generator\ServiceInterfaceGenerator;
 
 class GeneratorHelper {
 	
