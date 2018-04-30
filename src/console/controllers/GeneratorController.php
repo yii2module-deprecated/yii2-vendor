@@ -29,9 +29,9 @@ class GeneratorController extends Controller
 	 */
 	public function actionDomain()
 	{
-		//list($owner, $name) = $this->selectPackage();
-		//Yii::$domain->vendor->generator->generateDomain($owner, $name);
-		Yii::$domain->vendor->generator->generateDomain('yii2woop\history\domain');
+		$namespace = Enter::display('Enter namespace');
+		//$namespace = 'yii2woop\history\domain';
+		Yii::$domain->vendor->generator->generateDomain($namespace);
 		Output::block('Success generated');
 	}
 	
