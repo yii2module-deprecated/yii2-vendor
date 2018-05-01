@@ -4,7 +4,7 @@ namespace yii2module\vendor\domain\helpers;
 
 use yii2lab\helpers\yii\FileHelper;
 use yii2lab\misc\exceptions\ShellException;
-use yii2lab\misc\helpers\BaseShell;
+use yii2lab\extension\shell\base\BaseShell;
 use yii2mod\helpers\ArrayHelper;
 
 class GitShell extends BaseShell {
