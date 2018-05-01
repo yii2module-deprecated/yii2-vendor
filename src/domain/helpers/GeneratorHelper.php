@@ -15,6 +15,12 @@ use yii2lab\domain\generator\ServiceInterfaceGenerator;
 
 class GeneratorHelper {
 	
+	public static function generateDomain($namespace) {
+		$arr = self::getAllNames($namespace);
+		foreach($arr as $n => $items) {
+			self::generateName($namespace, $n, $items);
+		}
+	}
 	
 	private static function getNames($definitions) {
 		$nameList = [];
@@ -22,13 +28,6 @@ class GeneratorHelper {
 			$nameList[] = is_integer($serviceName) ? $definition : $serviceName;
 		}
 		return $nameList;
-	}
-	
-	public static function generateDomain($namespace) {
-		$arr = self::getAllNames($namespace);
-		foreach($arr as $n => $items) {
-			self::generateName($namespace, $n, $items);
-		}
 	}
 	
 	private static function getAllNames($namespace) {
