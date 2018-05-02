@@ -4,6 +4,7 @@ namespace yii2module\vendor\domain\services;
 
 use yii\helpers\Inflector;
 use yii2lab\domain\services\ActiveBaseService;
+use yii2module\vendor\domain\helpers\GeneratorHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
 class GeneratorService extends ActiveBaseService {
@@ -14,6 +15,14 @@ class GeneratorService extends ActiveBaseService {
 	public $install = [
 		'commands' => ['Module', 'Domain', 'Package', 'Rbac'],
 	];
+	
+	protected function getDomainCofig($domainClass) {
+	
+	}
+	
+	public function generateDomain($namespace) {
+		GeneratorHelper::generateDomain($namespace);
+	}
 	
 	public function generateAll($owner, $name, $types) {
 		$data = $this->getData($owner, $name);
@@ -63,5 +72,5 @@ class GeneratorService extends ActiveBaseService {
 			'year' => date('Y'),
 		];
 	}
- 
+	
 }
