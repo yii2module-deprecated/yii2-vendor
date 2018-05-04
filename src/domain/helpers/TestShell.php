@@ -2,8 +2,8 @@
 
 namespace yii2module\vendor\domain\helpers;
 
-use yii2lab\misc\exceptions\ShellException;
 use yii2lab\extension\shell\base\BaseShell;
+use yii2lab\extension\shell\exceptions\ShellException;
 
 class TestShell extends BaseShell {
 	
