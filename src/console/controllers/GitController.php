@@ -5,7 +5,7 @@ namespace yii2module\vendor\console\controllers;
 use Yii;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
-use yii2lab\misc\exceptions\ShellException;
+use yii2lab\extension\shell\base\exception;
 
 class GitController extends Controller
 {
