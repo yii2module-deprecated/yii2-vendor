@@ -12,14 +12,63 @@ use yii2lab\domain\generator\RepositoryInterfaceGenerator;
 use yii2lab\domain\generator\RepositorySchemaGenerator;
 use yii2lab\domain\generator\ServiceGenerator;
 use yii2lab\domain\generator\ServiceInterfaceGenerator;
+use yii2lab\extension\code\helpers\parser\DocCommentHelper;
+use yii2lab\extension\code\helpers\parser\TokenCollectionHelper;
+use yii2lab\extension\code\helpers\parser\TokenHelper;
+use yii2lab\helpers\yii\FileHelper;
 
 class GeneratorHelper {
 	
 	public static function generateDomain($namespace) {
 		$arr = self::getAllNames($namespace);
+		$repos = $servs = [];
 		foreach($arr as $n => $items) {
 			self::generateName($namespace, $n, $items);
+			if(isset($items['repository'])) {
+				$repos[] = $n;
+			}
+			if(isset($items['service'])) {
+				$servs[] = $n;
+			}
 		}
+		if($repos) {
+			foreach($repos as $repo) {
+				$repositoryDocBlock[] = [
+					'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+					'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
+					'value' => $repo,
+				];
+			}
+			$generator = new RepositoryInterfaceGenerator();
+			$generator->name = $namespace . '\\interfaces\\repositories\\' . 'RepositoriesInterface';
+			$generator->docBlockParameters = $repositoryDocBlock;
+			$generator->extends = null;
+			$generator->run();
+		}
+		
+		self::updateDomainDocComment($namespace, $servs);
+		
+	}
+	
+	private static function updateDomainDocComment($namespace, $servs) {
+		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
+		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
+		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
+		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
+		$entity = DocCommentHelper::parse($docComment);
+		foreach($servs as $serv) {
+			$entity = DocCommentHelper::addAttribute($entity, [
+				'name' => 'property-read',
+				'value' => [
+					'\\'.$namespace.'\\interfaces\\services\\'.ucfirst($serv).'Interface',
+					'$' . $serv,
+				],
+			]);
+		}
+		
+		$doc = DocCommentHelper::generate($entity);
+		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
 	}
 	
 	private static function getNames($definitions) {
