@@ -14,17 +14,20 @@ use yii2lab\domain\enums\Driver;
  * @property \yii2module\vendor\domain\services\GitService $git
  * @property \yii2module\vendor\domain\services\TestService $test
  * @property \yii2module\vendor\domain\services\GeneratorService $generator
+ * @property \yii2module\vendor\domain\services\PrettyService $pretty
  */
 class Domain extends \yii2lab\domain\Domain {
 	
 	public function config() {
 		return [
+			'defaultDriver' => Driver::FILE,
 			'repositories' => [
-				'info' => Driver::FILE,
-				'package' => Driver::FILE,
-				'generator' => Driver::FILE,
-				'git' => Driver::FILE,
-				'test' => Driver::FILE,
+				'info',
+				'package',
+				'generator',
+				'git',
+				'test',
+				'pretty',
 			],
 			'services' => [
 				'info' => [
@@ -54,6 +57,7 @@ class Domain extends \yii2lab\domain\Domain {
 						'yii2guide',
 					],
 				],
+				'pretty',
 			],
 		];
 	}
