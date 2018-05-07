@@ -32,22 +32,28 @@ class GeneratorHelper {
 			}
 		}
 		if($repos) {
-			foreach($repos as $repo) {
-				$repositoryDocBlock[] = [
-					'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
-					'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
-					'value' => $repo,
-				];
-			}
-			$generator = new RepositoryInterfaceGenerator();
-			$generator->name = $namespace . '\\interfaces\\repositories\\' . 'RepositoriesInterface';
-			$generator->docBlockParameters = $repositoryDocBlock;
-			$generator->extends = null;
-			$generator->run();
+			self::generateVirtualRepositoryInterface($repos, $namespace);
 		}
 		
 		self::updateDomainDocComment($namespace, $servs);
 		
+	}
+	
+	private static function generateVirtualRepositoryInterface($repos, $namespace) {
+		$repositoryDocBlock = [];
+		foreach($repos as $repo) {
+			$repositoryDocBlock[] = [
+				'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+				'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
+				'value' => $repo,
+			];
+		}
+		$generator = new RepositoryInterfaceGenerator();
+		$generator->name = $namespace . '\\interfaces\\repositories\\RepositoriesInterface';
+		$generator->docBlockParameters = $repositoryDocBlock;
+		$generator->extends = null;
+		$generator->defaultUses = null;
+		$generator->run();
 	}
 	
 	private static function updateDomainDocComment($namespace, $servs) {
@@ -58,14 +64,20 @@ class GeneratorHelper {
 		$entity = DocCommentHelper::parse($docComment);
 		foreach($servs as $serv) {
 			$entity = DocCommentHelper::addAttribute($entity, [
-				'name' => 'property-read',
+				'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
 				'value' => [
 					'\\'.$namespace.'\\interfaces\\services\\'.ucfirst($serv).'Interface',
 					'$' . $serv,
 				],
 			]);
 		}
-		
+		$entity = DocCommentHelper::addAttribute($entity, [
+			'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+			'value' => [
+				'\\' . $namespace . '\\interfaces\\repositories\\RepositoriesInterface',
+				'$repositories',
+			],
+		]);
 		$doc = DocCommentHelper::generate($entity);
 		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
 		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);

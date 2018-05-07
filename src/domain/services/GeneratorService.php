@@ -4,6 +4,7 @@ namespace yii2module\vendor\domain\services;
 
 use yii\helpers\Inflector;
 use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\helpers\ClassHelper;
 use yii2module\vendor\domain\helpers\GeneratorHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
@@ -21,6 +22,7 @@ class GeneratorService extends ActiveBaseService {
 	}
 	
 	public function generateDomain($namespace) {
+		$namespace = str_replace(SL, BSL, $namespace);
 		GeneratorHelper::generateDomain($namespace);
 	}
 	

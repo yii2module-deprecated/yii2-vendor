@@ -7,6 +7,7 @@ use yii2lab\console\helpers\input\Enter;
 use yii2lab\console\helpers\input\Select;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
+use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\enums\TypeEnum;
 
 class GeneratorController extends Controller
@@ -29,9 +30,13 @@ class GeneratorController extends Controller
 	 */
 	public function actionDomain()
 	{
-		$namespace = Enter::display('Enter namespace');
+		$domainAliases = Yii::$domain->vendor->pretty->all();
+		$domainAlias = Select::display('Select domain', $domainAliases);
+		$domainAlias = ArrayHelper::first($domainAlias);
+		
+		//$namespace = Enter::display('Enter namespace');
 		//$namespace = 'yii2woop\history\domain';
-		Yii::$domain->vendor->generator->generateDomain($namespace);
+		Yii::$domain->vendor->generator->generateDomain($domainAlias);
 		Output::block('Success generated');
 	}
 	
