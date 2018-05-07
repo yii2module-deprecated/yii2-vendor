@@ -9,6 +9,13 @@ use yii2lab\extension\code\entities\DocBlockParameterEntity;
 use yii2lab\extension\code\entities\InterfaceEntity;
 use yii2lab\extension\code\helpers\ClassHelper;
 
+/**
+ * Class ServiceGenerator
+ *
+ * @package yii2module\vendor\domain\filters\generator
+ *
+ * @property boolean $isActive
+ */
 class ServiceGenerator extends BaseGenerator {
 
 	public $isActive = false;

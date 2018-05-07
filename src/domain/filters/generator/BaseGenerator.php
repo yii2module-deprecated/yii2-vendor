@@ -11,12 +11,17 @@ use yii\helpers\Inflector;
  * @package yii2module\vendor\domain\filters\generator
  *
  * @property string $namespace
+ * @property-red string $alias
  * @property string $name
  */
 abstract class BaseGenerator extends BaseScenario {
 	
 	protected $namespace;
 	protected $name;
+	
+	public function getAlias() {
+		return '@' .  str_replace(BSL, SL, $this->namespace);
+	}
 	
 	public function getNamespace() {
 		return $this->namespace;

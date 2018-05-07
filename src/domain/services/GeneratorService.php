@@ -4,7 +4,6 @@ namespace yii2module\vendor\domain\services;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
-use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
 use yii2lab\domain\services\base\BaseService;
 use yii2module\vendor\domain\filters\generator\EntityGenerator;
 use yii2module\vendor\domain\filters\generator\RepositoryGenerator;
@@ -32,7 +31,7 @@ class GeneratorService extends BaseService {
 		$gen->namespace = $data['namespace'];
 		$gen->name = $data['name'];
 		$gen->drivers = $data['drivers'];
-		$gen->isActive = ArrayHelper::getValue($data, 'name', false);
+		$gen->isActive = ArrayHelper::getValue($data, 'isActive', false);
 		$gen->run();
 		PrettyHelper::refreshDomain($data['namespace']);
 	}
@@ -41,7 +40,7 @@ class GeneratorService extends BaseService {
 		$gen = new ServiceGenerator;
 		$gen->namespace = $data['namespace'];
 		$gen->name = $data['name'];
-		$gen->isActive = ArrayHelper::getValue($data, 'name', false);
+		$gen->isActive = ArrayHelper::getValue($data, 'isActive', false);
 		$gen->run();
 		PrettyHelper::refreshDomain($data['namespace']);
 	}

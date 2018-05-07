@@ -10,6 +10,14 @@ use yii2lab\extension\code\entities\InterfaceEntity;
 use yii2lab\extension\code\enums\AccessEnum;
 use yii2lab\extension\code\helpers\ClassHelper;
 
+/**
+ * Class RepositoryGenerator
+ *
+ * @package yii2module\vendor\domain\filters\generator
+ *
+ * @property boolean $isActive
+ * @property array $drivers
+ */
 class RepositoryGenerator extends BaseGenerator {
 	
 	public $drivers;
