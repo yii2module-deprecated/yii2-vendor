@@ -50,6 +50,7 @@ class GeneratorService extends BaseService {
 		$gen = new EntityGenerator();
 		$gen->namespace = $data['namespace'];
 		$gen->name = $data['name'];
+		$gen->attributes = ArrayHelper::getValue($data, 'attributes', []);
 		$gen->run();
 		PrettyHelper::refreshDomain($data['namespace']);
 	}
