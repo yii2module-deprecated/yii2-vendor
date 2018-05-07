@@ -4,11 +4,14 @@ namespace yii2module\vendor\console\controllers;
 
 use Yii;
 use yii2lab\console\helpers\input\Enter;
+use yii2lab\console\helpers\input\Question;
 use yii2lab\console\helpers\input\Select;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
+use yii2lab\domain\enums\Driver;
 use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\enums\TypeEnum;
+use yii2module\vendor\domain\forms\GenerateRepositoryForm;
 
 class GeneratorController extends Controller
 {
@@ -37,6 +40,27 @@ class GeneratorController extends Controller
 		//$namespace = Enter::display('Enter namespace');
 		//$namespace = 'yii2woop\history\domain';
 		Yii::$domain->vendor->generator->generateDomain($domainAlias);
+		Output::block('Success generated');
+	}
+	
+	/**
+	 * Generate repository
+	 */
+	public function actionRepository()
+	{
+		/*$data = Enter::form(GenerateRepositoryForm::class);
+		$allDrivers = Driver::values();
+		$drivers = Select::display('Select driver', $allDrivers);
+		$data['drivers'] = array_values($drivers);*/
+		
+		$data = [
+			'namespace' => 'yii2woop\history\domain',
+			'name' => 'qwerty',
+			'drivers' => ['tps','core'],
+			'isActive' => true,
+		];
+		
+		Yii::$domain->vendor->generator->generateRepository($data);
 		Output::block('Success generated');
 	}
 	

@@ -2,13 +2,24 @@
 
 namespace yii2module\vendor\domain\helpers;
 
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\Domain;
+use yii2lab\domain\generator\RepositoryInterfaceGenerator;
+use yii2lab\extension\code\entities\DocBlockParameterEntity;
+use yii2lab\extension\code\helpers\parser\DocCommentHelper;
+use yii2lab\extension\code\helpers\parser\TokenCollectionHelper;
+use yii2lab\extension\code\helpers\parser\TokenHelper;
 use yii2lab\helpers\ClassHelper;
 use yii2lab\helpers\yii\FileHelper;
 
 class PrettyHelper {
+	
+	public static function refreshDomain($namespace) {
+		self::generateVirtualRepositoryInterface($namespace);
+		self::updateDomainDocComment($namespace);
+	}
 	
 	public static function scanForDomainRecursive($domainAliasName) {
 		$domainAlias = '@' . $domainAliasName;
@@ -29,6 +40,60 @@ class PrettyHelper {
 		return $aliases;
 	}
 	
+	private static function updateDomainDocComment($namespace) {
+		$one = Yii::$domain->vendor->pretty->oneById($namespace);
+		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
+		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
+		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
+		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
+		$entity = DocCommentHelper::parse($docComment);
+		$services = ArrayHelper::getValue($one, 'interfaces.services');
+		if(!empty($services)) {
+			$servs = array_keys($services);
+			foreach($servs as $serv) {
+				$entity = DocCommentHelper::addAttribute($entity, [
+					'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+					'value' => [
+						'\\'.$namespace.'\\interfaces\\services\\'.ucfirst($serv).'Interface',
+						'$' . $serv,
+					],
+				]);
+			}
+		}
+		$entity = DocCommentHelper::addAttribute($entity, [
+			'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+			'value' => [
+				'\\' . $namespace . '\\interfaces\\repositories\\RepositoriesInterface',
+				'$repositories',
+			],
+		]);
+		$doc = DocCommentHelper::generate($entity);
+		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
+	}
+	
+	private static function generateVirtualRepositoryInterface($namespace) {
+		$one = Yii::$domain->vendor->pretty->oneById($namespace);
+		$repositories = ArrayHelper::getValue($one, 'interfaces.repositories');
+		if(empty($repositories)) {
+			return;
+		}
+		$repos = array_keys($repositories);
+		$repositoryDocBlock = [];
+		foreach($repos as $repo) {
+			$repositoryDocBlock[] = [
+				'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+				'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
+				'value' => $repo,
+			];
+		}
+		$generator = new RepositoryInterfaceGenerator();
+		$generator->name = $namespace . '\\interfaces\\repositories\\RepositoriesInterface';
+		$generator->docBlockParameters = $repositoryDocBlock;
+		$generator->extends = [];
+		$generator->defaultUses = [];
+		$generator->run();
+	}
 	
 	public static function scanDomain($dir, $types) {
 		if(!is_dir($dir)) {

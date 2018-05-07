@@ -21,25 +21,25 @@ class GeneratorHelper {
 	
 	public static function generateDomain($namespace) {
 		$arr = self::getAllNames($namespace);
-		$repos = $servs = [];
+		//$repos = $servs = [];
 		foreach($arr as $n => $items) {
 			self::generateName($namespace, $n, $items);
-			if(isset($items['repository'])) {
+			/*if(isset($items['repository'])) {
 				$repos[] = $n;
 			}
 			if(isset($items['service'])) {
 				$servs[] = $n;
-			}
+			}*/
 		}
-		if($repos) {
+		/*if($repos) {
 			self::generateVirtualRepositoryInterface($repos, $namespace);
 		}
 		
-		self::updateDomainDocComment($namespace, $servs);
+		self::updateDomainDocComment($namespace, $servs);*/
 		
 	}
 	
-	private static function generateVirtualRepositoryInterface($repos, $namespace) {
+	/*private static function generateVirtualRepositoryInterface($repos, $namespace) {
 		$repositoryDocBlock = [];
 		foreach($repos as $repo) {
 			$repositoryDocBlock[] = [
@@ -51,12 +51,12 @@ class GeneratorHelper {
 		$generator = new RepositoryInterfaceGenerator();
 		$generator->name = $namespace . '\\interfaces\\repositories\\RepositoriesInterface';
 		$generator->docBlockParameters = $repositoryDocBlock;
-		$generator->extends = null;
-		$generator->defaultUses = null;
+		$generator->extends = [];
+		$generator->defaultUses = [];
 		$generator->run();
-	}
+	}*/
 	
-	private static function updateDomainDocComment($namespace, $servs) {
+	/*private static function updateDomainDocComment($namespace, $servs) {
 		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
 		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
 		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
@@ -81,7 +81,7 @@ class GeneratorHelper {
 		$doc = DocCommentHelper::generate($entity);
 		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
 		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
-	}
+	}*/
 	
 	private static function getNames($definitions) {
 		$nameList = [];

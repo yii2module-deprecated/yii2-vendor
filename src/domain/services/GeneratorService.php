@@ -3,12 +3,17 @@
 namespace yii2module\vendor\domain\services;
 
 use yii\helpers\Inflector;
-use yii2lab\domain\services\ActiveBaseService;
-use yii2lab\helpers\ClassHelper;
+use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
+
+use yii2lab\domain\generator\RepositoryInterfaceGenerator;
+use yii2lab\domain\generator\RepositorySchemaGenerator;
+use yii2lab\domain\services\base\BaseService;
+use yii2lab\extension\code\entities\DocBlockParameterEntity;
+use yii2module\vendor\domain\filters\generator\RepositoryGenerator;
 use yii2module\vendor\domain\helpers\GeneratorHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
-class GeneratorService extends ActiveBaseService {
+class GeneratorService extends BaseService {
 
 	public $author;
 	public $email;
@@ -24,6 +29,12 @@ class GeneratorService extends ActiveBaseService {
 	public function generateDomain($namespace) {
 		$namespace = str_replace(SL, BSL, $namespace);
 		GeneratorHelper::generateDomain($namespace);
+	}
+	
+	public function generateRepository($data) {
+		$generatorDefinition = $data;
+		$generatorDefinition['class'] = RepositoryGenerator::class;
+		ScenarioHelper::run($generatorDefinition);
 	}
 	
 	public function generateAll($owner, $name, $types) {
