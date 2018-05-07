@@ -2,9 +2,11 @@
 
 namespace yii2module\vendor\domain\services;
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
 use yii2lab\domain\services\base\BaseService;
+use yii2module\vendor\domain\filters\generator\EntityGenerator;
 use yii2module\vendor\domain\filters\generator\RepositoryGenerator;
 use yii2module\vendor\domain\filters\generator\ServiceGenerator;
 use yii2module\vendor\domain\helpers\GeneratorHelper;
@@ -20,35 +22,37 @@ class GeneratorService extends BaseService {
 		'commands' => ['Module', 'Domain', 'Package', 'Rbac'],
 	];
 	
-	protected function getDomainCofig($domainClass) {
-	
-	}
-	
 	public function generateDomain($namespace) {
 		$namespace = str_replace(SL, BSL, $namespace);
 		GeneratorHelper::generateDomain($namespace);
 	}
 	
 	public function generateRepository($data) {
-		$generatorDefinition = $data;
-		$generatorDefinition['class'] = RepositoryGenerator::class;
-		ScenarioHelper::run($generatorDefinition);
-		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
+		$gen = new RepositoryGenerator();
+		$gen->namespace = $data['namespace'];
+		$gen->name = $data['name'];
+		$gen->drivers = $data['drivers'];
+		$gen->isActive = ArrayHelper::getValue($data, 'name', false);
+		$gen->run();
+		PrettyHelper::refreshDomain($data['namespace']);
 	}
 	
 	public function generateService($data) {
-		$generatorDefinition = $data;
-		$generatorDefinition['class'] = ServiceGenerator::class;
-		ScenarioHelper::run($generatorDefinition);
-		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
+		$gen = new ServiceGenerator;
+		$gen->namespace = $data['namespace'];
+		$gen->name = $data['name'];
+		$gen->isActive = ArrayHelper::getValue($data, 'name', false);
+		$gen->run();
+		PrettyHelper::refreshDomain($data['namespace']);
 	}
 	
-	/*public function generateEntity($data) {
-		$generatorDefinition = $data;
-		$generatorDefinition['class'] = ServiceGenerator::class;
-		ScenarioHelper::run($generatorDefinition);
-		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
-	}*/
+	public function generateEntity($data) {
+		$gen = new EntityGenerator();
+		$gen->namespace = $data['namespace'];
+		$gen->name = $data['name'];
+		$gen->run();
+		PrettyHelper::refreshDomain($data['namespace']);
+	}
 	
 	public function generateAll($owner, $name, $types) {
 		$data = $this->getData($owner, $name);

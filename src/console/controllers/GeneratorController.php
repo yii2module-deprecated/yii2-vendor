@@ -44,21 +44,53 @@ class GeneratorController extends Controller
 	}
 	
 	/**
+	 * Generate all
+	 */
+	public function actionAll()
+	{
+		$domainAliases = Yii::$domain->vendor->pretty->all();
+		$domainAlias = Select::display('Select domain', $domainAliases);
+		$data['namespace'] = ArrayHelper::first($domainAlias);
+		
+		$types = Select::display('Select types', ['service', 'repository', 'entity'], true);
+		$types = array_values($types);
+		
+		$data['name'] = Enter::display('Enter name');
+		
+		if(in_array('service', $types) || in_array('repository', $types)) {
+			$data['isActive'] = Question::display('Is active?');
+		}
+		
+		if(in_array('service', $types)) {
+			Yii::$domain->vendor->generator->generateService($data);
+		}
+		if(in_array('repository', $types)) {
+			$allDrivers = Driver::values();
+			$drivers = Select::display('Select repository driver', $allDrivers, true);
+			$data['drivers'] = array_values($drivers);
+		}
+		if(in_array('entity', $types)) {
+			Yii::$domain->vendor->generator->generateEntity($data);
+		}
+		Output::block('Success generated');
+	}
+	
+	/**
 	 * Generate repository
 	 */
 	public function actionRepository()
 	{
-		/*$data = Enter::form(GenerateRepositoryForm::class);
+		$data = Enter::form(GenerateRepositoryForm::class);
 		$allDrivers = Driver::values();
 		$drivers = Select::display('Select driver', $allDrivers);
-		$data['drivers'] = array_values($drivers);*/
+		$data['drivers'] = array_values($drivers);
 		
-		$data = [
+		/*$data = [
 			'namespace' => 'yii2woop\history\domain',
 			'name' => 'qwerty',
 			'drivers' => ['tps','core'],
 			'isActive' => true,
-		];
+		];*/
 		
 		Yii::$domain->vendor->generator->generateRepository($data);
 		Output::block('Success generated');
@@ -69,7 +101,24 @@ class GeneratorController extends Controller
 	 */
 	public function actionService()
 	{
-		/*$data = Enter::form(GenerateServiceForm::class);
+		$data = Enter::form(GenerateServiceForm::class);
+		
+		/*$data = [
+			'namespace' => 'yii2woop\history\domain',
+			'name' => 'qwerty',
+			'isActive' => true,
+		];*/
+		
+		Yii::$domain->vendor->generator->generateService($data);
+		Output::block('Success generated');
+	}
+	
+	/**
+	 * Generate entity
+	 */
+	public function actionEntity()
+	{
+		/*$data = Enter::form(GenerateEntityForm::class);
 		$allDrivers = Driver::values();
 		$drivers = Select::display('Select driver', $allDrivers);
 		$data['drivers'] = array_values($drivers);*/
@@ -77,11 +126,9 @@ class GeneratorController extends Controller
 		$data = [
 			'namespace' => 'yii2woop\history\domain',
 			'name' => 'qwerty',
-			//'drivers' => ['tps','core'],
-			//'isActive' => true,
 		];
 		
-		Yii::$domain->vendor->generator->generateService($data);
+		Yii::$domain->vendor->generator->generateEntity($data);
 		Output::block('Success generated');
 	}
 	

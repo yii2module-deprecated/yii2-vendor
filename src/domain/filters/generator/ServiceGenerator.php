@@ -11,7 +11,6 @@ use yii2lab\extension\code\helpers\ClassHelper;
 
 class ServiceGenerator extends BaseGenerator {
 
-	public $drivers;
 	public $isActive = false;
 	
 	public function run() {

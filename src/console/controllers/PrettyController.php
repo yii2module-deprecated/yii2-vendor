@@ -7,7 +7,6 @@ use yii2lab\console\helpers\input\Select;
 use yii2lab\console\base\Controller;
 use yii2lab\console\helpers\Output;
 use yii2mod\helpers\ArrayHelper;
-use yii2module\vendor\domain\helpers\PrettyHelper;
 
 class PrettyController extends Controller
 {
@@ -17,7 +16,7 @@ class PrettyController extends Controller
 		$domainAliases = Yii::$domain->vendor->pretty->all();
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
-		PrettyHelper::refreshDomain($domainAlias);
+		Yii::$domain->vendor->pretty->updateById($domainAlias, []);
 		Output::block('Success pretty');
 	}
 	
