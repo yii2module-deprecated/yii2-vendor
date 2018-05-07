@@ -17,8 +17,10 @@ use yii2lab\helpers\yii\FileHelper;
 class PrettyHelper {
 	
 	public static function refreshDomain($namespace) {
+		$namespace = str_replace(SL, BSL, $namespace);
 		self::generateVirtualRepositoryInterface($namespace);
 		self::updateDomainDocComment($namespace);
+		self::updateDomainContainerDocComment($namespace);
 	}
 	
 	public static function scanForDomainRecursive($domainAliasName) {
@@ -38,6 +40,33 @@ class PrettyHelper {
 			}
 		} catch(InvalidArgumentException $e) {}
 		return $aliases;
+	}
+	
+	private static function updateDomainContainerDocComment($namespace) {
+		$fileName = FileHelper::getAlias('@yii2lab/domain/yii2/DomainContainer');
+		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
+		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
+		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
+		$entity = DocCommentHelper::parse($docComment);
+		$classDomain = $namespace.'\\Domain';
+		foreach(Yii::$domain->components as $id => $instance) {
+			$isThisInstance =
+				(is_object($instance) && $instance instanceof $classDomain) ||
+				(is_array($instance) && $instance['class'] == $classDomain);
+			if($isThisInstance) {
+				$entity = DocCommentHelper::addAttribute($entity, [
+					'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+					'value' => [
+						'\\' . $classDomain,
+						'$' . $id,
+					],
+				]);
+			}
+		}
+		
+		$doc = DocCommentHelper::generate($entity);
+		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
 	}
 	
 	private static function updateDomainDocComment($namespace) {
@@ -81,11 +110,13 @@ class PrettyHelper {
 		$repos = array_keys($repositories);
 		$repositoryDocBlock = [];
 		foreach($repos as $repo) {
-			$repositoryDocBlock[] = [
-				'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
-				'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
-				'value' => $repo,
-			];
+			if($repo != 'repositories') {
+				$repositoryDocBlock[] = [
+					'name' => DocBlockParameterEntity::NAME_PROPERTY_READ,
+					'type' => '\\' . $namespace . '\\interfaces\\repositories\\' . ucfirst($repo) . 'Interface',
+					'value' => $repo,
+				];
+			}
 		}
 		$generator = new RepositoryInterfaceGenerator();
 		$generator->name = $namespace . '\\interfaces\\repositories\\RepositoriesInterface';

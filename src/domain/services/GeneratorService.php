@@ -4,13 +4,11 @@ namespace yii2module\vendor\domain\services;
 
 use yii\helpers\Inflector;
 use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
-
-use yii2lab\domain\generator\RepositoryInterfaceGenerator;
-use yii2lab\domain\generator\RepositorySchemaGenerator;
 use yii2lab\domain\services\base\BaseService;
-use yii2lab\extension\code\entities\DocBlockParameterEntity;
 use yii2module\vendor\domain\filters\generator\RepositoryGenerator;
+use yii2module\vendor\domain\filters\generator\ServiceGenerator;
 use yii2module\vendor\domain\helpers\GeneratorHelper;
+use yii2module\vendor\domain\helpers\PrettyHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
 class GeneratorService extends BaseService {
@@ -35,7 +33,22 @@ class GeneratorService extends BaseService {
 		$generatorDefinition = $data;
 		$generatorDefinition['class'] = RepositoryGenerator::class;
 		ScenarioHelper::run($generatorDefinition);
+		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
 	}
+	
+	public function generateService($data) {
+		$generatorDefinition = $data;
+		$generatorDefinition['class'] = ServiceGenerator::class;
+		ScenarioHelper::run($generatorDefinition);
+		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
+	}
+	
+	/*public function generateEntity($data) {
+		$generatorDefinition = $data;
+		$generatorDefinition['class'] = ServiceGenerator::class;
+		ScenarioHelper::run($generatorDefinition);
+		PrettyHelper::refreshDomain($generatorDefinition['namespace']);
+	}*/
 	
 	public function generateAll($owner, $name, $types) {
 		$data = $this->getData($owner, $name);

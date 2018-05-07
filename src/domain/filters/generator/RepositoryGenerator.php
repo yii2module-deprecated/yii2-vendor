@@ -2,17 +2,16 @@
 
 namespace yii2module\vendor\domain\filters\generator;
 
-use yii2lab\designPattern\scenario\base\BaseScenario;
 use yii\helpers\Inflector;
-use yii2lab\domain\generator\RepositoryInterfaceGenerator;
-use yii2lab\domain\generator\RepositorySchemaGenerator;
+use yii2lab\extension\code\entities\ClassEntity;
+use yii2lab\extension\code\entities\DocBlockEntity;
 use yii2lab\extension\code\entities\DocBlockParameterEntity;
-use yii2module\vendor\domain\helpers\PrettyHelper;
+use yii2lab\extension\code\entities\InterfaceEntity;
+use yii2lab\extension\code\enums\AccessEnum;
+use yii2lab\extension\code\helpers\ClassHelper;
 
-class RepositoryGenerator extends BaseScenario {
-
-	protected $namespace;
-	protected $name;
+class RepositoryGenerator extends BaseGenerator {
+	
 	public $drivers;
 	public $isActive = false;
 	
@@ -22,58 +21,65 @@ class RepositoryGenerator extends BaseScenario {
 			$this->generateRepositorySchema();
 		}
 		$this->generateRepository();
-		PrettyHelper::refreshDomain($this->namespace);
-	}
-	
-	public function getNamespace() {
-		return $this->namespace;
-	}
-	
-	public function setNamespace($namespace) {
-		$this->namespace = str_replace(SL, BSL, $namespace);
-	}
-	
-	public function getName() {
-		return $this->name;
-	}
-	
-	public function setName($name) {
-		$this->name = Inflector::camelize($name);
-		$this->name{0} = strtolower($this->name{0});
 	}
 	
 	private function generateRepository() {
 		$repositoryInterfaceClassName = $this->repositoryInterfaceClassName();
 		foreach($this->drivers as $driver) {
-			$generator = new \yii2lab\domain\generator\RepositoryGenerator();
-			$generator->name = $this->namespace . '\\repositories\\'.$driver.'\\' . Inflector::camelize($this->name) . 'Repository';
-			$generator->uses = [
+			$classEntity = new ClassEntity();
+			$classEntity->name = $this->namespace . '\\repositories\\'.$driver.'\\' . Inflector::camelize($this->name) . 'Repository';
+			$classEntity->extends = 'BaseRepository';
+			$classEntity->implements = basename($repositoryInterfaceClassName);
+			if($this->isActive) {
+				$classEntity->variables = [
+					[
+						'name' => 'schemaClass',
+						'access' => AccessEnum::PROTECTED,
+						'value' => 'true',
+					],
+				];
+			}
+			$classEntity->doc_block = new DocBlockEntity([
+				'title' => 'Class' . SPC . $classEntity->name,
+				'parameters' => $this->docComment(),
+			]);
+			$uses = [
 				['name' => $repositoryInterfaceClassName],
+				['name' => 'yii2lab\domain\repositories\BaseRepository'],
 			];
-			//$generator->extends = $extends;
-			$generator->implements = basename($repositoryInterfaceClassName);
-			$generator->docBlockParameters = $this->docComment();
-			$generator->run();
+			ClassHelper::generate($classEntity, $uses);
 		}
 	}
 	
 	private function generateRepositoryInterface() {
-		$generator = new RepositoryInterfaceGenerator();
-		$generator->name = $this->repositoryInterfaceClassName();
+		$uses = [];
+		$classEntity = new InterfaceEntity();
+		$classEntity->name = $this->repositoryInterfaceClassName();
 		if($this->isActive) {
-			$generator->uses = [
+			$classEntity->extends = 'CrudInterface';
+			$uses = [
 				['name' => 'yii2lab\domain\interfaces\repositories\CrudInterface'],
 			];
-			$generator->extends = 'CrudInterface';
 		}
-		$generator->docBlockParameters = $this->docComment();
-		$generator->run();
+		$classEntity->doc_block = new DocBlockEntity([
+			'title' => 'Interface' . SPC . $classEntity->name,
+			'parameters' => $this->docComment(),
+			
+		]);
+		ClassHelper::generate($classEntity, $uses);
 	}
 	
 	private function generateRepositorySchema() {
-		$generator = new RepositorySchemaGenerator();
-		$generator->name = $this->namespace . '\\repositories\\schema\\' . Inflector::camelize($this->name) . 'Schema';
-		$generator->run();
+		$classEntity = new ClassEntity();
+		$classEntity->name = $this->namespace . '\\repositories\\schema\\' . Inflector::camelize($this->name) . 'Schema';
+		$classEntity->extends = 'BaseSchema';
+		$classEntity->doc_block = new DocBlockEntity([
+			'title' => 'Class' . SPC . $classEntity->name,
+		]);
+		$uses = [
+			['name' => 'yii2lab\domain\repositories\relations\BaseSchema'],
+		];
+		ClassHelper::generate($classEntity, $uses);
 	}
 	
 	private function repositoryInterfaceClassName() {

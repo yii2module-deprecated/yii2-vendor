@@ -64,6 +64,27 @@ class GeneratorController extends Controller
 		Output::block('Success generated');
 	}
 	
+	/**
+	 * Generate service
+	 */
+	public function actionService()
+	{
+		/*$data = Enter::form(GenerateServiceForm::class);
+		$allDrivers = Driver::values();
+		$drivers = Select::display('Select driver', $allDrivers);
+		$data['drivers'] = array_values($drivers);*/
+		
+		$data = [
+			'namespace' => 'yii2woop\history\domain',
+			'name' => 'qwerty',
+			//'drivers' => ['tps','core'],
+			//'isActive' => true,
+		];
+		
+		Yii::$domain->vendor->generator->generateService($data);
+		Output::block('Success generated');
+	}
+	
 	private function selectPackage() {
 		$ownerSelect = Select::display('Select owner', Yii::$domain->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
