@@ -74,6 +74,7 @@ class PrettyHelper {
 		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
 		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
 		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
+		// todo: если нет докблока, то вставлять
 		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
 		$entity = DocCommentHelper::parse($docComment);
 		$services = ArrayHelper::getValue($one, 'interfaces.services');
