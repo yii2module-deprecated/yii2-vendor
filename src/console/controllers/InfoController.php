@@ -50,6 +50,16 @@ class InfoController extends Controller
 	}
 	
 	/**
+	 * Package list with version for all
+	 */
+	public function actionAllVersionExtensions()
+	{
+		Output::line();
+		$result = ArrayHelper::map(Yii::$app->extensions, 'name', 'version');
+		Output::arr($result, 'Repository version list');
+	}
+	
+	/**
 	 * Package list for release
 	 */
 	public function actionAllForRelease()
