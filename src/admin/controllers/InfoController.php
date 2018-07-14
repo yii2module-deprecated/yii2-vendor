@@ -11,7 +11,7 @@ use yii2lab\helpers\Behavior;
 
 class InfoController extends Controller {
 
-	public $serviceName = 'vendor.info';
+	public $service = 'vendor.info';
 	public $titleName = 'package';
 	
 	public function behaviors()

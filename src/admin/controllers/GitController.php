@@ -13,7 +13,7 @@ use yii2lab\navigation\domain\widgets\Alert;
 
 class GitController extends Controller {
 	
-	public $serviceName = 'vendor.git';
+	public $service = 'vendor.git';
 	public $titleName = 'package';
 	
 	public function behaviors()
