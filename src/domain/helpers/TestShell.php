@@ -9,8 +9,9 @@ class TestShell extends BaseShell {
 	
 	public function codeceptionRun() {
 		try {
-		    $path = VENDOR_DIR . DS . 'codeception' . DS . 'base' . DS . 'codecept';
-		    $result = $this->extractFromCommand($path . ' run', 'trim');
+			$defaultCommand = VENDOR_DIR . DS . 'codeception' . DS . 'base' . DS . 'codecept run';
+			$command = param('codeception.command', $defaultCommand);
+		    $result = $this->extractFromCommand($command, 'trim');
 			$result = implode(PHP_EOL, $result);
 		} catch(ShellException $e) {
 			$result = 'error';
