@@ -56,18 +56,21 @@ class TestController extends Controller
 		$failPackages = [];
 		$allTestCount = $allAssertCount = 0;
 		foreach($collection as $entity) {
-			$output = $entity['name'];
-			$result = Yii::$domain->vendor->test->run($entity['directory']);
 			$dots = Output::getDots($entity['name'], 40);
+			$packageName = $entity['name'];
+			$packageName .= SPC . $dots;
+			Output::line($packageName, null);
+			$result = Yii::$domain->vendor->test->run($entity['directory']);
+			$resultData = '';
 			if(!empty($result['result'])) {
-				$output .= SPC . $dots . SPC . 'OK. tests: ' . $result['testCount'] . '. assertions: ' . $result['assertionCount'];
+				$resultData .= SPC . 'OK. tests: ' . $result['testCount'] . '. assertions: ' . $result['assertionCount'];
 				$allTestCount = $allTestCount + $result['testCount'];
 				$allAssertCount = $allAssertCount + $result['assertionCount'];
 			} else {
 				$failPackages[] = $entity['name'];
-				$output .= SPC . $dots . SPC . 'FAIL';
+				$resultData .= SPC . 'FAIL';
 			}
-			Output::line($output);
+			Output::line($resultData);
 		}
 		
 		Output::pipe();
