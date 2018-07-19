@@ -3,6 +3,7 @@
 namespace yii2module\vendor\console\controllers;
 
 use Yii;
+use yii\console\ExitCode;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
 
@@ -89,9 +90,11 @@ class TestController extends Controller
 		if($failCount) {
 			Output::line();
 			Output::arr($failPackages, 'List of packages with errors');
+			return ExitCode::UNSPECIFIED_ERROR;
 		} else {
 			Output::line();
 			Output::pipe('All tests are OK!');
+			return ExitCode::OK;
 		}
 	}
 }
