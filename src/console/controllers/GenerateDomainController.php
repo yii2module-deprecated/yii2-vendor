@@ -64,7 +64,7 @@ class GenerateDomainController extends Controller
 	 * For example,
 	 *
 	 * ```
-	 * php yii vendor/generate-domain/all --namespace=yii2woop\history\domain --types=service,repository,entity --name=articleCategory --is-active=y --drivers=tps,core --attributes=id,name,title,created_at
+	 * php yii vendor/generate-domain/all --namespace=yii2module\example\domain --types=service,repository,entity --name=articleCategory --is-active=y --drivers=tps,core --attributes=id,name,title,created_at
 	 * ```
 	 */
 	public function actionAll()

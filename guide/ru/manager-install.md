@@ -40,7 +40,6 @@ return [
         					'owners' => [
         						'yii2lab',
         						'yii2module',
-        						'yii2woop',
         					],
         				],
         			],

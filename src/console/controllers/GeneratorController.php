@@ -33,9 +33,7 @@ class GeneratorController extends Controller
 		$domainAliases = Yii::$domain->vendor->pretty->all();
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
-		
-		//$namespace = Enter::display('Enter namespace');
-		//$namespace = 'yii2woop\history\domain';
+
 		Yii::$domain->vendor->generator->generateDomain($domainAlias);
 		Output::block('Success generated');
 	}
