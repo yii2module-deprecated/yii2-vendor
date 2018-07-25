@@ -43,7 +43,7 @@ class PrettyHelper {
 	}
 	
 	private static function updateDomainContainerDocComment($namespace) {
-		$fileName = FileHelper::getAlias('@yii2lab/domain/yii2/DomainContainer');
+		$fileName = FileHelper::getAlias('@common/locators/DomainLocator');
 		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
 		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
 		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
