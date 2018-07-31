@@ -62,8 +62,10 @@ class PackageService extends ActiveBaseService {
 		$config['require'] = $this->formatVersion(ArrayHelper::getValue($config, 'require', []), $flatCollection);
 		$config['require-dev'] = $this->formatVersion(ArrayHelper::getValue($config, 'require-dev', []), $flatCollection);
 		$config = $this->removeEmptyValues($config);
-		$entity->config = $config;
-		$this->repository->save($entity);
+		if($entity->config != $config) {
+			$entity->config = $config;
+			$this->repository->save($entity);
+		}
 	}
 	
 	private function removeEmptyValues($config) {
