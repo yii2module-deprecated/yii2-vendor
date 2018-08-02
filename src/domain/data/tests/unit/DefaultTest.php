@@ -8,7 +8,7 @@ class DefaultTest extends Unit
 	
 	public function testMy()
 	{
-		expect(1)->equals(1);
+		$this->tester->assertEquals(1, 1);
 	}
 	
 }
