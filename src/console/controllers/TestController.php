@@ -95,16 +95,7 @@ class TestController extends Controller
 		if($failCount) {
 			Output::line();
 			Output::arr($failPackages, 'List of packages with errors');
-
-            $isShowErrors = Question::confirm2('Is show error details?', false);
-            if($isShowErrors) {
-                foreach($resultCollection as $testItem) {
-                    if($testItem->error) {
-                        Output::block($testItem->text);
-                    }
-                }
-            }
-
+            $this->showErrorDetails($resultCollection);
 			return ExitCode::UNSPECIFIED_ERROR;
 		} else {
 			Output::line();
@@ -112,4 +103,20 @@ class TestController extends Controller
 			return ExitCode::OK;
 		}
 	}
+
+	private function showErrorDetails($resultCollection) {
+        if(empty($resultCollection)) {
+            return;
+        }
+        $isShowErrors = Question::confirm2('Is show error details?', false);
+        if(!$isShowErrors) {
+            return;
+        }
+        foreach($resultCollection as $testItem) {
+            if($testItem->error) {
+                Output::line($testItem->text, $testItem->directory);
+            }
+        }
+    }
+
 }

@@ -41,6 +41,7 @@ class TestRepository extends BaseRepository {
                 'text' => $result,
             ];
         }
+        $data['directory'] = $directory;
 		return $this->forgeEntity($data);
 	}
 	
