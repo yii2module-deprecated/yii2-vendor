@@ -4,8 +4,11 @@ namespace yii2module\vendor\console\controllers;
 
 use Yii;
 use yii\console\ExitCode;
+use yii2lab\console\helpers\input\Question;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
+use yii2lab\domain\data\EntityCollection;
+use yii2module\vendor\domain\entities\TestEntity;
 
 class TestController extends Controller
 {
@@ -56,20 +59,22 @@ class TestController extends Controller
 		}
 		$failPackages = [];
 		$allTestCount = $allAssertCount = 0;
+		$resultCollection = new EntityCollection(TestEntity::class);
 		foreach($collection as $entity) {
 			$dots = Output::getDots($entity['name'], 40);
 			$packageName = $entity['name'];
 			$packageName .= SPC . $dots;
 			Output::line($packageName, null);
-			$result = Yii::$domain->vendor->test->run($entity['directory']);
+			$testEntity = Yii::$domain->vendor->test->run($entity['directory']);
+            $resultCollection[] = $testEntity;
 			$resultData = '';
-			if(!empty($result['result'])) {
-				$resultData .= SPC . 'OK. tests: ' . $result['testCount'] . '. assertions: ' . $result['assertionCount'];
-				$allTestCount = $allTestCount + $result['testCount'];
-				$allAssertCount = $allAssertCount + $result['assertionCount'];
+            $allTestCount = $allTestCount + $testEntity->tests;
+            $allAssertCount = $allAssertCount + $testEntity->assertions;
+			if(empty($testEntity->error)) {
+				$resultData .= SPC . 'OK. tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
 			} else {
 				$failPackages[] = $entity['name'];
-				$resultData .= SPC . 'FAIL';
+				$resultData .= SPC . 'FAIL. errors: ' . $testEntity->error . '. assertions: ' . $testEntity->assertions;
 			}
 			Output::line($resultData);
 		}
@@ -90,6 +95,16 @@ class TestController extends Controller
 		if($failCount) {
 			Output::line();
 			Output::arr($failPackages, 'List of packages with errors');
+
+            $isShowErrors = Question::confirm2('Is show error details?', false);
+            if($isShowErrors) {
+                foreach($resultCollection as $testItem) {
+                    if($testItem->error) {
+                        Output::block($testItem->text);
+                    }
+                }
+            }
+
 			return ExitCode::UNSPECIFIED_ERROR;
 		} else {
 			Output::line();

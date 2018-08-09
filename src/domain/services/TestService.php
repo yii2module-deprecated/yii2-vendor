@@ -7,13 +7,13 @@ use yii2lab\domain\services\ActiveBaseService;
 use yii2lab\helpers\yii\FileHelper;
 use yii\helpers\ArrayHelper;
 use yii2module\vendor\domain\repositories\file\GitRepository;
+use yii2module\vendor\domain\repositories\file\TestRepository;
 
 /**
- * Class GitService
- *
+ * Class TestService
  * @package yii2module\vendor\domain\services
  *
- * @property GitRepository $repository
+ * @property TestRepository $repository
  */
 class TestService extends ActiveBaseService {
 	
