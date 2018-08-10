@@ -2,12 +2,12 @@
 
 namespace yii2module\vendor\admin\controllers;
 
-use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\helpers\Behavior;
+use yii2module\vendor\domain\enums\VendorPermissionEnum;
 
 class InfoController extends Controller {
 
@@ -17,7 +17,7 @@ class InfoController extends Controller {
 	public function behaviors()
 	{
 		return [
-			'access' => Behavior::access(PermissionEnum::VENDOR_MANAGE),
+			'access' => Behavior::access(VendorPermissionEnum::MANAGE),
 		];
 	}
 	

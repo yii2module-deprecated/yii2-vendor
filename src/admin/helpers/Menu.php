@@ -2,16 +2,16 @@
 
 namespace yii2module\vendor\admin\helpers;
 
-use common\enums\rbac\PermissionEnum;
 use yii2lab\extension\menu\interfaces\MenuInterface;
 use yii2lab\helpers\ModuleHelper;
+use yii2module\vendor\domain\enums\VendorPermissionEnum;
 
 class Menu implements MenuInterface {
 	
 	public function toArray() {
 		return [
 			'module' => 'vendor',
-			'access' => PermissionEnum::VENDOR_MANAGE,
+			'access' => VendorPermissionEnum::MANAGE,
 			'label' => ['vendor/main', 'title'],
 			'icon' => 'cube',
 			'items' => [

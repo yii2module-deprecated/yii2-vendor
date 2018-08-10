@@ -36,8 +36,10 @@ class TestRepository extends BaseRepository {
 				'text' => $result,
 			];
 		} else {
-            //prr($result);
             $data = [
+                'tests' => 0,
+                'assertions' => 0,
+                'error' => 1,
                 'text' => $result,
             ];
         }

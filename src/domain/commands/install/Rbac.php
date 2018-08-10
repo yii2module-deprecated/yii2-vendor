@@ -2,7 +2,6 @@
 
 namespace yii2module\vendor\domain\commands\install;
 
-use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\helpers\Inflector;
 use yii2lab\helpers\yii\FileHelper;
