@@ -51,7 +51,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		$query = Query::forge($query);
 		$collection = $this->all($query);
 		if(empty($collection)) {
-			throw new NotFoundHttpException();
+			throw new NotFoundHttpException(__METHOD__ . ': ' . __LINE__);
 		}
 		return $collection[0];
 	}
