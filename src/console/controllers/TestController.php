@@ -4,6 +4,7 @@ namespace yii2module\vendor\console\controllers;
 
 use Yii;
 use yii\console\ExitCode;
+use yii\helpers\Console;
 use yii2lab\console\helpers\input\Question;
 use yii2lab\console\helpers\Output;
 use yii2lab\console\base\Controller;
@@ -71,12 +72,14 @@ class TestController extends Controller
             $allTestCount = $allTestCount + $testEntity->tests;
             $allAssertCount = $allAssertCount + $testEntity->assertions;
 			if(empty($testEntity->error)) {
-				$resultData .= SPC . 'OK. tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
+				Output::line(' OK.', null, Console::FG_GREEN);
+				$resultData .= SPC . 'tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
 			} else {
 				$failPackages[] = $entity['name'];
-				$resultData .= SPC . 'FAIL. errors: ' . $testEntity->error . '. assertions: ' . $testEntity->assertions;
+				Output::line(' FAIL.', null, Console::FG_RED);
+				$resultData .= SPC . 'errors: ' . $testEntity->error . '. assertions: ' . $testEntity->assertions;
 			}
-			Output::line($resultData);
+			Output::line($resultData, 'after');
 		}
 		
 		Output::pipe();
@@ -94,12 +97,12 @@ class TestController extends Controller
 		
 		if($failCount) {
 			Output::line();
-			Output::arr($failPackages, 'List of packages with errors');
+			Output::arr($failPackages, Output::wrap('List of packages with errors', Console::FG_RED));
             $this->showErrorDetails($resultCollection);
 			return ExitCode::UNSPECIFIED_ERROR;
 		} else {
 			Output::line();
-			Output::pipe('All tests are OK!');
+			Output::pipe('All tests are OK!', '-', Console::FG_GREEN);
 			return ExitCode::OK;
 		}
 	}

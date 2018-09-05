@@ -27,14 +27,18 @@ class TestRepository extends BaseRepository {
 				'assertions' => $matches[2],
 				'text' => $result,
 			];
-		} elseif(preg_match('#ERRORS#', $result)) {
-            preg_match('#Tests?: (\d+), Assertions?: (\d+), Errors?: (\d+).#', $result, $matches);
-		    $data = [
-                'tests' => $matches[1],
-                'assertions' => $matches[2],
-                'error' => $matches[3],
+		} elseif(preg_match('#ERRORS!\s+(Tests:.+)$#', $result, $matchesParent)) {
+			$parts = explode(',', $matches[1]);
+            preg_match('#Tests?: (\d+), Assertions?: (\d+), Errors?: (\d+)#', $result, $matches);
+            $data = [
+                'tests' => intval($matches[1]),
+                'assertions' => intval($matches[2]),
+                'error' => intval($matches[3]),
 				'text' => $result,
 			];
+            if(preg_match('#Failures?: (\d+)#', $result, $matches)) {
+	            $data['error'] = $data['error'] + $matches[1];
+            }
 		} else {
             $data = [
                 'tests' => 0,
