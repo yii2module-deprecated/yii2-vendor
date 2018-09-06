@@ -56,7 +56,7 @@ class TestController extends Controller
 		if(empty($collection)) {
 			Output::line();
 			Output::pipe('Tests not found!');
-			return;
+			return ExitCode::OK;
 		}
 		$failPackages = [];
 		$allTestCount = $allAssertCount = 0;
@@ -71,7 +71,11 @@ class TestController extends Controller
 			$resultData = '';
             $allTestCount = $allTestCount + $testEntity->tests;
             $allAssertCount = $allAssertCount + $testEntity->assertions;
-			if(empty($testEntity->error)) {
+            
+			if(empty($testEntity->tests)) {
+				Output::line(' SKIP.', null, Console::FG_YELLOW);
+				$resultData .= SPC . 'tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
+			} elseif(empty($testEntity->error)) {
 				Output::line(' OK.', null, Console::FG_GREEN);
 				$resultData .= SPC . 'tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
 			} else {
