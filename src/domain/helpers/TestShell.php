@@ -9,7 +9,10 @@ class TestShell extends BaseShell {
 	
 	public function codeceptionRun() {
 		try {
-			$result = $this->extractFromCommand("codeception run", 'trim');
+		    $result = $this->extractFromCommand(
+		        \Yii::getAlias('@vendor') . DS . 'codeception' . DS . 'base' . DS .'codecept run',
+		        'trim'
+		    );
 			$result = implode(PHP_EOL, $result);
 		} catch(ShellException $e) {
 			$result = 'error';
