@@ -72,11 +72,12 @@ class TestController extends Controller
             $allTestCount = $allTestCount + $testEntity->tests;
             $allAssertCount = $allAssertCount + $testEntity->assertions;
             
-			if(empty($testEntity->tests)) {
-				Output::line(' SKIP.', null, Console::FG_YELLOW);
-				$resultData .= SPC . 'tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
-			} elseif(empty($testEntity->error)) {
-				Output::line(' OK.', null, Console::FG_GREEN);
+            if(empty($testEntity->error)) {
+				if(empty($testEntity->tests)) {
+					Output::line(' SKIP.', null, Console::FG_YELLOW);
+				} else {
+					Output::line(' OK.', null, Console::FG_GREEN);
+				}
 				$resultData .= SPC . 'tests: ' . $testEntity->tests . '. assertions: ' . $testEntity->assertions;
 			} else {
 				$failPackages[] = $entity['name'];
