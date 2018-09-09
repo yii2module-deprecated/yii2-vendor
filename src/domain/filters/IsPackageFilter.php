@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\filters;
 
 use Yii;
-use yii2lab\designPattern\scenario\base\BaseScenario;
+use yii2lab\extension\scenario\base\BaseScenario;
 
 class IsPackageFilter extends BaseScenario {
 	

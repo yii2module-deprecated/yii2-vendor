@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\enums;
 
-use yii2lab\misc\enums\BaseEnum;
+use yii2lab\extension\enum\base\BaseEnum;
 
 class VendorPermissionEnum extends BaseEnum
 {

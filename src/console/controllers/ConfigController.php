@@ -3,8 +3,8 @@
 namespace yii2module\vendor\console\controllers;
 
 use Yii;
-use yii2lab\console\helpers\Output;
-use yii2lab\console\base\Controller;
+use yii2lab\extension\console\helpers\Output;
+use yii2lab\extension\console\base\Controller;
 
 class ConfigController extends Controller
 {

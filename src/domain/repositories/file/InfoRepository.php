@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii\web\NotFoundHttpException;
-use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
+use yii2lab\extension\scenario\helpers\ScenarioHelper;
 use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;

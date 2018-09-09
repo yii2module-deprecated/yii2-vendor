@@ -5,8 +5,8 @@ namespace yii2module\vendor\domain\commands;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
-use yii2lab\console\helpers\CopyFiles;
-use yii2lab\designPattern\scenario\base\BaseScenario;
+use yii2lab\extension\console\helpers\CopyFiles;
+use yii2lab\extension\scenario\base\BaseScenario;
 use yii2lab\helpers\yii\FileHelper;
 
 abstract class Base extends BaseScenario {

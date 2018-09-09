@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\commands\install;
 
 use Yii;
-use yii2lab\store\Store;
+use yii2lab\extension\store\Store;
 use yii2module\vendor\domain\commands\Base;
 
 class Package extends Base {

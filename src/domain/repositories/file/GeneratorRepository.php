@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
-use yii2lab\designPattern\scenario\helpers\ScenarioHelper;
+use yii2lab\extension\scenario\helpers\ScenarioHelper;
 use yii2lab\domain\repositories\BaseRepository;
 
 class GeneratorRepository extends BaseRepository {

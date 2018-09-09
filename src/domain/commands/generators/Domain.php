@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\commands\generators;
 
-use yii2lab\helpers\generator\ClassGeneratorHelper;
+use yii2lab\extension\code\helpers\generator\ClassGeneratorHelper;
 use yii2module\vendor\domain\commands\Base;
 
 class Domain extends Base {

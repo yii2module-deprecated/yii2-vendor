@@ -4,10 +4,10 @@ namespace yii2module\vendor\console\controllers;
 
 use Yii;
 use yii\console\Controller;
-use yii2lab\console\helpers\input\Enter;
-use yii2lab\console\helpers\input\Question;
-use yii2lab\console\helpers\input\Select;
-use yii2lab\console\helpers\Output;
+use yii2lab\extension\console\helpers\input\Enter;
+use yii2lab\extension\console\helpers\input\Question;
+use yii2lab\extension\console\helpers\input\Select;
+use yii2lab\extension\console\helpers\Output;
 use yii2lab\domain\enums\Driver;
 use yii2mod\helpers\ArrayHelper;
 
