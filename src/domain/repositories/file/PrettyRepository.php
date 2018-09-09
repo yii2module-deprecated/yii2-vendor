@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii2module\vendor\domain\entities\DomainEntity;
 use yii2module\vendor\domain\entities\PackageEntity;
 use yii2module\vendor\domain\helpers\PrettyHelper;

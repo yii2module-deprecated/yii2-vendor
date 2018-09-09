@@ -4,7 +4,7 @@ namespace yii2module\vendor\domain\services;
 
 use Yii;
 use yii2lab\domain\services\ActiveBaseService;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii\helpers\ArrayHelper;
 use yii2module\vendor\domain\repositories\file\GitRepository;
 use yii2module\vendor\domain\repositories\file\TestRepository;

@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii2lab\domain\repositories\BaseRepository;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii2lab\extension\store\Store;
 use yii2module\vendor\domain\entities\PackageEntity;
 

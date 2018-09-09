@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\helpers;
 
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 use yii2mod\helpers\ArrayHelper;
 
 class UseHelper {

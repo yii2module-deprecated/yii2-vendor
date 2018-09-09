@@ -7,7 +7,7 @@ use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii2lab\extension\console\helpers\CopyFiles;
 use yii2lab\extension\scenario\base\BaseScenario;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 abstract class Base extends BaseScenario {
 	

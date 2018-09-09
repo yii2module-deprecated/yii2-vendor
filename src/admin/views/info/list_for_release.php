@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\grid\GridView;
-use yii2lab\helpers\yii\Html;
+use yii2lab\extension\yii\helpers\Html;
 
 $this->title = Yii::t('vendor/info', 'list');
 

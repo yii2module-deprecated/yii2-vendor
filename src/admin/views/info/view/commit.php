@@ -7,7 +7,7 @@
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
-use yii2lab\helpers\yii\Html;
+use yii2lab\extension\yii\helpers\Html;
 
 $columns = [
 	[

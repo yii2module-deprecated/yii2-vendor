@@ -15,7 +15,7 @@ use yii2lab\domain\generator\ServiceInterfaceGenerator;
 use yii2lab\extension\code\helpers\parser\DocCommentHelper;
 use yii2lab\extension\code\helpers\parser\TokenCollectionHelper;
 use yii2lab\extension\code\helpers\parser\TokenHelper;
-use yii2lab\helpers\yii\FileHelper;
+use yii2lab\extension\yii\helpers\FileHelper;
 
 class GeneratorHelper {
 	
