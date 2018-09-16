@@ -23,7 +23,7 @@ class InfoController extends Controller
 	public function actionAllChanged()
 	{
 		Output::line('Getting package info...');
-		$collection = Yii::$domain->vendor->info->allChanged();
+		$collection = \App::$domain->vendor->info->allChanged();
 		if(!empty($collection)) {
 			$names = ArrayHelper::getColumn($collection, 'alias');
 			Output::line();
@@ -39,7 +39,7 @@ class InfoController extends Controller
 	public function actionAllVersion()
 	{
 		Output::line('Getting package info...');
-		$collection = Yii::$domain->vendor->info->allVersion();
+		$collection = \App::$domain->vendor->info->allVersion();
 		if(!empty($collection)) {
 			$flatCollection = ArrayHelper::map($collection, 'package', 'version');
 			Output::line();
@@ -65,7 +65,7 @@ class InfoController extends Controller
 	public function actionAllForRelease()
 	{
 		Output::line('Getting package info...');
-		$collection = Yii::$domain->vendor->info->allForRelease();
+		$collection = \App::$domain->vendor->info->allForRelease();
 		if(!empty($collection)) {
 			$flatCollection = ArrayHelper::map($collection, 'package', 'version');
 			Output::line();
@@ -82,7 +82,7 @@ class InfoController extends Controller
 	{
 		list($owner, $name) = $this->inputPackage();
 		Output::line('Find uses in package...');
-		$uses = Yii::$domain->vendor->info->usesById($owner . '-yii2-' . $name);
+		$uses = \App::$domain->vendor->info->usesById($owner . '-yii2-' . $name);
 		Output::line();
 		foreach($uses as $placeName => $list) {
 			Output::items($list, Inflector::titleize($placeName));
@@ -93,11 +93,11 @@ class InfoController extends Controller
 	/*
 	public function actionGitPull()
 	{
-		$collection = Yii::$domain->vendor->info->all();
+		$collection = \App::$domain->vendor->info->all();
 		Output::line();
 		Output::pipe('Git pull packages');
 		foreach($collection as $entity) {
-			$result = Yii::$domain->vendor->info->pull($entity);
+			$result = \App::$domain->vendor->info->pull($entity);
 			$outputLine = $entity->package . SPC . DOT . DOT . DOT . SPC;
 			if($result) {
 				$outputLine .= PHP_EOL . $result . PHP_EOL;
@@ -112,9 +112,9 @@ class InfoController extends Controller
 	*/
 	
 	private function inputPackage() {
-		$ownerSelect = Select::display('Select owner', Yii::$domain->vendor->generator->owners);
+		$ownerSelect = Select::display('Select owner', \App::$domain->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
-		$names = Yii::$domain->vendor->info->shortNamesByOwner($owner);
+		$names = \App::$domain->vendor->info->shortNamesByOwner($owner);
 		$nameSelect = Select::display('Select package', $names);
 		$name = Select::getFirstValue($nameSelect);
 		Output::line();

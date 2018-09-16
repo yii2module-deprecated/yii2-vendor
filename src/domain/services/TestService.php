@@ -31,7 +31,7 @@ class TestService extends ActiveBaseService {
 	}
 	
 	public function directoriesWithHasForPackage() {
-		$collection = Yii::$domain->vendor->info->allWithHasTest();
+		$collection = \App::$domain->vendor->info->allWithHasTest();
 		$result = [];
 		foreach($collection as $item) {
 			$result[] = [

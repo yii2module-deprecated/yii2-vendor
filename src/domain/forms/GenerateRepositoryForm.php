@@ -20,7 +20,7 @@ class GenerateRepositoryForm extends Model {
 	{
 		return [
 			[['namespace', 'name', 'isActive'/*, 'drivers'*/], 'required'],
-			['namespace', 'in', 'range' => Yii::$domain->vendor->pretty->all()],
+			['namespace', 'in', 'range' => \App::$domain->vendor->pretty->all()],
 			['isActive', 'boolean'],
 			//['drivers', 'in', 'range' => Driver::values()],
 		];

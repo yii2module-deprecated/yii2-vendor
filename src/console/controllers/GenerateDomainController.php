@@ -79,7 +79,7 @@ class GenerateDomainController extends Controller
 		$types = !empty($this->types) ? explode(',', $this->types) : null;
 		
 		if(empty($data['namespace'])) {
-			$domainAliases = Yii::$domain->vendor->pretty->all();
+			$domainAliases = \App::$domain->vendor->pretty->all();
 			$domainAlias = Select::display('Select domain', $domainAliases);
 			$data['namespace'] = ArrayHelper::first($domainAlias);
 		}
@@ -98,7 +98,7 @@ class GenerateDomainController extends Controller
 		}
 		//prr($data,1);
 		if(in_array('service', $types)) {
-			Yii::$domain->vendor->generator->generateService($data);
+			\App::$domain->vendor->generator->generateService($data);
 		}
 		
 		if(in_array('repository', $types)) {
@@ -107,7 +107,7 @@ class GenerateDomainController extends Controller
 				$drivers = Select::display('Select repository driver', $allDrivers, true, true);
 				$data['drivers'] = array_values($drivers);
 			}
-			Yii::$domain->vendor->generator->generateRepository($data);
+			\App::$domain->vendor->generator->generateRepository($data);
 		}
 		
 		if(in_array('entity', $types)) {
@@ -115,7 +115,7 @@ class GenerateDomainController extends Controller
 				$attributes = Enter::display('Enter entity attributes');
 				$data['attributes'] = explode(',', $attributes);
 			}
-			Yii::$domain->vendor->generator->generateEntity($data);
+			\App::$domain->vendor->generator->generateEntity($data);
 		}
 		
 		Output::block('Success generated');

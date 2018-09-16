@@ -49,7 +49,7 @@ class PrettyHelper {
 		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
 		$entity = DocCommentHelper::parse($docComment);
 		$classDomain = $namespace.'\\Domain';
-		foreach(Yii::$domain->components as $id => $instance) {
+		foreach(\App::$domain->components as $id => $instance) {
 			$isThisInstance =
 				(is_object($instance) && $instance instanceof $classDomain) ||
 				(is_array($instance) && $instance['class'] == $classDomain);
@@ -70,7 +70,7 @@ class PrettyHelper {
 	}
 	
 	private static function updateDomainDocComment($namespace) {
-		$one = Yii::$domain->vendor->pretty->oneById($namespace);
+		$one = \App::$domain->vendor->pretty->oneById($namespace);
 		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
 		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
 		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
@@ -103,7 +103,7 @@ class PrettyHelper {
 	}
 	
 	private static function generateVirtualRepositoryInterface($namespace) {
-		$one = Yii::$domain->vendor->pretty->oneById($namespace);
+		$one = \App::$domain->vendor->pretty->oneById($namespace);
 		$repositories = ArrayHelper::getValue($one, 'interfaces.repositories');
 		if(empty($repositories)) {
 			return;

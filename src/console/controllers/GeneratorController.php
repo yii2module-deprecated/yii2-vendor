@@ -21,7 +21,7 @@ class GeneratorController extends Controller
 		list($owner, $name) = $this->inputPackage();
 		$types = Select::display('Select for generate', TypeEnum::values(), 1);
 		$types = array_values($types);
-		Yii::$domain->vendor->generator->generateAll($owner, $name, $types);
+		\App::$domain->vendor->generator->generateAll($owner, $name, $types);
 		Output::block('Success generated');
 	}
 	
@@ -30,16 +30,16 @@ class GeneratorController extends Controller
 	 */
 	public function actionDomain()
 	{
-		$domainAliases = Yii::$domain->vendor->pretty->all();
+		$domainAliases = \App::$domain->vendor->pretty->all();
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
 
-		Yii::$domain->vendor->generator->generateDomain($domainAlias);
+		\App::$domain->vendor->generator->generateDomain($domainAlias);
 		Output::block('Success generated');
 	}
 	
 	private function inputPackage() {
-		$ownerSelect = Select::display('Select owner', Yii::$domain->vendor->generator->owners);
+		$ownerSelect = Select::display('Select owner', \App::$domain->vendor->generator->owners);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
 		return [$owner, $name];

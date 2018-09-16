@@ -24,7 +24,7 @@ class TestController extends Controller
 	 */
 	public function actionAll()
 	{
-		$collection = Yii::$domain->vendor->test->directoriesWithHasTestAll();
+		$collection = \App::$domain->vendor->test->directoriesWithHasTestAll();
 		Output::pipe('Test all (count: ' . count($collection) . ')');
 		$this->runCollection($collection);
 		Output::line();
@@ -35,7 +35,7 @@ class TestController extends Controller
 	 */
 	public function actionPackage()
 	{
-		$collection = Yii::$domain->vendor->test->directoriesWithHasForPackage();
+		$collection = \App::$domain->vendor->test->directoriesWithHasForPackage();
 		Output::pipe('Test packages (count: ' . count($collection) . ')');
 		$this->runCollection($collection);
 		Output::line();
@@ -46,7 +46,7 @@ class TestController extends Controller
 	 */
 	public function actionProject()
 	{
-		$collection = Yii::$domain->vendor->test->directoriesWithHasTestForProject();
+		$collection = \App::$domain->vendor->test->directoriesWithHasTestForProject();
 		Output::pipe('Test project (count: ' . count($collection) . ')');
 		$this->runCollection($collection);
 		Output::line();
@@ -66,7 +66,7 @@ class TestController extends Controller
 			$packageName = $entity['name'];
 			$packageName .= SPC . $dots;
 			Output::line($packageName, null);
-			$testEntity = Yii::$domain->vendor->test->run($entity['directory']);
+			$testEntity = \App::$domain->vendor->test->run($entity['directory']);
             $resultCollection[] = $testEntity;
 			$resultData = '';
             $allTestCount = $allTestCount + $testEntity->tests;

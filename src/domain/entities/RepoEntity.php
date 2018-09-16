@@ -38,7 +38,7 @@ class RepoEntity extends BaseEntity {
 	}
 	
 	public function setCommits($value) {
-		$value = Yii::$domain->vendor->factory->entity->create('commit', $value);
+		$value = \App::$domain->vendor->factory->entity->create('commit', $value);
 		$this->commits = $this->attachTagToCommit($value);
 	}
 	

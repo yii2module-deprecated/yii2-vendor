@@ -13,19 +13,19 @@ class PrettyController extends Controller
 	
 	public function actionDomain()
 	{
-		$domainAliases = Yii::$domain->vendor->pretty->all();
+		$domainAliases = \App::$domain->vendor->pretty->all();
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
-		Yii::$domain->vendor->pretty->updateById($domainAlias, []);
+		\App::$domain->vendor->pretty->updateById($domainAlias, []);
 		Output::block('Success pretty');
 	}
 	
 	/*public function actionDomain()
 	{
-		$domainAliases = Yii::$domain->vendor->pretty->all();
+		$domainAliases = \App::$domain->vendor->pretty->all();
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
-		$domainEntity = Yii::$domain->vendor->pretty->oneById($domainAlias);
+		$domainEntity = \App::$domain->vendor->pretty->oneById($domainAlias);
 		prr($domainEntity,1,1);
 	}*/
 	

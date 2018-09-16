@@ -34,7 +34,7 @@ class PrettyRepository extends BaseRepository {
 	
 	public function allPackagesDomain() {
 		/** @var PackageEntity[] $packageCollection */
-		$packageCollection = Yii::$domain->vendor->info->all();
+		$packageCollection = \App::$domain->vendor->info->all();
 		$aliases = [];
 		foreach($packageCollection as $package) {
 			$domainAliasName = $package->alias;
