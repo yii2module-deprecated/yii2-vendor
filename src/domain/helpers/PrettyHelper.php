@@ -11,7 +11,7 @@ use yii2lab\extension\code\entities\DocBlockParameterEntity;
 use yii2lab\extension\code\helpers\parser\DocCommentHelper;
 use yii2lab\extension\code\helpers\parser\TokenCollectionHelper;
 use yii2lab\extension\code\helpers\parser\TokenHelper;
-use yii2lab\helpers\ClassHelper;
+use yii2lab\extension\common\helpers\ClassHelper;
 use yii2lab\extension\yii\helpers\FileHelper;
 
 class PrettyHelper {
