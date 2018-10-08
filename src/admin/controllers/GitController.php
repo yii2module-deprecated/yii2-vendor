@@ -7,7 +7,7 @@ use yii\data\ArrayDataProvider;
 use yii\helpers\Url;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
-use yii2lab\helpers\Behavior;
+use yii2lab\extension\web\helpers\Behavior;
 use yii2lab\navigation\domain\widgets\Alert;
 use yii2module\vendor\domain\enums\VendorPermissionEnum;
 
