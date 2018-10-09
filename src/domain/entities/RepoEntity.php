@@ -16,7 +16,7 @@ use yii2module\vendor\domain\helpers\VersionHelper;
  * @property $name
  * @property $package
  * @property $branch
- * @property $tags
+ * @property TagEntity[] $tags
  * @property $commits
  * @property $has_changes
  * @property $has_readme

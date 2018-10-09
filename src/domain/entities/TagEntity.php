@@ -9,8 +9,8 @@ use yii2lab\domain\BaseEntity;
  *
  * @package yii2module\vendor\domain\entities
  *
- * @property string $alias
- * @property array $config
+ * @property string $full_name
+ * @property array $sha
  */
 class TagEntity extends BaseEntity {
 

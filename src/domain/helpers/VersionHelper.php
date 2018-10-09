@@ -3,12 +3,79 @@
 namespace yii2module\vendor\domain\helpers;
 
 use yii\helpers\ArrayHelper;
+use yii2module\vendor\domain\entities\CommitEntity;
+use yii2module\vendor\domain\entities\RepoEntity;
+use yii2module\vendor\domain\enums\VersionTypeEnum;
 
 class VersionHelper {
 	
 	const UP = 1;
 	const MIDDLE = 0;
 	const DOWN = -1;
+	
+	public static function kkkk(RepoEntity $entity) {
+		$rrrrrr = VersionHelper::seekRecommendation($entity);
+		
+		//rsort($rrrrrr);
+		
+		
+		
+		//prr($rrrrrr,1,1);
+		
+		$versionList = \yii\helpers\ArrayHelper::getColumn($entity->tags, 'version');
+		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);
+		
+		$result = [];
+		foreach($versionVariations as $variationType => $variationVersion) {
+			$result[$variationType] = [
+				'type' => $variationType,
+				'version' => $variationVersion,
+				'weight' => $rrrrrr[$variationType],
+				'is_recommended' => !empty($rrrrrr[$variationType]),
+			];
+		}
+		
+		return $result;
+	}
+	
+	public static function seekRecommendation(RepoEntity $entity) {
+		$types = [
+			VersionTypeEnum::MINOR => [
+				'remove',
+				'delete',
+			],
+			VersionTypeEnum::MAJOR => [
+				'make',
+				'add',
+				'create',
+				'refacto',
+				'deprecated',
+			],
+			VersionTypeEnum::PATCH => [
+				'fix',
+				'clean',
+				'clear',
+			],
+		];
+		
+		$type = [];
+		
+		/** @var CommitEntity $commit */
+		foreach($entity->commits as $commit) {
+			if($commit->tag) {
+				return $type;
+			}
+			foreach($types as $tName => $tValue) {
+				foreach($tValue as $exp) {
+					$exp = '#' . $exp . '#';
+					if(preg_match($exp, $commit->message)) {
+						$type[$tName]++;
+					}
+				}
+			}
+		}
+		return $type;
+	}
 	
 	public static function sort($versionCollection) {
 		$versionCollection = ArrayHelper::toArray($versionCollection, [], false);
@@ -41,7 +108,7 @@ class VersionHelper {
 	private static function newVersions($tree) {
 		$items = [];
 		$result = [];
-		foreach(['major', 'minor', 'patch'] as $name) {
+		foreach([VersionTypeEnum::MAJOR, VersionTypeEnum::MINOR, VersionTypeEnum::PATCH] as $name) {
 			$version = self::getLastFromTree($tree);
 			$items[] = $version;
 			$result[$name] = self::buildNextVersion($items);

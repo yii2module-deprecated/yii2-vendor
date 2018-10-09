@@ -30,16 +30,19 @@ ClipboardJsAsset::register($this);
 				'target' => '_blank',
 			]
 		) ?>
-		
-		<?php foreach($versionVariations as $version) { ?>
-            <button class="btn btn-default btn-copy" title="copy version" data-clipboard-text="v<?= $version ?>">
-                v<?= $version ?>
-                <i class="fa fa-clipboard" aria-hidden="true"></i>
-            </button>
-            &nbsp;
-		<?php } ?>
-
     </div>
+	
+	<?php foreach($versionVariations as $version) { ?>
+        <button class="btn btn-<?= $version['is_recommended'] ? 'primary' : 'default' ?> btn-copy" title="copy version" data-clipboard-text="v<?= $version['version'] ?>">
+            v<?= $version['version'] ?>
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+        </button>
+        &nbsp;
+	<?php } ?>
+
+    <br/>
+    <br/>
+    
 <?php } ?>
 
 <?php if($entity->has_changes) { ?>

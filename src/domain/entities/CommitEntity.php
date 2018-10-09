@@ -9,8 +9,11 @@ use yii2lab\domain\BaseEntity;
  *
  * @package yii2module\vendor\domain\entities
  *
- * @property string $alias
- * @property array $config
+ * @property $sha
+ * @property $author
+ * @property $date
+ * @property $message
+ * @property $tag
  */
 class CommitEntity extends BaseEntity {
 

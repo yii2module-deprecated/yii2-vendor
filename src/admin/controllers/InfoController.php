@@ -7,7 +7,10 @@ use yii\data\ArrayDataProvider;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\web\ActiveController as Controller;
 use yii2lab\extension\web\helpers\Behavior;
+use yii2module\vendor\domain\entities\CommitEntity;
+use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\enums\VendorPermissionEnum;
+use yii2module\vendor\domain\helpers\VersionHelper;
 
 class InfoController extends Controller {
 
@@ -38,10 +41,18 @@ class InfoController extends Controller {
 		$query->with('commits');
 		$query->with('required_packages');
 		$query->with('has_changes');
+		
+		/** @var RepoEntity $entity */
 		$entity = \App::$domain->vendor->info->oneById($id, $query);
 		
+		$versionVariations = VersionHelper::kkkk($entity);
+		//prr($rrrrrr,1,1);
+		
+		/*$rrrrrr = VersionHelper::seekRecommendation($entity);
+		prr($rrrrrr,1,1);
+		
 		$versionList = \yii\helpers\ArrayHelper::getColumn($entity->tags, 'version');
-		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);
+		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);*/
 		
 		return $this->render('view', [
 			'entity' => $entity,
