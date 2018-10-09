@@ -39,7 +39,14 @@ class InfoController extends Controller {
 		$query->with('required_packages');
 		$query->with('has_changes');
 		$entity = \App::$domain->vendor->info->oneById($id, $query);
-		return $this->render('view', ['entity' => $entity]);
+		
+		$versionList = \yii\helpers\ArrayHelper::getColumn($entity->tags, 'version');
+		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);
+		
+		return $this->render('view', [
+			'entity' => $entity,
+			'versionVariations' => $versionVariations,
+		]);
 	}
 	
 	public function actionList() {

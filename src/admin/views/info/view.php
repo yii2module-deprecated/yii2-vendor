@@ -2,11 +2,15 @@
 
 /* @var $this yii\web\View
  * @var $entity \yii2module\vendor\domain\entities\RepoEntity
+ * @var $versionVariations array
  */
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii2lab\extension\clipboardJs\ClipboardJsAsset;
 
 $this->title = $entity->package;
+
+ClipboardJsAsset::register($this);
 
 ?>
 
@@ -26,7 +30,16 @@ $this->title = $entity->package;
 				'target' => '_blank',
 			]
 		) ?>
-	</div>
+		
+		<?php foreach($versionVariations as $version) { ?>
+            <button class="btn btn-default btn-copy" title="copy version" data-clipboard-text="v<?= $version ?>">
+                v<?= $version ?>
+                <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+            &nbsp;
+		<?php } ?>
+
+    </div>
 <?php } ?>
 
 <?php if($entity->has_changes) { ?>

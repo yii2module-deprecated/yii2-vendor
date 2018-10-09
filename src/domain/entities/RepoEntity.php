@@ -2,10 +2,32 @@
 
 namespace yii2module\vendor\domain\entities;
 
-use Yii;
 use yii2lab\domain\BaseEntity;
 use yii2mod\helpers\ArrayHelper;
+use yii2module\vendor\domain\helpers\VersionHelper;
 
+/**
+ * Class RepoEntity
+ *
+ * @package yii2module\vendor\domain\entities
+ *
+ * @property $id
+ * @property $owner
+ * @property $name
+ * @property $package
+ * @property $branch
+ * @property $tags
+ * @property $commits
+ * @property $has_changes
+ * @property $has_readme
+ * @property $has_changelog
+ * @property $has_guide
+ * @property $has_license
+ * @property $has_test
+ * @property $required_packages
+ * @property $need_release
+ * @property $version
+ */
 class RepoEntity extends BaseEntity {
 	
 	protected $id;
@@ -74,15 +96,8 @@ class RepoEntity extends BaseEntity {
 		if(empty($this->tags)) {
 			return null;
 		}
-		$versionList = ArrayHelper::flatten($this->tags);
-		$cmp = function ($a, $b) {
-			if ($a == $b) {
-				return 0;
-			}
-			$isGreater = version_compare($a->version, $b->version, '<');
-			return $isGreater ? 1 : -1;
-		};
-		usort($versionList, $cmp);
+		//$versionList = ArrayHelper::flatten($this->tags);
+		$versionList = VersionHelper::sort($this->tags);
 		$last = $versionList[0];
 		$last = trim($last->name, 'v');
 		return $last;

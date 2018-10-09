@@ -12,6 +12,13 @@ use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
 use yii2module\vendor\domain\helpers\UseHelper;
 
+/**
+ * Class InfoRepository
+ *
+ * @package yii2module\vendor\domain\repositories\file
+ *
+ * @property-read \yii2module\vendor\domain\Domain $domain
+ */
 class InfoRepository extends BaseRepository implements ReadInterface {
 	
 	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_changelog', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit'];
