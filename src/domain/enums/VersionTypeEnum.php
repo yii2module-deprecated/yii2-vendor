@@ -6,8 +6,8 @@ use yii2lab\extension\enum\base\BaseEnum;
 
 class VersionTypeEnum extends BaseEnum {
 	
-	const MINOR = 'MINOR';
 	const MAJOR = 'MAJOR';
+	const MINOR = 'MINOR';
 	const PATCH = 'PATCH';
 	
 }

@@ -19,8 +19,10 @@ class VersionHelper {
 		VersionTypeEnum::MAJOR => [
 			'remove',
 			'delete',
+			'deep',
 		],
 		VersionTypeEnum::MINOR => [
+			'new',
 			'make',
 			'add',
 			'create',
@@ -30,12 +32,17 @@ class VersionHelper {
 			'refacto',
 			'deprecated',
 			'move',
+			'rename',
 		],
 		VersionTypeEnum::PATCH => [
 			'fix',
 			'clean',
 			'clear',
 			'todo',
+			'note',
+			'doc',
+			'comment',
+			'pretty',
 		],
 	];
 	
@@ -68,12 +75,19 @@ class VersionHelper {
 		$versionVariations = VersionHelper::getVersionVariations($versionList);
 		
 		$result = [];
+		$isFoundVariation = false;
 		foreach($versionVariations as $variationType => $variationVersion) {
+			$is_recommended = !empty($recommendations[$variationType]);
+			if($isFoundVariation) {
+				$is_recommended = false;
+			}
+			if($is_recommended) {
+				$isFoundVariation = true;
+			}
 			$result[$variationType] = [
 				'type' => $variationType,
 				'version' => $variationVersion,
-				'weight' => $recommendations[$variationType],
-				'is_recommended' => !empty($recommendations[$variationType]),
+				'is_recommended' => $is_recommended,
 			];
 		}
 		
