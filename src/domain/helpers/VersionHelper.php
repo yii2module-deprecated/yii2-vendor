@@ -3,6 +3,8 @@
 namespace yii2module\vendor\domain\helpers;
 
 use yii\helpers\ArrayHelper;
+use yii2lab\extension\common\helpers\UrlHelper;
+use yii2lab\extension\widget\helpers\WidgetHelper;
 use yii2module\vendor\domain\entities\CommitEntity;
 use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\enums\VersionTypeEnum;
@@ -13,68 +15,69 @@ class VersionHelper {
 	const MIDDLE = 0;
 	const DOWN = -1;
 	
-	public static function kkkk(RepoEntity $entity) {
-		$rrrrrr = VersionHelper::seekRecommendation($entity);
-		
-		//rsort($rrrrrr);
-		
-		
-		
-		//prr($rrrrrr,1,1);
-		
-		$versionList = \yii\helpers\ArrayHelper::getColumn($entity->tags, 'version');
-		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);
+	private static $types = [
+		VersionTypeEnum::MAJOR => [
+			'remove',
+			'delete',
+		],
+		VersionTypeEnum::MINOR => [
+			'make',
+			'add',
+			'create',
+			'update',
+			'upgrade',
+			'use',
+			'refacto',
+			'deprecated',
+			'move',
+		],
+		VersionTypeEnum::PATCH => [
+			'fix',
+			'clean',
+			'clear',
+			'todo',
+		],
+	];
+	
+	private static $remotes = [
+		'git.wooppay.local' => [
+			'uri' => [
+				'newTag' => 'http://git.wooppay.local/{package}/tags/new',
+			],
+		],
+		'github.com' => [
+			'uri' => [
+				'newTag' => 'https://github.com/{package}/releases/new',
+			],
+		],
+	];
+	
+	public static function getReleaseUrl(RepoEntity $entity) {
+		$url = UrlHelper::parse($entity->remote_url);
+		$host = $url['host'];
+		$newTagUrlTemplate = self::$remotes[$host]['uri']['newTag'];
+		$newTagUrl = WidgetHelper::renderTemplate($newTagUrlTemplate, [
+			'package' => $entity->package,
+		]);
+		return $newTagUrl;
+	}
+	
+	public static function getVariations(RepoEntity $entity) {
+		$recommendations = VersionHelper::seekRecommendation($entity);
+		$versionList = ArrayHelper::getColumn($entity->tags, 'version');
+		$versionVariations = VersionHelper::getVersionVariations($versionList);
 		
 		$result = [];
 		foreach($versionVariations as $variationType => $variationVersion) {
 			$result[$variationType] = [
 				'type' => $variationType,
 				'version' => $variationVersion,
-				'weight' => $rrrrrr[$variationType],
-				'is_recommended' => !empty($rrrrrr[$variationType]),
+				'weight' => $recommendations[$variationType],
+				'is_recommended' => !empty($recommendations[$variationType]),
 			];
 		}
 		
 		return $result;
-	}
-	
-	public static function seekRecommendation(RepoEntity $entity) {
-		$types = [
-			VersionTypeEnum::MINOR => [
-				'remove',
-				'delete',
-			],
-			VersionTypeEnum::MAJOR => [
-				'make',
-				'add',
-				'create',
-				'refacto',
-				'deprecated',
-			],
-			VersionTypeEnum::PATCH => [
-				'fix',
-				'clean',
-				'clear',
-			],
-		];
-		
-		$type = [];
-		
-		/** @var CommitEntity $commit */
-		foreach($entity->commits as $commit) {
-			if($commit->tag) {
-				return $type;
-			}
-			foreach($types as $tName => $tValue) {
-				foreach($tValue as $exp) {
-					$exp = '#' . $exp . '#';
-					if(preg_match($exp, $commit->message)) {
-						$type[$tName]++;
-					}
-				}
-			}
-		}
-		return $type;
 	}
 	
 	public static function sort($versionCollection) {
@@ -96,7 +99,27 @@ class VersionHelper {
 		return $isGreater ? VersionHelper::UP : VersionHelper::DOWN;
 	}
 	
-	public static function getVersionVariations($versionList) {
+	private static function seekRecommendation(RepoEntity $entity) {
+		$type = [];
+		
+		/** @var CommitEntity $commit */
+		foreach($entity->commits as $commit) {
+			if($commit->tag) {
+				return $type;
+			}
+			foreach(self::$types as $tName => $tValue) {
+				foreach($tValue as $exp) {
+					$exp = '#' . $exp . '#';
+					if(preg_match($exp, $commit->message)) {
+						$type[$tName]++;
+					}
+				}
+			}
+		}
+		return $type;
+	}
+	
+	private static function getVersionVariations($versionList) {
 		usort($versionList, [self::class, 'sortCallback']);
 		$versionList = array_reverse($versionList);
 		$tree = self::list2tree($versionList);
@@ -108,7 +131,7 @@ class VersionHelper {
 	private static function newVersions($tree) {
 		$items = [];
 		$result = [];
-		foreach([VersionTypeEnum::MAJOR, VersionTypeEnum::MINOR, VersionTypeEnum::PATCH] as $name) {
+		foreach(VersionTypeEnum::values() as $name) {
 			$version = self::getLastFromTree($tree);
 			$items[] = $version;
 			$result[$name] = self::buildNextVersion($items);

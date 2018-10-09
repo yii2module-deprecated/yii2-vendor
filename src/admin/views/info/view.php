@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii2lab\extension\clipboardJs\ClipboardJsAsset;
+use yii2module\vendor\domain\helpers\VersionHelper;
 
 $this->title = $entity->package;
 
@@ -20,11 +21,12 @@ ClipboardJsAsset::register($this);
 </h3>
 
 <?php if($entity->need_release) { ?>
+
 	<div class="alert alert-info">
 		<?= Yii::t('vendor/info', 'package_need_of_release') ?>
 		<?= Html::a(
 			Yii::t('vendor/info', 'draft_new_release'),
-			'https://github.com/' . $entity->package . '/releases/new',
+			VersionHelper::getReleaseUrl($entity),
 			[
 				'class' => 'btn btn-primary',
 				'target' => '_blank',

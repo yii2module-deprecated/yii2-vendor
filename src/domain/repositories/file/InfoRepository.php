@@ -21,7 +21,7 @@ use yii2module\vendor\domain\helpers\UseHelper;
  */
 class InfoRepository extends BaseRepository implements ReadInterface {
 	
-	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_changelog', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit'];
+	protected $withList = ['branch', 'has_changes', 'has_readme', 'has_changelog', 'has_guide', 'has_license', 'has_test', 'version', 'need_release', 'head_commit', 'remote_url'];
 	
 	public function isExistsById($id) {
 		try {
@@ -191,6 +191,9 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 			}
 			if(in_array('required_packages', $with)) {
 				$item['required_packages'] = $this->usesById($item['id'])['required_packages'];
+			}
+			if(in_array('remote_url', $with)) {
+				$item['remote_url'] = $repo->showRemote();
 			}
 		}
 		$item = RepositoryHelper::getHasInfo($item, $with);

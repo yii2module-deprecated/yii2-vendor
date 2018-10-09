@@ -430,7 +430,12 @@ class GitShell extends BaseShell {
 			->run("git fetch $remote", $params)
 			->end();
 	}
-
+	
+	public function showRemote() {
+		$array = $this->extractFromCommand('git config --get remote.origin.url', 'trim');
+		return ArrayHelper::first($array);
+	}
+	
 	/**
 	 * Adds new remote repository
 	 *

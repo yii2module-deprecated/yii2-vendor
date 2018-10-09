@@ -27,6 +27,7 @@ use yii2module\vendor\domain\helpers\VersionHelper;
  * @property $required_packages
  * @property $need_release
  * @property $version
+ * @property $remote_url
  */
 class RepoEntity extends BaseEntity {
 	
@@ -44,6 +45,7 @@ class RepoEntity extends BaseEntity {
 	protected $has_license;
 	protected $has_test;
 	protected $required_packages;
+	protected $remote_url;
 
 	public function fieldType() {
 		return [

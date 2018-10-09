@@ -41,18 +41,14 @@ class InfoController extends Controller {
 		$query->with('commits');
 		$query->with('required_packages');
 		$query->with('has_changes');
+		$query->with('remote_url');
 		
 		/** @var RepoEntity $entity */
 		$entity = \App::$domain->vendor->info->oneById($id, $query);
 		
-		$versionVariations = VersionHelper::kkkk($entity);
-		//prr($rrrrrr,1,1);
+		//prr($entity->remote_url,1,1);
 		
-		/*$rrrrrr = VersionHelper::seekRecommendation($entity);
-		prr($rrrrrr,1,1);
-		
-		$versionList = \yii\helpers\ArrayHelper::getColumn($entity->tags, 'version');
-		$versionVariations = \yii2module\vendor\domain\helpers\VersionHelper::getVersionVariations($versionList);*/
+		$versionVariations = VersionHelper::getVariations($entity);
 		
 		return $this->render('view', [
 			'entity' => $entity,
