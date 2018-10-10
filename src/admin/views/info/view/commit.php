@@ -6,19 +6,24 @@
 
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
-use yii\helpers\ArrayHelper;
 use yii2lab\extension\yii\helpers\Html;
+use yii2module\vendor\domain\entities\CommitEntity;
+use yii2module\vendor\domain\helpers\VersionHelper;
 
 $columns = [
 	[
 		'label' => Yii::t('main', 'message'),
 		'format' => 'raw',
-		'value' => function($data) use($entity){
+		'value' => function(CommitEntity $commitEntity) use($entity){
 			$tagHtml = '';
-			if(!empty($data['tag'])) {
-				$tagHtml =  " <span class='label label-default'>{$data['tag']['name']}</span>";
+			if(!empty($commitEntity->tag)) {
+				$tagHtml =  " <span class='label label-default'>{$commitEntity->tag->name}</span>";
 			}
-			return Html::a($data['message'], "https://github.com/{$entity->package}/commit/{$data['sha']}", [
+			$url = VersionHelper::generateUrl($entity, 'viewCommit', [
+				'package' => $entity->package,
+				'hash' => $commitEntity->sha,
+			]);
+			return Html::a($commitEntity->message, $url, [
 				'target' => '_blank',
 			]) . SPC . $tagHtml;
 		},
@@ -26,13 +31,13 @@ $columns = [
 	[
 		'label' => Yii::t('main', 'sha'),
 		'format' => 'raw',
-		'value' => function($data) {
-			return Html::tag('span', substr($data['sha'], 0, 8), ['title' => $data['sha']]);
+		'value' => function(CommitEntity $commitEntity) {
+			return Html::tag('span', substr($commitEntity->sha, 0, 8), ['title' => $commitEntity->sha]);
 		},
 	],
 ];
 $dataProvider = new ArrayDataProvider([
-	'models' => ArrayHelper::toArray($entity->commits),
+	'models' => $entity->commits,
 ]);
 ?>
 

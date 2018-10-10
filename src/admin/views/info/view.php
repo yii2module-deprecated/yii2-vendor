@@ -26,7 +26,9 @@ ClipboardJsAsset::register($this);
 		<?= Yii::t('vendor/info', 'package_need_of_release') ?>
 		<?= Html::a(
 			Yii::t('vendor/info', 'draft_new_release'),
-			VersionHelper::getReleaseUrl($entity),
+			VersionHelper::generateUrl($entity, 'newTag', [
+				'package' => $entity->package,
+			]),
 			[
 				'class' => 'btn btn-primary',
 				'target' => '_blank',

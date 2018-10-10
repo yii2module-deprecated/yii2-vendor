@@ -20,6 +20,7 @@ class VersionHelper {
 			'remove',
 			'delete',
 			'deep',
+			'major',
 		],
 		VersionTypeEnum::MINOR => [
 			'new',
@@ -33,6 +34,7 @@ class VersionHelper {
 			'deprecated',
 			'move',
 			'rename',
+			'minor',
 		],
 		VersionTypeEnum::PATCH => [
 			'fix',
@@ -43,30 +45,52 @@ class VersionHelper {
 			'doc',
 			'comment',
 			'pretty',
+			'copyright',
+			'license',
+			'guide',
+			'test',
+			'patch',
 		],
 	];
 	
 	private static $remotes = [
 		'git.wooppay.local' => [
 			'uri' => [
-				'newTag' => 'http://git.wooppay.local/{package}/tags/new',
+				'newTag' => '{package}/tags/new',
+				'viewCommit' => '{package}/commit/{hash}',
 			],
 		],
 		'github.com' => [
 			'uri' => [
-				'newTag' => 'https://github.com/{package}/releases/new',
+				'newTag' => '{package}/releases/new',
+				'viewCommit' => '{package}/commit/{hash}',
 			],
 		],
 	];
 	
-	public static function getReleaseUrl(RepoEntity $entity) {
-		$url = UrlHelper::parse($entity->remote_url);
+	private static function forgeUrl($remote_url, $path = null) {
+		$url = UrlHelper::parse($remote_url);
+		$result = $url['scheme'] . '://' . $url['host'];
+		if($path) {
+			$result .= SL . $path;
+		}
+		return $result;
+	}
+	
+	private static function getProfileConfig($remote_url, $key = null) {
+		$url = UrlHelper::parse($remote_url);
 		$host = $url['host'];
-		$newTagUrlTemplate = self::$remotes[$host]['uri']['newTag'];
-		$newTagUrl = WidgetHelper::renderTemplate($newTagUrlTemplate, [
-			'package' => $entity->package,
-		]);
-		return $newTagUrl;
+		$config = self::$remotes[$host];
+		if(!empty($key)) {
+			return ArrayHelper::getValue($config, $key);
+		}
+		return $config;
+	}
+	
+	public static function generateUrl(RepoEntity $entity, $paramName, $params) {
+		$newTagUrlTemplate = self::getProfileConfig($entity->remote_url, 'uri.' . $paramName);
+		$newTagUrl = WidgetHelper::renderTemplate($newTagUrlTemplate, $params);
+		return self::forgeUrl($entity->remote_url, $newTagUrl);
 	}
 	
 	public static function getVariations(RepoEntity $entity) {
@@ -123,7 +147,7 @@ class VersionHelper {
 			}
 			foreach(self::$types as $tName => $tValue) {
 				foreach($tValue as $exp) {
-					$exp = '#' . $exp . '#';
+					$exp = '#' . $exp . '#i';
 					if(preg_match($exp, $commit->message)) {
 						$type[$tName]++;
 					}
