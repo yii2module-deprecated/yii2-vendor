@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\helpers;
 
 use yii\helpers\ArrayHelper;
+use yii2lab\extension\common\helpers\Helper;
 use yii2lab\extension\common\helpers\UrlHelper;
 use yii2lab\extension\widget\helpers\WidgetHelper;
 use yii2module\vendor\domain\entities\CommitEntity;
@@ -160,7 +161,7 @@ class VersionHelper {
 	private static function getVersionVariations($versionList) {
 		usort($versionList, [self::class, 'sortCallback']);
 		$versionList = array_reverse($versionList);
-		$tree = self::list2tree($versionList);
+		$tree = Helper::list2tree($versionList);
 		$result = self::newVersions($tree);
 		//$result['current'] = \yii2mod\helpers\ArrayHelper::last($versionList);
 		return $result;
@@ -176,14 +177,6 @@ class VersionHelper {
 			$tree = $tree[$version];
 		}
 		return $result;
-	}
-	
-	private static function list2tree($versionList) {
-		$tree = [];
-		foreach($versionList as $version) {
-			\yii2mod\helpers\ArrayHelper::setValue($tree, $version, $version);
-		}
-		return $tree;
 	}
 	
 	private static function buildNextVersion($items) {
