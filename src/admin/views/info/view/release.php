@@ -22,21 +22,25 @@ $releaseUrl = VersionHelper::generateUrl($entity, 'newTag', [
 <?php } ?>
 
 <?php foreach($versionVariations as $version) { ?>
-	<a href="<?= $releaseUrl ?>" target="_blank" class="btn btn-<?= $version['is_recommended'] ? 'primary' : 'default' ?> btn-copy" title="copy version" data-clipboard-text="v<?= $version['version'] ?>">
+    <a href="<?= $releaseUrl ?>" target="_blank"
+       class="btn btn-<?= $version['is_recommended'] ? 'primary' : 'default' ?> btn-copy" title="copy version"
+       data-clipboard-text="v<?= $version['version'] ?>">
         v<?= $version['version'] ?>
-		<i class="fa fa-clipboard" aria-hidden="true"></i>
-	</a>
-	&nbsp;
+        <i class="fa fa-clipboard" aria-hidden="true"></i>
+    </a>
+    &nbsp;
 <?php } ?>
 
 <?php
 
-$newEntity = clone $entity;
-$newEntity->commits = VersionHelper::filterNewVersionCommits($newEntity->commits);
-//prr($newEntity->commits,1,1);
+$commits = VersionHelper::filterNewVersionCommits($entity->commits);
+
 ?>
 
 <h4><?= Yii::t('vendor/info', 'new_commits') ?></h4>
 
-<?= $this->render('_commitTable', ['entity' => $newEntity]) ?>
+<?= $this->render('_commitTable', [
+	'entity' => $entity,
+	'commits' => $commits,
+]) ?>
 

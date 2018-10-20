@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\helpers;
 
 use yii\helpers\ArrayHelper;
+use yii2lab\domain\data\EntityCollection;
 use yii2lab\extension\common\helpers\Helper;
 use yii2lab\extension\common\helpers\UrlHelper;
 use yii2lab\extension\widget\helpers\WidgetHelper;
@@ -89,15 +90,17 @@ class VersionHelper {
 	}
 	
 	public static function filterNewVersionCommits($collection) {
-		$commits = [];
-		/** @var CommitEntity $collection */
-		foreach($collection as $commit) {
+		/** @var CommitEntity[] $collection */
+		$start = false;
+		foreach($collection as $index => $commit) {
 			if($commit->tag) {
-				return $commits;
+				$start = true;
 			}
-			$commits[] = $commit;
+			if($start) {
+				unset($collection[$index]);
+			}
 		}
-		return $commits;
+		return $collection;
 	}
 	
 	public static function generateUrl(RepoEntity $entity, $paramName, $params) {

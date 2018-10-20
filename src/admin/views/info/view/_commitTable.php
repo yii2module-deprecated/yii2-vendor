@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View
  * @var $entity \yii2module\vendor\domain\entities\RepoEntity
+ * @var $commits \yii2module\vendor\domain\entities\CommitEntity[]
  */
 
 use yii\data\ArrayDataProvider;
@@ -45,7 +46,7 @@ $columns = [
 	],
 ];
 $dataProvider = new ArrayDataProvider([
-	'models' => $entity->commits,
+	'models' => $commits,
 ]);
 ?>
 

@@ -6,7 +6,7 @@
 
 ?>
 
-<br/>
+    <br/>
 
 <?php if($entity->has_changes) { ?>
     <div class="alert alert-warning">
@@ -14,4 +14,7 @@
     </div>
 <?php } ?>
 
-<?= $this->render('_commitTable', compact('entity')) ?>
+<?= $this->render('_commitTable', [
+	'entity' => $entity,
+	'commits' => $entity->commits,
+]) ?>
