@@ -23,14 +23,14 @@ $columns = [
 		},
 	],
 	[
-		'label' => Yii::t('main', 'sha'),
+		'label' => Yii::t('vendor/main', 'sha'),
 		'format' => 'raw',
 		'value' => function($data) {
 			return Html::tag('span', substr($data['sha'], 0, 8), ['title' => $data['sha']]);
 		},
 	],
 	[
-		'label' => Yii::t('main', 'checkout'),
+		'label' => Yii::t('main', 'action'),
 		'format' => 'raw',
 		'value' => function($data) use($entity) {
 			return Html::a(
@@ -50,6 +50,8 @@ $dataProvider = new ArrayDataProvider([
 ]);
 ?>
 
+<br/>
+
 <?= Html::a(
 	Yii::t('vendor/git', 'checkout') . SPC . '<b>master</b>',
 	Url::to('/vendor/git/checkout?id='.$entity->id.'&branch=master'),
@@ -57,9 +59,10 @@ $dataProvider = new ArrayDataProvider([
 		'class' => 'btn btn-default',
 		'data-method' => 'post',
 	]
-);
+); ?>
 
-?>
+<br/>
+<br/>
 
 <?= GridView::widget([
 	'dataProvider' => $dataProvider,

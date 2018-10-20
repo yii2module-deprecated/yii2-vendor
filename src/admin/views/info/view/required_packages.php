@@ -24,6 +24,8 @@ $dataProvider = new ArrayDataProvider([
 ]);
 ?>
 
+<br/>
+
 <?= GridView::widget([
 	'dataProvider' => $dataProvider,
 	'layout' => '{items}',

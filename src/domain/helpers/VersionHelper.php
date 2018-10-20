@@ -88,6 +88,18 @@ class VersionHelper {
 		return $config;
 	}
 	
+	public static function filterNewVersionCommits($collection) {
+		$commits = [];
+		/** @var CommitEntity $collection */
+		foreach($collection as $commit) {
+			if($commit->tag) {
+				return $commits;
+			}
+			$commits[] = $commit;
+		}
+		return $commits;
+	}
+	
 	public static function generateUrl(RepoEntity $entity, $paramName, $params) {
 		$newTagUrlTemplate = self::getProfileConfig($entity->remote_url, 'uri.' . $paramName);
 		$newTagUrl = WidgetHelper::renderTemplate($newTagUrlTemplate, $params);

@@ -18,6 +18,7 @@ return [
 	'list_changed' => 'Измененные',
 	'list_for_release' => 'Релиз',
 	'last_commit' => 'HEAD коммит',
+	'new_commits' => 'Неверсионированные коммиты',
 	'package_need_of_release' => 'Есть неверсионированные изменения. Можно выпустить очередной релиз.',
 	'draft_new_release' => 'Выпустить релиз',
 	'required_packages' => 'Зависимости',
