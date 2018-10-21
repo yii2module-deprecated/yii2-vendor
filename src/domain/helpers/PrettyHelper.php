@@ -53,6 +53,7 @@ class PrettyHelper {
 		$one = \App::$domain->vendor->pretty->oneById($namespace);
 		$fileName = FileHelper::getAlias('@' . $namespace . '\\Domain');
 		$tokenCollection = TokenHelper::load($fileName . DOT . 'php');
+		$tokenCollection = TokenCollectionHelper::addDocComment($tokenCollection);
 		$docCommentIndexes = TokenCollectionHelper::getDocCommentIndexes($tokenCollection);
 		// todo: если нет докблока, то вставлять
 		$docComment = $tokenCollection[$docCommentIndexes[0]]->value;
@@ -78,7 +79,9 @@ class PrettyHelper {
 			],
 		]);
 		$doc = DocCommentHelper::generate($entity);
-		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		$index = $docCommentIndexes[0];
+		$tokenEntity = $tokenCollection[$index];
+		$tokenEntity->value = $doc;
 		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
 	}
 	

@@ -15,9 +15,15 @@ class PrettyController extends Controller
 	{
 		$collection = \App::$domain->vendor->pretty->all();
 		$domainAliases = ArrayHelper::getColumn($collection, 'path');
-		$domainAlias = Select::display('Select domain', $domainAliases);
-		$domainAlias = ArrayHelper::first($domainAlias);
-		\App::$domain->vendor->pretty->updateById($domainAlias, []);
+		
+		$aliases = Select::display('Select domains', $domainAliases, true);
+		$aliases = array_values($aliases);
+		
+		foreach($aliases as $alias) {
+			\App::$domain->vendor->pretty->updateById($alias, []);
+			Output::line($alias . ' ... OK');
+		}
+		
 		Output::block('Success pretty');
 	}
 	
