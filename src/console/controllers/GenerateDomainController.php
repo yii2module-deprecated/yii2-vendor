@@ -2,14 +2,16 @@
 
 namespace yii2module\vendor\console\controllers;
 
-use Yii;
 use yii\console\Controller;
-use yii2lab\extension\console\helpers\input\Enter;
-use yii2lab\extension\console\helpers\input\Question;
-use yii2lab\extension\console\helpers\input\Select;
 use yii2lab\extension\console\helpers\Output;
-use yii2lab\domain\enums\Driver;
-use yii2mod\helpers\ArrayHelper;
+use yii2lab\extension\scenario\collections\ScenarioCollection;
+use yii2module\vendor\console\commands\generator\GenerateRepositoryCommand;
+use yii2module\vendor\console\commands\generator\GenerateServiceCommand;
+use yii2module\vendor\console\commands\generator\InputEntityNameCommand;
+use yii2module\vendor\console\commands\generator\QuestionIsActiveCommand;
+use yii2module\vendor\console\commands\generator\SelectDomainCommand;
+use yii2module\vendor\console\commands\generator\SelectUnitTypesCommand;
+use yii2module\vendor\console\events\DomainEvent;
 
 class GenerateDomainController extends Controller
 {
@@ -71,52 +73,25 @@ class GenerateDomainController extends Controller
 	{
 		Output::title("Domain units generator");
 		
-		$data['namespace'] = $this->namespace;
-		$data['name'] = $this->name;
-		$data['isActive'] = !empty($this->isActive) ? $this->isActive == 'y' : null;
-		$data['drivers'] = !empty($this->drivers) ? explode(',', $this->drivers) : null;
-		$data['attributes'] = !empty($this->attributes) ? explode(',', $this->attributes) : null;
-		$types = !empty($this->types) ? explode(',', $this->types) : null;
+		$event = new DomainEvent();
+		$event->namespace = $this->namespace;
+		$event->name = $this->name;
+		$event->isActive = !empty($this->isActive) ? $this->isActive == 'y' : null;
+		$event->drivers = !empty($this->drivers) ? explode(',', $this->drivers) : null;
+		$event->attributes = !empty($this->attributes) ? explode(',', $this->attributes) : null;
+		$event->types = !empty($this->types) ? explode(',', $this->types) : null;
 		
-		if(empty($data['namespace'])) {
-			$domainAliases = \App::$domain->vendor->pretty->all();
-			$domainAlias = Select::display('Select domain', $domainAliases);
-			$data['namespace'] = ArrayHelper::first($domainAlias);
-		}
-		
-		if(empty($types)) {
-			$types = Select::display('Select types', ['service', 'repository', 'entity'], true);
-			$types = array_values($types);
-		}
-		
-		if(empty($data['name'])) {
-			$data['name'] = Enter::display('Enter name');
-		}
-		
-		if($data['isActive'] === null && (in_array('service', $types) || in_array('repository', $types))) {
-			$data['isActive'] = Question::confirm2('Is active?', false);
-		}
-		//prr($data,1);
-		if(in_array('service', $types)) {
-			\App::$domain->vendor->generator->generateService($data);
-		}
-		
-		if(in_array('repository', $types)) {
-			if(empty($data['drivers'])) {
-				$allDrivers = Driver::values();
-				$drivers = Select::display('Select repository driver', $allDrivers, true, true);
-				$data['drivers'] = array_values($drivers);
-			}
-			\App::$domain->vendor->generator->generateRepository($data);
-		}
-		
-		if(in_array('entity', $types)) {
-			if(empty($data['attributes'])) {
-				$attributes = Enter::display('Enter entity attributes');
-				$data['attributes'] = explode(',', $attributes);
-			}
-			\App::$domain->vendor->generator->generateEntity($data);
-		}
+		$filters = [
+			SelectDomainCommand::class,
+			SelectUnitTypesCommand::class,
+			InputEntityNameCommand::class,
+			QuestionIsActiveCommand::class,
+			GenerateServiceCommand::class,
+			GenerateRepositoryCommand::class,
+			GenerateRepositoryCommand::class,
+		];
+		$filterCollection = new ScenarioCollection($filters);
+		$filterCollection->runAll($event);
 		
 		Output::block('Success generated');
 	}

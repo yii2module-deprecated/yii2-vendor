@@ -2,7 +2,6 @@
 
 namespace yii2module\vendor\console\controllers;
 
-use Yii;
 use yii\console\Controller;
 use yii2lab\extension\console\helpers\input\Enter;
 use yii2lab\extension\console\helpers\input\Select;
@@ -39,7 +38,8 @@ class GeneratorController extends Controller
 	}
 	
 	private function inputPackage() {
-		$ownerSelect = Select::display('Select owner', \App::$domain->vendor->generator->owners);
+		$owners = array_unique(\App::$domain->vendor->generator->owners);
+		$ownerSelect = Select::display('Select owner', $owners);
 		$owner = Select::getFirstValue($ownerSelect);
 		$name = Enter::display('Enter vendor name');
 		return [$owner, $name];
