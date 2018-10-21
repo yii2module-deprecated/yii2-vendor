@@ -5,11 +5,14 @@ namespace yii2module\vendor\console\controllers;
 use yii\console\Controller;
 use yii2lab\extension\console\helpers\Output;
 use yii2lab\extension\scenario\collections\ScenarioCollection;
+use yii2module\vendor\console\commands\domainUnitGenerator\GenerateEntityCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\GenerateRepositoryCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\GenerateServiceCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\InputEntityAttributesCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\InputEntityNameCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\QuestionIsActiveCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\SelectDomainCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\SelectRepositoryDriversCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\SelectUnitTypesCommand;
 use yii2module\vendor\console\events\DomainEvent;
 
@@ -86,9 +89,12 @@ class GenerateDomainController extends Controller
 			SelectUnitTypesCommand::class,
 			InputEntityNameCommand::class,
 			QuestionIsActiveCommand::class,
+			SelectRepositoryDriversCommand::class,
+			InputEntityAttributesCommand::class,
+			
 			GenerateServiceCommand::class,
 			GenerateRepositoryCommand::class,
-			GenerateRepositoryCommand::class,
+			GenerateEntityCommand::class,
 		];
 		$filterCollection = new ScenarioCollection($filters);
 		$filterCollection->runAll($event);

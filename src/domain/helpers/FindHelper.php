@@ -6,8 +6,22 @@ use yii\base\InvalidArgumentException;
 use yii2lab\domain\Domain;
 use yii2lab\extension\common\helpers\ClassHelper;
 use yii2lab\extension\yii\helpers\FileHelper;
+use yii2mod\helpers\ArrayHelper;
 
 class FindHelper {
+	
+	public static function scanForDomain($sourceAliasNames) {
+		if(empty($sourceAliasNames)) {
+			return [];
+		}
+		$sourceAliasNames = ArrayHelper::toArray($sourceAliasNames);
+		$aliases = [];
+		foreach($sourceAliasNames as $domainAliasName) {
+			$aliasesNew = FindHelper::scanForDomainRecursive($domainAliasName);
+			$aliases = ArrayHelper::merge($aliases, $aliasesNew);
+		}
+		return $aliases;
+	}
 	
 	public static function scanForDomainRecursive($domainAliasName) {
 		$aliases = [];

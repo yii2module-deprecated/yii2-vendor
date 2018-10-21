@@ -9,11 +9,12 @@ class SelectDomainCommand extends Base {
 	
 	public function run() {
 		$event = $this->getEvent();
-		if(empty($event->namespace)) {
-			$domainAliases = \App::$domain->vendor->pretty->all();
-			$domainAlias = Select::display('Select domain', $domainAliases);
-			$event->namespace = ArrayHelper::first($domainAlias);
+		if(!empty($event->namespace)) {
+			return;
 		}
+		$domainAliases = \App::$domain->vendor->pretty->all();
+		$domainAlias = Select::display('Select domain', $domainAliases);
+		$event->namespace = ArrayHelper::first($domainAlias);
 	}
 	
 }

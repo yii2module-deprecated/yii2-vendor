@@ -8,10 +8,11 @@ class SelectUnitTypesCommand extends Base {
 	
 	public function run() {
 		$event = $this->getEvent();
-		if(empty($event->types)) {
-			$types = Select::display('Select types', ['service', 'repository', 'entity'], true);
-			$event->types = array_values($types);
+		if(!empty($event->types)) {
+			return;
 		}
+		$types = Select::display('Select types', ['service', 'repository', 'entity'], true);
+		$event->types = array_values($types);
 	}
 	
 }

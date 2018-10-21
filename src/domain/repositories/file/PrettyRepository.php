@@ -36,18 +36,13 @@ class PrettyRepository extends BaseRepository {
 	public function allPackagesDomain() {
 		/** @var PackageEntity[] $packageCollection */
 		$packageCollection = \App::$domain->vendor->info->all();
-		$aliases = [];
-		foreach($packageCollection as $package) {
-			$domainAliasName = $package->alias;
-			$aliasesNew = FindHelper::scanForDomainRecursive($domainAliasName);
-			$aliases = ArrayHelper::merge($aliases, $aliasesNew);
-		}
-		return $aliases;
+		$aliases = ArrayHelper::getColumn($packageCollection, 'alias');
+		return FindHelper::scanForDomain($aliases);
 	}
 	
 	public function allProjectDomain() {
 		$baseAlias = 'domain';
-		return FindHelper::scanForDomainRecursive($baseAlias);
+		return FindHelper::scanForDomain($baseAlias);
 	}
 	
 }

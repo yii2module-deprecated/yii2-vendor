@@ -8,9 +8,10 @@ class GenerateServiceCommand extends Base {
 	
 	public function run() {
 		$event = $this->getEvent();
-		if(in_array('service', $event->types)) {
-			\App::$domain->vendor->generator->generateService(ArrayHelper::toArray($event));
+		if(!$this->isHasType('service')) {
+			return;
 		}
+		\App::$domain->vendor->generator->generateService(ArrayHelper::toArray($event));
 	}
 	
 }

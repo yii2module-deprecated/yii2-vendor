@@ -2,28 +2,15 @@
 
 namespace yii2module\vendor\console\events;
 
-use yii2lab\domain\BaseEntity;
+use yii\base\Event;
 
-/**
- * Class DomainEvent
- *
- * @package yii2module\vendor\console\events
- *
- * @property $namespace
- * @property $name
- * @property $isActive
- * @property $drivers
- * @property $attributes
- * @property $types
- *
- */
-class DomainEvent extends BaseEntity {
+class DomainEvent extends Event {
 	
-	protected $namespace;
-	protected $name;
-	protected $isActive;
-	protected $drivers;
-	protected $attributes;
-	protected $types;
+	public $namespace;
+	public $name;
+	public $isActive;
+	public $drivers;
+	public $attributes;
+	public $types;
 	
 }

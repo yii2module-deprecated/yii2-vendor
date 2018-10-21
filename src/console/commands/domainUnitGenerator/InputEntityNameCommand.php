@@ -8,9 +8,10 @@ class InputEntityNameCommand extends Base {
 	
 	public function run() {
 		$event = $this->getEvent();
-		if(empty($event->name)) {
-			$event->name = Enter::display('Enter name');
+		if(!empty($event->name)) {
+			return;
 		}
+		$event->name = Enter::display('Enter name');
 	}
 	
 }

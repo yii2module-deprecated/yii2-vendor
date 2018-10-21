@@ -12,5 +12,9 @@ abstract class Base extends BaseScenario {
 		$event = $this->getData();
 		return $event;
 	}
-
+	
+	protected function isHasType($typeName) {
+		$event = $this->getEvent();
+		return in_array($typeName, $event->types);
+	}
 }
