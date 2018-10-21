@@ -2,7 +2,7 @@
 
 namespace yii2module\vendor\domain\services;
 
-use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\domain\services\base\BaseActiveService;
 use yii2module\vendor\domain\repositories\file\GitRepository;
 
 /**
@@ -10,9 +10,10 @@ use yii2module\vendor\domain\repositories\file\GitRepository;
  *
  * @package yii2module\vendor\domain\services
  *
- * @property GitRepository $repository
+ * @property-read GitRepository $repository
+ * @property-read \yii2module\vendor\domain\Domain $domain
  */
-class GitService extends ActiveBaseService {
+class GitService extends BaseActiveService {
 	
 	public $ignore;
 	

@@ -2,8 +2,7 @@
 
 namespace yii2module\vendor\domain\services;
 
-use Yii;
-use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\domain\services\base\BaseActiveService;
 use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\entities\PackageEntity;
 use yii2module\vendor\domain\repositories\file\PackageRepository;
@@ -12,9 +11,10 @@ use yii2module\vendor\domain\repositories\file\PackageRepository;
  * Class PackageService
  *
  * @package yii2module\vendor\domain\services
- * @property PackageRepository $repository
+ * @property-read PackageRepository $repository
+ * @property-read \yii2module\vendor\domain\Domain $domain
  */
-class PackageService extends ActiveBaseService {
+class PackageService extends BaseActiveService {
 	
 	public $aliases = [EMP];
 	

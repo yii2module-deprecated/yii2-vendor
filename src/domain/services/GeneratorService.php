@@ -12,6 +12,14 @@ use yii2module\vendor\domain\helpers\GeneratorHelper;
 use yii2module\vendor\domain\helpers\PrettyHelper;
 use yii2module\vendor\domain\repositories\file\GeneratorRepository;
 
+/**
+ * Class GeneratorService
+ *
+ * @package yii2module\vendor\domain\services
+ *
+ * @property-read GeneratorRepository $repository
+ * @property-read \yii2module\vendor\domain\Domain $domain
+ */
 class GeneratorService extends BaseService {
 
 	public $author;

@@ -3,7 +3,7 @@
 namespace yii2module\vendor\domain\services;
 
 use yii2lab\domain\data\Query;
-use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\domain\services\base\BaseActiveService;
 use yii2module\vendor\domain\repositories\file\InfoRepository;
 
 /**
@@ -11,9 +11,10 @@ use yii2module\vendor\domain\repositories\file\InfoRepository;
  *
  * @package yii2module\vendor\domain\services
  *
- * @property InfoRepository $repository
+ * @property-read InfoRepository $repository
+ * @property-read \yii2module\vendor\domain\Domain $domain
  */
-class InfoService extends ActiveBaseService {
+class InfoService extends BaseActiveService {
 	
 	public $ignore;
 	

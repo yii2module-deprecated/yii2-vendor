@@ -2,20 +2,19 @@
 
 namespace yii2module\vendor\domain\services;
 
-use Yii;
-use yii2lab\domain\services\ActiveBaseService;
+use yii2lab\domain\services\base\BaseActiveService;
 use yii2lab\extension\yii\helpers\FileHelper;
 use yii\helpers\ArrayHelper;
-use yii2module\vendor\domain\repositories\file\GitRepository;
 use yii2module\vendor\domain\repositories\file\TestRepository;
 
 /**
  * Class TestService
  * @package yii2module\vendor\domain\services
  *
- * @property TestRepository $repository
+ * @property-read TestRepository $repository
+ * @property-read \yii2module\vendor\domain\Domain $domain
  */
-class TestService extends ActiveBaseService {
+class TestService extends BaseActiveService {
 	
 	public $ignore;
 	public $aliases;
@@ -48,7 +47,7 @@ class TestService extends ActiveBaseService {
 			return [];
 		}
 		foreach($this->aliases as $alias) {
-			$directory = Yii::getAlias($alias);
+			$directory = FileHelper::getAlias($alias);
 		    if(FileHelper::has($directory)) {
                 $collection[] = [
                     'name' => trim($alias, '@/'),
