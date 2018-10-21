@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2module\vendor\console\commands\generator;
+namespace yii2module\vendor\console\commands\domainUnitGenerator;
 
 use yii2lab\extension\console\helpers\input\Question;
 

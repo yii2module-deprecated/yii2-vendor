@@ -5,12 +5,12 @@ namespace yii2module\vendor\console\controllers;
 use yii\console\Controller;
 use yii2lab\extension\console\helpers\Output;
 use yii2lab\extension\scenario\collections\ScenarioCollection;
-use yii2module\vendor\console\commands\generator\GenerateRepositoryCommand;
-use yii2module\vendor\console\commands\generator\GenerateServiceCommand;
-use yii2module\vendor\console\commands\generator\InputEntityNameCommand;
-use yii2module\vendor\console\commands\generator\QuestionIsActiveCommand;
-use yii2module\vendor\console\commands\generator\SelectDomainCommand;
-use yii2module\vendor\console\commands\generator\SelectUnitTypesCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\GenerateRepositoryCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\GenerateServiceCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\InputEntityNameCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\QuestionIsActiveCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\SelectDomainCommand;
+use yii2module\vendor\console\commands\domainUnitGenerator\SelectUnitTypesCommand;
 use yii2module\vendor\console\events\DomainEvent;
 
 class GenerateDomainController extends Controller
