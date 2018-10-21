@@ -2,7 +2,6 @@
 
 namespace yii2module\vendor\domain\helpers;
 
-use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii2lab\domain\Domain;
@@ -21,25 +20,6 @@ class PrettyHelper {
 		self::generateVirtualRepositoryInterface($namespace);
 		self::updateDomainDocComment($namespace);
 		self::updateDomainContainerDocComment($namespace);
-	}
-	
-	public static function scanForDomainRecursive($domainAliasName) {
-		$domainAlias = '@' . $domainAliasName;
-		$aliases = [];
-		try {
-			if(self::isDomainDir($domainAlias)) {
-				$aliases[] = $domainAliasName;
-			} else {
-				$versions = self::scanForDomain($domainAlias);
-				foreach($versions as $version) {
-					$newAliases = self::scanForDomainRecursive($domainAliasName . SL . $version);
-					if(!empty($newAliases)) {
-						$aliases = ArrayHelper::merge($aliases, $newAliases);
-					}
-				}
-			}
-		} catch(InvalidArgumentException $e) {}
-		return $aliases;
 	}
 	
 	private static function updateDomainContainerDocComment($namespace) {
@@ -156,33 +136,5 @@ class PrettyHelper {
 		$class{0} = strtolower($class{0});
 		return $class;
 	}
-	
-	private static function isDomainDir($domainDir) {
-		$alias = substr($domainDir, 1);
-		$alias = str_replace(SL, BSL, $alias);
-		$className = FileHelper::fileRemoveExt($alias);
-		if($className != $alias) {
-			return false;
-		}
-		$classNameDomain = $className . BSL . 'Domain';
-		if(class_exists($classNameDomain)) {
-			$domainInstance = ClassHelper::createObject($classNameDomain);
-			$isDomainClass = $domainInstance instanceof Domain;
-			if($isDomainClass) {
-				return true;
-			}
-		}
-		$isServicesDirExists = is_dir(FileHelper::getAlias($domainDir)  . DS . 'services');
-		return $isServicesDirExists;
-	}
-	
-	private static function scanForDomain($alias) {
-		$domainDir = FileHelper::getAlias($alias);
-		if(!is_dir($domainDir)) {
-			return [];
-		}
-		return FileHelper::scanDir($domainDir);
-	}
-	
 	
 }

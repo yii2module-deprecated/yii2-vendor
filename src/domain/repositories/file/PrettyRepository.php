@@ -9,6 +9,7 @@ use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\extension\yii\helpers\FileHelper;
 use yii2module\vendor\domain\entities\DomainEntity;
 use yii2module\vendor\domain\entities\PackageEntity;
+use yii2module\vendor\domain\helpers\FindHelper;
 use yii2module\vendor\domain\helpers\PrettyHelper;
 
 class PrettyRepository extends BaseRepository {
@@ -38,7 +39,7 @@ class PrettyRepository extends BaseRepository {
 		$aliases = [];
 		foreach($packageCollection as $package) {
 			$domainAliasName = $package->alias;
-			$aliasesNew = PrettyHelper::scanForDomainRecursive($domainAliasName);
+			$aliasesNew = FindHelper::scanForDomainRecursive($domainAliasName);
 			$aliases = ArrayHelper::merge($aliases, $aliasesNew);
 		}
 		return $aliases;
@@ -46,7 +47,7 @@ class PrettyRepository extends BaseRepository {
 	
 	public function allProjectDomain() {
 		$baseAlias = 'domain';
-		return PrettyHelper::scanForDomainRecursive($baseAlias);
+		return FindHelper::scanForDomainRecursive($baseAlias);
 	}
 	
 }
