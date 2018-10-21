@@ -10,17 +10,16 @@ use yii\helpers\ArrayHelper;
 $columns = [
 	[
 		'label' => Yii::t('main', 'name'),
-		'attribute' => 'alias',
+		'attribute' => 'name',
+	],
+	[
+		'label' => Yii::t('main', 'version'),
+		'attribute' => 'version',
 	],
 ];
-$collection = [];
-foreach($entity->required_packages as $item) {
-	$collection[] = [
-		'alias' => $item,
-	];
-}
+
 $dataProvider = new ArrayDataProvider([
-	'models' => ArrayHelper::toArray($collection),
+	'models' => ArrayHelper::toArray($entity->required_packages),
 ]);
 ?>
 

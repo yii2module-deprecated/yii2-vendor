@@ -23,7 +23,7 @@ class FindHelper {
 		return $aliases;
 	}
 	
-	public static function scanForDomainRecursive($domainAliasName) {
+	private static function scanForDomainRecursive($domainAliasName) {
 		$aliases = [];
 		$domainAlias = '@' . $domainAliasName;
 		$domains = self::getDomainsFromDir($domainAlias);

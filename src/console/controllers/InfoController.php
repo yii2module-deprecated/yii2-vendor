@@ -8,6 +8,7 @@ use yii2lab\extension\console\helpers\input\Select;
 use yii2lab\extension\console\helpers\Output;
 use yii2lab\extension\console\base\Controller;
 use yii\helpers\ArrayHelper;
+use yii2module\vendor\domain\entities\RequiredEntity;
 
 class InfoController extends Controller
 {
@@ -82,11 +83,11 @@ class InfoController extends Controller
 	{
 		list($owner, $name) = $this->inputPackage();
 		Output::line('Find uses in package...');
-		$uses = \App::$domain->vendor->info->usesById($owner . '-yii2-' . $name);
+		$requiredCollection = \App::$domain->vendor->info->usesById($owner . '-yii2-' . $name);
 		Output::line();
-		foreach($uses as $placeName => $list) {
-			Output::items($list, Inflector::titleize($placeName));
-			Output::line();
+		/** @var RequiredEntity[] $requiredCollection */
+		foreach($requiredCollection as $requiredEntity) {
+			Output::line($requiredEntity->name . ' ... ' . $requiredEntity->version);
 		}
 	}
 	

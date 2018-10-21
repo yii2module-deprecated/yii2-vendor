@@ -2,13 +2,17 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
+use yii\base\InvalidArgumentException;
 use yii\web\NotFoundHttpException;
 use yii2lab\extension\scenario\collections\ScenarioCollection;
 use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
+use yii2lab\extension\yii\helpers\FileHelper;
+use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\entities\RepoEntity;
+use yii2module\vendor\domain\entities\RequiredEntity;
 use yii2module\vendor\domain\filters\IsIgnoreFilter;
 use yii2module\vendor\domain\filters\IsPackageFilter;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
@@ -116,7 +120,24 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 		$entity = $this->oneById($id);
 		$uses = UseHelper::find($entity->directory);
 		$res = UseHelper::listToMap($uses, $entity);
-		return $res;
+		$res['required_packages'] = $this->forgeRequiredPackages($res['required_packages']);
+		return $res['required_packages'];
+	}
+	
+	private function forgeRequiredPackages($collection) {
+		$packages = [];
+		foreach($collection as $package) {
+			try {
+				$package = FileHelper::getAlias('@' . $package);
+				$package = str_replace(VENDOR_DIR . DS, '', $package);
+				$packageArr = explode(BSL, $package);
+				$package = $packageArr[0] . BSL . $packageArr[1];
+				$package = str_replace(BSL, SL, $package);
+				$version = \Yii::$app->extensions[$package];
+				$packages[] = new RequiredEntity($version);
+			} catch(InvalidArgumentException $e) {}
+		}
+		return $packages;
 	}
 	
 	/**
@@ -189,7 +210,7 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 				$item['has_changes'] = $repo->hasChanges();
 			}
 			if(in_array('required_packages', $with)) {
-				$item['required_packages'] = $this->usesById($item['id'])['required_packages'];
+				$item['required_packages'] = $this->usesById($item['id']);
 			}
 			if(in_array('remote_url', $with)) {
 				$item['remote_url'] = $repo->showRemote();
