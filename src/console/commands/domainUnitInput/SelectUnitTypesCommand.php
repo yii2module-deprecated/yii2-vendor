@@ -1,8 +1,9 @@
 <?php
 
-namespace yii2module\vendor\console\commands\domainUnitGenerator;
+namespace yii2module\vendor\console\commands\domainUnitInput;
 
 use yii2lab\extension\console\helpers\input\Select;
+use yii2module\vendor\console\commands\Base;
 
 class SelectUnitTypesCommand extends Base {
 	

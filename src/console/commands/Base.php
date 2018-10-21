@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2module\vendor\console\commands\domainUnitGenerator;
+namespace yii2module\vendor\console\commands;
 
 use yii2lab\extension\scenario\base\BaseScenario;
 use yii2module\vendor\console\events\DomainEvent;

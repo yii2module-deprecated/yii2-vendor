@@ -3,6 +3,7 @@
 namespace yii2module\vendor\console\commands\domainUnitGenerator;
 
 use yii\helpers\ArrayHelper;
+use yii2module\vendor\console\commands\Base;
 
 class GenerateEntityCommand extends Base {
 	

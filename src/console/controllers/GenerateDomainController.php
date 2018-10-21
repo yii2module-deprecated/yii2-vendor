@@ -8,12 +8,12 @@ use yii2lab\extension\scenario\collections\ScenarioCollection;
 use yii2module\vendor\console\commands\domainUnitGenerator\GenerateEntityCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\GenerateRepositoryCommand;
 use yii2module\vendor\console\commands\domainUnitGenerator\GenerateServiceCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\InputEntityAttributesCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\InputEntityNameCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\QuestionIsActiveCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\SelectDomainCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\SelectRepositoryDriversCommand;
-use yii2module\vendor\console\commands\domainUnitGenerator\SelectUnitTypesCommand;
+use yii2module\vendor\console\commands\domainUnitInput\InputEntityAttributesCommand;
+use yii2module\vendor\console\commands\domainUnitInput\InputEntityNameCommand;
+use yii2module\vendor\console\commands\domainUnitInput\QuestionIsActiveCommand;
+use yii2module\vendor\console\commands\domainUnitInput\SelectDomainCommand;
+use yii2module\vendor\console\commands\domainUnitInput\SelectRepositoryDriversCommand;
+use yii2module\vendor\console\commands\domainUnitInput\SelectUnitTypesCommand;
 use yii2module\vendor\console\events\DomainEvent;
 
 class GenerateDomainController extends Controller
@@ -76,14 +76,24 @@ class GenerateDomainController extends Controller
 	{
 		Output::title("Domain units generator");
 		
-		$event = new DomainEvent();
-		$event->namespace = $this->namespace;
-		$event->name = $this->name;
-		$event->isActive = !empty($this->isActive) ? $this->isActive == 'y' : null;
-		$event->drivers = !empty($this->drivers) ? explode(',', $this->drivers) : null;
-		$event->attributes = !empty($this->attributes) ? explode(',', $this->attributes) : null;
-		$event->types = !empty($this->types) ? explode(',', $this->types) : null;
+		$event = $this->forgeEvent();
+		$this->getParams($event);
+		$this->generateUnits($event);
 		
+		Output::block('Success generated');
+	}
+	
+	private function generateUnits(DomainEvent $event) {
+		$filters = [
+			GenerateServiceCommand::class,
+			GenerateRepositoryCommand::class,
+			GenerateEntityCommand::class,
+		];
+		$filterCollection = new ScenarioCollection($filters);
+		$filterCollection->runAll($event);
+	}
+	
+	private function getParams(DomainEvent $event) {
 		$filters = [
 			SelectDomainCommand::class,
 			SelectUnitTypesCommand::class,
@@ -91,15 +101,19 @@ class GenerateDomainController extends Controller
 			QuestionIsActiveCommand::class,
 			SelectRepositoryDriversCommand::class,
 			InputEntityAttributesCommand::class,
-			
-			GenerateServiceCommand::class,
-			GenerateRepositoryCommand::class,
-			GenerateEntityCommand::class,
 		];
 		$filterCollection = new ScenarioCollection($filters);
 		$filterCollection->runAll($event);
-		
-		Output::block('Success generated');
 	}
 	
+	private function forgeEvent() {
+		$event = new DomainEvent();
+		$event->namespace = $this->namespace;
+		$event->name = $this->name;
+		$event->isActive = !empty($this->isActive) ? $this->isActive == 'y' : null;
+		$event->drivers = !empty($this->drivers) ? explode(',', $this->drivers) : null;
+		$event->attributes = !empty($this->attributes) ? explode(',', $this->attributes) : null;
+		$event->types = !empty($this->types) ? explode(',', $this->types) : null;
+		return $event;
+	}
 }
