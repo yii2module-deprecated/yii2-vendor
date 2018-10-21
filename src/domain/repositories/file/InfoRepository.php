@@ -3,12 +3,14 @@
 namespace yii2module\vendor\domain\repositories\file;
 
 use yii\web\NotFoundHttpException;
-use yii2lab\extension\scenario\helpers\ScenarioHelper;
+use yii2lab\extension\scenario\collections\ScenarioCollection;
 use yii2lab\extension\arrayTools\helpers\ArrayIterator;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2module\vendor\domain\entities\RepoEntity;
+use yii2module\vendor\domain\filters\IsIgnoreFilter;
+use yii2module\vendor\domain\filters\IsPackageFilter;
 use yii2module\vendor\domain\helpers\RepositoryHelper;
 use yii2module\vendor\domain\helpers\UseHelper;
 
@@ -121,22 +123,19 @@ class InfoRepository extends BaseRepository implements ReadInterface {
 	 * @param $collection
 	 *
 	 * @return \yii2lab\domain\values\BaseValue
-	 * @throws \yii\base\InvalidConfigException
-	 * @throws \yii\web\ServerErrorHttpException
 	 */
 	private function separateCollection($collection) {
 		$filters = [
 			[
-				'class' => 'yii2module\vendor\domain\filters\IsPackageFilter',
+				'class' => IsPackageFilter::class,
 			],
 			[
-				'class' => 'yii2module\vendor\domain\filters\IsIgnoreFilter',
+				'class' => IsIgnoreFilter::class,
 				'ignore' => $this->domain->info->ignore,
 			],
 		];
-		
-		$filterCollection = ScenarioHelper::forgeCollection($filters);
-		$collection =  ScenarioHelper::runAll($filterCollection, $collection);
+		$filterCollection = new ScenarioCollection($filters);
+		$collection =  $filterCollection->runAll($collection);
 		return $collection;
 	}
 	

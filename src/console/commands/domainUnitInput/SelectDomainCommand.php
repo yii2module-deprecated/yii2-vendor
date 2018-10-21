@@ -13,7 +13,8 @@ class SelectDomainCommand extends Base {
 		if(!empty($event->namespace)) {
 			return;
 		}
-		$domainAliases = \App::$domain->vendor->pretty->all();
+		$collection = \App::$domain->vendor->pretty->all();
+		$domainAliases = ArrayHelper::getColumn($collection, 'path');
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$event->namespace = ArrayHelper::first($domainAlias);
 	}

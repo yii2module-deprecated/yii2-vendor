@@ -3,6 +3,7 @@
 namespace yii2module\vendor\domain\forms;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii2lab\domain\base\Model;
 use yii2lab\domain\enums\Driver;
 
@@ -18,9 +19,11 @@ class GenerateRepositoryForm extends Model {
 	 */
 	public function rules()
 	{
+		$collection = \App::$domain->vendor->pretty->all();
+		$domainAliases = ArrayHelper::getColumn($collection, 'path');
 		return [
 			[['namespace', 'name', 'isActive'/*, 'drivers'*/], 'required'],
-			['namespace', 'in', 'range' => \App::$domain->vendor->pretty->all()],
+			['namespace', 'in', 'range' => $domainAliases],
 			['isActive', 'boolean'],
 			//['drivers', 'in', 'range' => Driver::values()],
 		];

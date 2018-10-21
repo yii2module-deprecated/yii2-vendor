@@ -29,7 +29,8 @@ class GeneratorController extends Controller
 	 */
 	public function actionDomain()
 	{
-		$domainAliases = \App::$domain->vendor->pretty->all();
+		$collection = \App::$domain->vendor->pretty->all();
+		$domainAliases = ArrayHelper::getColumn($collection, 'path');
 		$domainAlias = Select::display('Select domain', $domainAliases);
 		$domainAlias = ArrayHelper::first($domainAlias);
 

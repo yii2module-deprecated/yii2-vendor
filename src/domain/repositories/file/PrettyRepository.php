@@ -2,14 +2,10 @@
 
 namespace yii2module\vendor\domain\repositories\file;
 
-use Yii;
-use yii\helpers\ArrayHelper;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\extension\yii\helpers\FileHelper;
 use yii2module\vendor\domain\entities\DomainEntity;
-use yii2module\vendor\domain\entities\PackageEntity;
-use yii2module\vendor\domain\helpers\FindHelper;
 use yii2module\vendor\domain\helpers\PrettyHelper;
 
 class PrettyRepository extends BaseRepository {
@@ -31,18 +27,6 @@ class PrettyRepository extends BaseRepository {
 			$domain[$type] = PrettyHelper::scanDomain($domainDir . DS . $type, $postFix);
 		}
 		return $this->forgeEntity($domain);
-	}
-	
-	public function allPackagesDomain() {
-		/** @var PackageEntity[] $packageCollection */
-		$packageCollection = \App::$domain->vendor->info->all();
-		$aliases = ArrayHelper::getColumn($packageCollection, 'alias');
-		return FindHelper::scanForDomain($aliases);
-	}
-	
-	public function allProjectDomain() {
-		$baseAlias = 'domain';
-		return FindHelper::scanForDomain($baseAlias);
 	}
 	
 }
