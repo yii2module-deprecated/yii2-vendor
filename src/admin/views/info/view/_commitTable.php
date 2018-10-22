@@ -31,7 +31,7 @@ $columns = [
 	],
 	[
 		'label' => Yii::t('main', 'author'),
-		'attribute' => 'author_email',
+		'attribute' => 'author_name',
 	],
 	[
 		'label' => Yii::t('main', 'created_at'),
