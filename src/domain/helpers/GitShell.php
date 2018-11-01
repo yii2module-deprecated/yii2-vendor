@@ -74,6 +74,9 @@ class GitShell extends BaseShell {
 		$tag = ArrayHelper::toArray($tag);
 		$tag = implode(' ', $tag);
 		$result = $this->extractFromCommand('git show-ref --tags -d ' . $tag, 'trim');
+		if(empty($result)) {
+			return [];
+		}
 		$tagSha = [];
 		foreach($result as $key => $item) {
 			list($sha, $tagName) = explode(' ', $item);
