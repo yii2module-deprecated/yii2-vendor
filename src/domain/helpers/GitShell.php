@@ -353,6 +353,17 @@ class GitShell extends BaseShell {
 		$this->end();
 		return (strpos($lastLine, 'nothing to commit')) === false; // FALSE => changes
 	}
+	
+	public function clone($remote = null, array $params = null) {
+		FileHelper::createDirectory($this->getPath());
+		if(!is_array($params)) {
+			$params = [];
+		}
+		return $this
+			->begin()
+			->run("git clone $remote .", $params)
+			->end();
+	}
 
 	/**
 	 * Pull changes from a remote
