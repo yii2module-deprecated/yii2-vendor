@@ -3,6 +3,7 @@
 namespace yii2module\vendor\console\controllers;
 
 use Yii;
+use yii2lab\extension\console\helpers\Alert;
 use yii2lab\extension\console\helpers\input\Enter;
 use yii2lab\extension\console\helpers\Output;
 use yii2lab\extension\console\base\Controller;
@@ -21,7 +22,7 @@ class PackageController extends Controller
 		$group = Enter::display('Enter vendor name');
         $package = Enter::display('Enter package name');
         PackageHelper::forge($group, $package);
-        Output::block('Package downloaded and installed!');
+        Alert::success('Package downloaded and installed!');
 	}
 
 }
