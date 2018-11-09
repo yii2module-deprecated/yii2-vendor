@@ -2,12 +2,12 @@
 
 namespace tests\rest;
 
-use api\enums\ApiVersionEnum;
+use yii2lab\rest\domain\helpers\MiscHelper;
 use yii2lab\test\Test\Rest;
 
 class DefaultTest extends Rest {
 	
-	protected $version = ApiVersionEnum::VERSION_DEFAULT;
+	protected $version = 'v4';
 	
 	public function testMainPage() {
 		$this->tester->sendGET($this->url());
@@ -26,7 +26,7 @@ class DefaultTest extends Rest {
 	}
 	
 	public function testVersionPage() {
-		$versionList = ApiVersionEnum::getApiVersionNumberList();
+		$versionList = MiscHelper::getAllVersions();
 		foreach($versionList as $version) {
 			$this->tester->sendGET($this->url('v' . $version));
 			$this->tester->seeResponseCodeIs(200);
