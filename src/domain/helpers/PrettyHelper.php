@@ -45,7 +45,9 @@ class PrettyHelper {
 		}
 		
 		$doc = DocCommentHelper::generate($entity);
-		$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		if($tokenCollection) {
+			$tokenCollection[$docCommentIndexes[0]]->value = $doc;
+		}
 		TokenHelper::save($fileName . DOT . 'php', $tokenCollection);
 	}
 	

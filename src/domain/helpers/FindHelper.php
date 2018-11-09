@@ -69,10 +69,14 @@ class FindHelper {
 	}
 	
 	private static function findDomains($domainDir) {
-		$files = FileHelper::findFiles($domainDir, [
-			'only'=>['Domain.php'],
-			'recursive' => true,
-		]);
+		try {
+			$files = FileHelper::findFiles($domainDir, [
+				'only'=>['Domain.php'],
+				'recursive' => true,
+			]);
+		} catch(InvalidArgumentException $e) {
+			$files = [];
+		}
 		if(empty($files)) {
 			return [];
 		}
