@@ -60,10 +60,10 @@ class FindHelper {
 	private static function getDomainsFromDir($domainAlias) {
 		try {
 			$domainDir = FileHelper::getAlias($domainAlias);
+			$files = self::findDomains($domainDir);
 		} catch(InvalidArgumentException $e) {
 			return [];
 		}
-		$files = self::findDomains($domainDir);
 		$files = self::normalizeFileNames($files, $domainDir);
 		return $files;
 	}
