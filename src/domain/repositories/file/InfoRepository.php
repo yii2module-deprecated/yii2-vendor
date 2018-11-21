@@ -10,7 +10,6 @@ use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\BaseRepository;
 use yii2lab\extension\yii\helpers\FileHelper;
-use yii2mod\helpers\ArrayHelper;
 use yii2module\vendor\domain\entities\RepoEntity;
 use yii2module\vendor\domain\entities\RequiredEntity;
 use yii2module\vendor\domain\filters\IsIgnoreFilter;
