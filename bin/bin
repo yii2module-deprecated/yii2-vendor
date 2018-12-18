@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use yii2lab\domain\helpers\DomainHelper;
+use yii2lab\extension\console\helpers\BinConsoleHelper;
+
+$path = '../../../..';
+
+@include_once(__DIR__ . '/' . $path . '/vendor/yii2lab/yii2-extension/src/console/helpers/binAppEndpoint.php');
+
+/* ------------------------------------------------------ */
+
+DomainHelper::defineDomains([
+    'vendor' => 'yii2module\vendor\domain\Domain',
+]);
+
+$controllerNamespace = 'yii2module\\vendor\\console\\bin';
+$console = new BinConsoleHelper($controllerNamespace);
+$console->init();
