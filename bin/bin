@@ -12,6 +12,7 @@ use yii2lab\extension\console\helpers\BinConsoleHelper;
 
 DomainHelper::defineDomains([
     'vendor' => 'yii2module\vendor\domain\Domain',
+	'package' => 'yii2lab\extension\package\domain\Domain',
 ]);
 
 $controllerNamespace = 'yii2module\\vendor\\console\\bin';
