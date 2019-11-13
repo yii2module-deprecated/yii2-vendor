@@ -28,6 +28,9 @@ class TestRepository extends BaseRepository {
 				'text' => $result,
 			];
 		} elseif(preg_match('#ERRORS!\s+(Tests:.+)$#', $result, $matchesParent)) {
+			if(empty($matches[1])){
+				return $result;
+			}
 			$parts = explode(',', $matches[1]);
             preg_match('#Tests?: (\d+), Assertions?: (\d+), Errors?: (\d+)#', $result, $matches);
             $data = [

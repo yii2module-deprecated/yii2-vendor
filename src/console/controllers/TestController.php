@@ -33,7 +33,7 @@ class TestController extends Controller
 	/**
 	 * Test packages
 	 */
-	public function actionPackage()
+	public function actionPackage($name)
 	{
 		$collection = \App::$domain->vendor->test->directoriesWithHasForPackage();
 		Output::pipe('Test packages (count: ' . count($collection) . ')');

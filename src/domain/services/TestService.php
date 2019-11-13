@@ -40,7 +40,19 @@ class TestService extends BaseActiveService {
 		}
 		return $result;
 	}
-	
+
+	public function directoryWithHasForPackage($packageNome) {
+		$collection = \App::$domain->vendor->info->allWithHasTest();
+		$result = [];
+		foreach($collection as $item) {
+			$result[] = [
+				'name' => $item->package,
+				'directory' => $item->directory,
+			];
+		}
+		return $result;
+	}
+
 	public function directoriesWithHasTestForProject() {
 		$collection = [];
 		if(empty($this->aliases)) {
